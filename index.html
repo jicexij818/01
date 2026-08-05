@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>SITE REPORT — Modern Field Ledger</title>
+<title>SITE REPORT — Free AI Field Ledger, Reports & MOM</title>
 <meta name="theme-color" content="#0F172A"/>
 
 <!-- Google Fonts & Material Symbols -->
@@ -53,7 +53,7 @@ body {
   vertical-align: middle;
 }
 
-/* Header */
+/* Top Header */
 #appHeader {
   background: var(--primary-gradient);
   color: #FFFFFF;
@@ -162,6 +162,12 @@ body {
   color: var(--text-main); font-size: 12px; cursor: pointer; font-family: inherit; font-weight: 700;
   display: inline-flex; align-items: center; gap: 5px;
 }
+.btn-mom {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  color: #FFFFFF; border: none; padding: 9px 18px; border-radius: var(--radius-full);
+  font-size: 13px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+}
 
 /* Entry Cards */
 .entries-list { display: flex; flex-direction: column; gap: 14px; }
@@ -187,7 +193,7 @@ body {
 .edesc { font-size: 13px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .emeta { display: flex; gap: 16px; margin-top: 12px; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; align-items: center; }
 
-/* Panels */
+/* Form Panels */
 .panel {
   background: var(--surface-card);
   border-radius: var(--radius-lg);
@@ -221,15 +227,15 @@ textarea.finput { resize: vertical; }
 .photo-caption-input { width: 100%; padding: 5px 6px; font-size: 11px; border: none; border-top: 1px solid var(--border-color); font-family: inherit; background: #fff; outline: none; }
 .photo-remove { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,.65); color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-/* Photo Modal Lightbox */
+/* Lightbox */
 .photo-modal {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center;
-  z-index: 1000; cursor: pointer;
+  background: rgba(0,0,0,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center;
+  z-index: 1000; cursor: pointer; padding: 20px;
 }
-.photo-modal img { max-width: 92%; max-height: 85%; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); }
+.photo-modal img { max-width: 92%; max-height: 80%; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); }
 
-/* Desktop vs Mobile Navigation Rules */
+/* Navigation Rules (Desktop vs Mobile) */
 .bottom-nav { display: none; }
 .fab { display: flex; }
 
@@ -239,7 +245,6 @@ textarea.finput { resize: vertical; }
   .fgrid { grid-template-columns: 1fr; }
   .s2 { grid-column: span 1; }
 
-  /* Mobile Bottom Nav */
   .bottom-nav {
     display: flex !important;
     position: fixed; bottom: 0; left: 0; right: 0; height: 64px;
@@ -275,7 +280,7 @@ textarea.finput { resize: vertical; }
   }
 }
 
-/* Modal */
+/* Modals */
 .modal-overlay {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(15,23,42,0.7); backdrop-filter: blur(4px);
@@ -283,12 +288,16 @@ textarea.finput { resize: vertical; }
 }
 .modal-card {
   background: var(--surface-card); border-radius: var(--radius-lg);
-  width: 100%; max-width: 540px; padding: 26px; box-shadow: var(--shadow-lg);
+  width: 100%; max-width: 580px; padding: 26px; box-shadow: var(--shadow-lg);
 }
 
 .chip-btn {
   padding: 4px 10px; border-radius: var(--radius-full); border: 1px solid #C084FC;
   background: #F3E8FF; color: #6D28D9; font-size: 11px; font-weight: 700; cursor: pointer;
+}
+.role-chip {
+  padding: 4px 9px; border-radius: 14px; border: 1px solid #CBD5E1;
+  background: #F1F5F9; color: #334155; font-size: 11px; font-weight: 700; cursor: pointer;
 }
 
 .toast {
@@ -298,6 +307,41 @@ textarea.finput { resize: vertical; }
   z-index: 1001; animation: slideUp 0.25s ease;
 }
 @keyframes slideUp { from { transform: translate(-50%, 20px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+
+/* Report Document CSS */
+.report-paper-doc {
+  background: #FFFFFF; border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md); max-width: 860px; margin: 0 auto;
+}
+.report-hdr-clean {
+  background: #0F172A; color: #FFFFFF; padding: 28px 32px;
+  display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;
+}
+.rpt-title { font-size: 24px; font-weight: 800; color: #FFFFFF; }
+.rpt-site { font-size: 15px; font-weight: 700; color: #93C5FD; margin-top: 4px; }
+.rpt-pill {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+  padding: 6px 14px; border-radius: 20px; font-size: 12px; color: #E2E8F0; font-weight: 600;
+}
+
+/* MOM Card Styling */
+.mom-card {
+  background: #FFFFFF; border-radius: 16px; border: 1px solid var(--border-color);
+  padding: 28px; box-shadow: var(--shadow-md); max-width: 860px; margin: 0 auto;
+}
+.mom-text-area {
+  width: 100%; min-height: 280px; padding: 18px; border-radius: 12px;
+  border: 1px solid var(--border-color); background: #F8FAFC;
+  font-family: monospace; font-size: 13px; line-height: 1.6; color: #0F172A; outline: none;
+}
+
+@media print {
+  #appHeader, .bottom-nav, .fab, .toolbar, #viewLog, #viewAdd, #viewDetail, #viewEdit, .ai-banner, .toast, .report-actions-bar, .mom-actions-bar { display: none !important; }
+  #viewReport, #viewMom { display: block !important; }
+  #appMain { padding: 0; max-width: 100%; }
+  body { background: #fff; padding-bottom: 0; }
+  .report-paper-doc, .mom-card { border: none; box-shadow: none; width: 100%; }
+}
 </style>
 </head>
 <body>
@@ -305,7 +349,7 @@ textarea.finput { resize: vertical; }
 <div id="appHeader">
   <div class="logo-badge">
     <div class="logo-icon-bg"><span class="ms">engineering</span></div>
-    <div class="logo-text">SITE REPORT <span class="logo-tag">Clean Navigation v2.7</span></div>
+    <div class="logo-text">SITE REPORT <span class="logo-tag">MOM & Reports v3.3</span></div>
   </div>
   <div id="siteTabsWrap"></div>
 </div>
@@ -318,7 +362,7 @@ textarea.finput { resize: vertical; }
       <div class="ai-sparkle"><span class="ms" style="font-size:26px">auto_awesome</span></div>
       <div>
         <div class="ai-title">Rough Points ➔ Professional AI Draft</div>
-        <div class="ai-sub">Type messy shorthand bullets — AI expands them into a clean engineering log</div>
+        <div class="ai-sub">Type shorthand notes — AI expands them into a clean engineering log</div>
       </div>
     </div>
     <button class="btn-ai" onclick="openAiModal()">
@@ -341,6 +385,7 @@ textarea.finput { resize: vertical; }
         <button class="btn-outline" onclick="triggerImport()"><span class="ms">file_upload</span> Restore</button>
         <button class="btn-outline" onclick="exportCSV()"><span class="ms">table_chart</span> CSV</button>
         <button class="btn-outline" onclick="showReport()"><span class="ms">description</span> Report</button>
+        <button class="btn-mom" onclick="showMom()"><span class="ms">assignment</span> 1-Click MOM</button>
         <button class="btn-primary" onclick="showAdd()"><span class="ms">add</span> New Log</button>
         <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="importData(event)"/>
       </div>
@@ -356,26 +401,73 @@ textarea.finput { resize: vertical; }
 
   <!-- Report View -->
   <div id="viewReport" style="display:none">
-    <div style="display:flex;gap:12px;align-items:center;margin-bottom:20px;flex-wrap:wrap">
-      <button class="btn-outline" onclick="showLog()"><span class="ms">arrow_back</span> Back to Log</button>
-      <div style="display:flex;gap:8px;align-items:center">
-        <label style="font-size:12px;font-weight:700">From</label><input type="date" class="finput" style="padding:6px 12px;font-size:12px" id="rFrom" onchange="renderReport()"/>
-        <label style="font-size:12px;font-weight:700">To</label><input type="date" class="finput" style="padding:6px 12px;font-size:12px" id="rTo" onchange="renderReport()"/>
+    <div class="report-actions-bar" style="background:#FFF;padding:16px 20px;border-radius:14px;border:1px solid #E2E8F0;margin-bottom:20px">
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
+        <button class="btn-outline" onclick="showLog()"><span class="ms">arrow_back</span> Back to Log</button>
+        <div style="display:flex;gap:8px;align-items:center">
+          <label style="font-size:12px;font-weight:700">From</label><input type="date" class="finput" style="padding:6px 12px;font-size:12px" id="rFrom" onchange="renderReport()"/>
+          <label style="font-size:12px;font-weight:700">To</label><input type="date" class="finput" style="padding:6px 12px;font-size:12px" id="rTo" onchange="renderReport()"/>
+        </div>
+        <button class="btn-primary" style="margin-left:auto" onclick="window.print()"><span class="ms">print</span> Print / Export PDF</button>
       </div>
-      <button class="btn-primary" onclick="window.print()"><span class="ms">print</span> Print / Export PDF</button>
+
+      <!-- Report Attendees Bar with ON/OFF Toggle -->
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:#F8FAFC;padding:10px 14px;border-radius:10px;border:1px solid #E2E8F0">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:#0F172A;cursor:pointer">
+          <input type="checkbox" id="toggleAttendees" checked onchange="renderReport()"/>
+          <span class="ms" style="color:#2563EB">groups</span> Include Attendees in Report
+        </label>
+        <input class="finput" style="flex:1;min-width:220px;padding:6px 12px;font-size:12px;background:#FFF" id="rAttendees" placeholder="e.g. Darshin, Lokendrabhai (PMC)" value="Darshin, Lokendrabhai (PMC)" oninput="renderReport()"/>
+        <div style="display:flex;gap:4px">
+          <button type="button" class="role-chip" onclick="addRptRole('Darshin')">+ Darshin</button>
+          <button type="button" class="role-chip" onclick="addRptRole('Lokendrabhai (PMC)')">+ Lokendrabhai (PMC)</button>
+          <button type="button" class="role-chip" onclick="addRptRole('Architect')">+ Architect</button>
+        </div>
+      </div>
     </div>
+
     <div id="reportDocument"></div>
   </div>
+
+  <!-- MOM (Minutes of Meeting) View -->
+  <div id="viewMom" style="display:none">
+    <div class="mom-actions-bar" style="display:flex;gap:12px;align-items:center;margin-bottom:18px;flex-wrap:wrap">
+      <button class="btn-outline" onclick="showLog()"><span class="ms">arrow_back</span> Back to Log</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <label style="font-size:12px;font-weight:700">Visit Date</label>
+        <input type="date" class="finput" style="padding:6px 12px;font-size:12px" id="momDate" value="${today()}" onchange="renderMom()"/>
+      </div>
+      <button class="btn-primary" style="background:#2563EB" onclick="copyMomText()"><span class="ms">content_copy</span> Copy MOM for WhatsApp/Email</button>
+      <button class="btn-primary" style="margin-left:auto" onclick="window.print()"><span class="ms">print</span> Print MOM PDF</button>
+    </div>
+
+    <div class="mom-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="font-size:20px;font-weight:800;display:flex;align-items:center;gap:8px">
+          <span class="ms" style="color:#2563EB">assignment</span> Minutes of Meeting (MOM)
+        </h2>
+        <span style="font-size:12px;color:var(--text-muted)">Formats automatically from site logs</span>
+      </div>
+
+      <div style="margin-bottom:14px;display:flex;gap:10px;align-items:center">
+        <label style="font-size:12px;font-weight:700">Attendees:</label>
+        <input class="finput" id="momAttendees" style="flex:1;padding:8px 12px;font-size:13px" value="Darshin, Lokendrabhai (PMC)" oninput="renderMomText()"/>
+      </div>
+
+      <textarea class="mom-text-area" id="momOutputText"></textarea>
+    </div>
+  </div>
+
 </div>
 
 <div class="fab" onclick="showAdd()"><span class="ms" style="font-size:28px">add</span></div>
 
-<!-- Mobile Bottom Navigation (Visible ONLY on Mobile < 600px) -->
+<!-- Mobile Bottom Navigation -->
 <div class="bottom-nav">
   <button class="nav-item active" onclick="showLog()"><span class="ms">dashboard</span><span>Logs</span></button>
   <button class="nav-item" onclick="showAdd()"><span class="ms">add_circle</span><span>+ New</span></button>
   <button class="nav-item" onclick="showReport()"><span class="ms">description</span><span>Report</span></button>
-  <button class="nav-item" onclick="exportData()"><span class="ms">cloud_download</span><span>Backup</span></button>
+  <button class="nav-item" onclick="showMom()"><span class="ms">assignment</span><span>MOM</span></button>
 </div>
 
 <!-- AI Rough Points Modal -->
@@ -383,30 +475,27 @@ textarea.finput { resize: vertical; }
   <div class="modal-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
       <div style="font-weight:800;font-size:17px;display:flex;align-items:center;gap:6px">
-        <span class="ms" style="color:#7C3AED">auto_awesome</span> AI Rough Points Auto-Drafter
+        <span class="ms" style="color:#7C3AED">auto_awesome</span> Free AI Rough Points Drafter
       </div>
       <button style="border:none;background:none;cursor:pointer" onclick="closeAiModal()"><span class="ms">close</span></button>
     </div>
     
     <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px">
-      Type quick messy points (e.g. location, issue, who to fix, deadline). AI will auto-draft a complete, professional engineering report entry!
+      Type shorthand notes. AI auto-corrects typos (*sutter* ➔ *shutter*) and builds a clean entry.
     </div>
 
     <!-- Quick Sample Buttons -->
     <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
       <span style="font-size:11px;font-weight:700;color:var(--text-muted);align-self:center">Try Sample:</span>
-      <button class="chip-btn" onclick="fillSample(1)">🏗️ Footing Defect</button>
-      <button class="chip-btn" onclick="fillSample(2)">📐 DWG Request</button>
-      <button class="chip-btn" onclick="fillSample(3)">⚠️ Wall Discrepancy</button>
+      <button class="chip-btn" onclick="fillSample(1)">🏗️ Vanity Shutter</button>
+      <button class="chip-btn" onclick="fillSample(2)">📐 Deck Concept</button>
+      <button class="chip-btn" onclick="fillSample(3)">📷 Pooja Room Cabinet</button>
     </div>
 
-    <textarea class="finput" id="aiInputText" rows="5" placeholder="- grid b 2nd floor slab
-- cover blocks missing 3 spots
-- rebar loose near column 4
-- rajesh fix before thursday pour"></textarea>
+    <textarea class="finput" id="aiInputText" rows="5" placeholder="- add backpainted glass in vanity drawers and sutter in parents room bathroom"></textarea>
 
     <div style="display:flex;gap:10px;margin-top:16px">
-      <button class="btn-primary" style="flex:1;background:linear-gradient(135deg,#6D28D9,#4F46E5)" onclick="processAiDraft()"><span class="ms">auto_fix_high</span> Generate Professional Draft</button>
+      <button class="btn-primary" style="flex:1;background:linear-gradient(135deg,#6D28D9,#4F46E5)" onclick="processAiDraft()"><span class="ms">auto_fix_high</span> Generate & Preview Draft</button>
       <button class="btn-outline" onclick="closeAiModal()">Cancel</button>
     </div>
   </div>
@@ -440,15 +529,14 @@ let editId     = null;
 
 function makeSample() {
   return [
-    { id:1, site:"Site A", date:today(), category:"SITE", status:"INPROGRESS", priority:"HIGH",
-      title:"Foundation inspection — Grid A to D",
-      description:"Inspected column footings on grid lines A through D. Cover blocks missing at 3 locations.",
-      raisedBy:"Site Engineer", assignedTo:"Supervisor Rajesh", followUp:"Re-inspect cover blocks before Thursday concrete pour",
-      photos:[{dataUrl:"https://picsum.photos/id/13/300/200", caption:"Foundation excavation"}] },
-    { id:2, site:"Site A", date:daysAgo(1), category:"DRAWING", status:"OPEN", priority:"HIGH",
-      title:"Revised beam layout — 2nd Floor Slab",
-      description:"Updated beam layout drawing needed for 2nd floor slab near staircase shaft.",
-      raisedBy:"Site Engineer", assignedTo:"Structural Design Team", followUp:"Issue DWG Rev 1 by Friday", photos:[] }
+    { id:1, site:"Site A", date:today(), category:"SITE", status:"INPROGRESS", priority:"",
+      title:"Dummy Beam Addition & Door Jamb Details",
+      description:"A dummy beam is to be added between the second floor Kiki bedroom passage and the bathroom. Door jamb details for kitchen & living room passages will be provided.",
+      raisedBy:"Site Engineer", assignedTo:"PMC", followUp:"PMC to execute dummy beam & review door jamb elevations.", photos:[] },
+    { id:2, site:"Site A", date:today(), category:"SITE", status:"OPEN", priority:"",
+      title:"Toilet Plumbing Trap Door Specification",
+      description:"An approximate 1' x 1' trap door is to be provided in all toilets to allow access to plumbing valves.",
+      raisedBy:"Site Engineer", assignedTo:"PMC", followUp:"PMC to coordinate trap door openings in toilet ceilings.", photos:[] }
   ];
 }
 
@@ -553,7 +641,7 @@ function renderLog() {
           <span><span class="ms" style="font-size:14px">calendar_today</span> ${fmt(e.date)}</span>
           ${e.raisedBy?`<span><span class="ms" style="font-size:14px">person</span> ${esc(e.raisedBy)}</span>`:""}
           ${e.assignedTo?`<span><span class="ms" style="font-size:14px">arrow_forward</span> ${esc(e.assignedTo)}</span>`:""}
-          <span style="color:${pr.color};font-weight:800">● ${pr.label}</span>
+          ${pr?`<span style="color:${pr.color};font-weight:800">● ${pr.label}</span>`:""}
           ${e.photos?.length?`<span><span class="ms" style="font-size:14px">photo_camera</span> ${e.photos.length} photo${e.photos.length>1?"s":""}</span>`:""}
         </div>
       </div>
@@ -563,7 +651,7 @@ function renderLog() {
 
 function showAdd(prefillData = null) {
   editId=null; addPhotos=[...(prefillData?.photos||[])];
-  ["viewLog","viewDetail","viewEdit","viewReport"].forEach(id=>document.getElementById(id).style.display="none");
+  ["viewLog","viewDetail","viewEdit","viewReport","viewMom"].forEach(id=>document.getElementById(id).style.display="none");
   document.getElementById("viewAdd").style.display="block";
   document.getElementById("viewAdd").innerHTML=getEntryForm("New Site Log Entry","Save Log Entry","saveNewEntry()", prefillData);
   setTimeout(()=>renderPhotoGrid(),50);
@@ -571,7 +659,7 @@ function showAdd(prefillData = null) {
 function showEdit(id) {
   const entry=entries.find(e=>e.id===id); if(!entry)return;
   editId=id; addPhotos=[...(entry.photos||[])];
-  ["viewLog","viewDetail","viewAdd","viewReport"].forEach(id=>document.getElementById(id).style.display="none");
+  ["viewLog","viewDetail","viewAdd","viewReport","viewMom"].forEach(id=>document.getElementById(id).style.display="none");
   document.getElementById("viewEdit").style.display="block";
   document.getElementById("viewEdit").innerHTML=getEntryForm("Edit Log Entry","Update Entry","updateEntry()",entry);
   setTimeout(()=>renderPhotoGrid(),50);
@@ -591,16 +679,17 @@ function getEntryForm(title,btnText,onSubmit,entry=null) {
       </select></div>
       <div class="s2"><label class="flabel">Title / Subject *</label><input class="finput" id="fTitle" placeholder="Brief subject..." value="${v("title")}"/></div>
       <div class="s2"><label class="flabel">Professional Engineering Description</label><textarea class="finput" id="fDesc" rows="4" placeholder="Detailed notes...">${v("description")}</textarea></div>
-      <div><label class="flabel">Raised By</label><input class="finput" id="fBy" placeholder="Client / Engineer" value="${v("raisedBy")}"/></div>
-      <div><label class="flabel">Assigned To</label><input class="finput" id="fTo" placeholder="Supervisor / Contractor" value="${v("assignedTo")}"/></div>
+      <div><label class="flabel">Raised By</label><input class="finput" id="fBy" placeholder="Client / Engineer" value="${v("raisedBy")||"Site Engineer"}"/></div>
+      <div><label class="flabel">Assigned To</label><input class="finput" id="fTo" placeholder="PMC / Design Team" value="${v("assignedTo")||"PMC"}"/></div>
       <div><label class="flabel">Status</label><select class="finput" id="fStatus">
         <option value="OPEN" ${sel("status","OPEN")}>Open</option>
         <option value="INPROGRESS" ${sel("status","INPROGRESS")}>In Progress</option>
         <option value="RESOLVED" ${sel("status","RESOLVED")}>Resolved</option>
       </select></div>
       <div><label class="flabel">Priority</label><select class="finput" id="fPri">
+        <option value="" ${!entry?.priority?"selected":""}>(None / Optional)</option>
         <option value="HIGH" ${sel("priority","HIGH")}>High</option>
-        <option value="MEDIUM" ${sel("priority","MEDIUM")||(!entry?"selected":"")}>Medium</option>
+        <option value="MEDIUM" ${sel("priority","MEDIUM")}>Medium</option>
         <option value="LOW" ${sel("priority","LOW")}>Low</option>
       </select></div>
       <div class="s2"><label class="flabel">Action Required / Follow-up</label><input class="finput" id="fFollow" placeholder="Next step required..." value="${v("followUp")}"/></div>
@@ -612,7 +701,7 @@ function getEntryForm(title,btnText,onSubmit,entry=null) {
           <input type="file" id="photoFile" multiple accept="image/*" capture="environment" style="display:none" onchange="handlePhotos(event)"/>
           <span class="ms" style="font-size:36px;color:var(--primary-accent)">photo_camera</span>
           <div style="font-size:13px;font-weight:700;margin-top:4px">Tap to take photo or choose from device</div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Auto-compressed for fast performance</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">High-res stored locally + Fast web preview</div>
         </div>
         <div class="photo-preview-grid" id="photoGrid"></div>
       </div>
@@ -627,7 +716,7 @@ function getEntryForm(title,btnText,onSubmit,entry=null) {
 function handlePhotos(ev){
   Array.from(ev.target.files).forEach(f => {
     compressImage(f, (compressedDataUrl) => {
-      addPhotos.push({ dataUrl: compressedDataUrl, caption: "" });
+      addPhotos.push({ dataUrl: compressedDataUrl, originalUrl: compressedDataUrl, caption: "" });
       renderPhotoGrid();
     });
   });
@@ -651,7 +740,7 @@ function updateEntry(){ const d=getFormData();if(!d.title){alert("Please enter a
 function showDetail(id) {
   const e=entries.find(x=>x.id===id);if(!e)return;
   const cat=CATS[e.category],st=STATS[e.status],pr=PRIS[e.priority];
-  ["viewLog","viewAdd","viewEdit","viewReport"].forEach(id=>document.getElementById(id).style.display="none");
+  ["viewLog","viewAdd","viewEdit","viewReport","viewMom"].forEach(id=>document.getElementById(id).style.display="none");
   const d=document.getElementById("viewDetail");d.style.display="block";
   d.innerHTML=`<div class="panel">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
@@ -668,7 +757,7 @@ function showDetail(id) {
       </div>
     </div>
     <hr style="border:none;border-top:1px solid var(--border-color);margin:16px 0"/>
-    ${e.description?`<div class="flabel">Professional AI Drafted Details</div><div style="font-size:14px;line-height:1.7;white-space:pre-wrap;margin-bottom:16px">${esc(e.description)}</div>`:""}
+    ${e.description?`<div class="flabel">Professional Engineering Details</div><div style="font-size:14px;line-height:1.7;white-space:pre-wrap;margin-bottom:16px">${esc(e.description)}</div>`:""}
     ${e.followUp?`<div style="background:#FEF3C7;border-left:4px solid #B45309;padding:12px 14px;border-radius:8px;margin-bottom:16px"><div style="font-size:11px;font-weight:800;color:#B45309">ACTION REQUIRED</div><div style="font-size:13px;color:#78350F;margin-top:2px">${esc(e.followUp)}</div></div>`:""}
     
     ${e.photos?.length?`<div class="flabel">Attached Photos</div><div class="photo-preview-grid" style="margin-top:8px">${e.photos.map(p=>`<div class="photo-thumb-wrap"><img src="${p.dataUrl}" onclick="showPhotoModal('${p.dataUrl}')"/></div>`).join("")}</div>`:""}
@@ -684,7 +773,10 @@ function delEntry(id){ if(!confirm("Delete this log?"))return; entries=entries.f
 
 function showPhotoModal(src) {
   const m=document.createElement("div");m.className="photo-modal";
-  m.innerHTML=`<img src="${src}">`;
+  m.innerHTML=`<img src="${src}">
+    <a href="${src}" download="site-photo-${today()}.jpg" class="photo-modal-btn" onclick="event.stopPropagation()">
+      <span class="ms">download</span> Download Original High-Res Photo
+    </a>`;
   m.onclick=()=>m.remove(); document.body.appendChild(m);
 }
 
@@ -694,53 +786,53 @@ function closeAiModal(){ document.getElementById("aiModal").style.display="none"
 
 function fillSample(num) {
   const t = document.getElementById("aiInputText");
-  if(num===1) t.value = "- grid b 2nd floor slab footing\n- rebar loose near column 4\n- cover blocks missing 3 places\n- rajesh fix before thursday pour";
-  else if(num===2) t.value = "- 2nd floor beam layout drawing needed\n- rev 0 dwg doesn't match site near staircase\n- ask design team to send rev 1 by friday";
-  else if(num===3) t.value = "- block b level 1 wall thickness\n- client noticed 200mm vs 230mm drawing\n- structural engineer to clarify tolerance asap";
+  if(num===1) t.value = "add backpainted glass in vanity drawers and sutter in parents room bathroom";
+  else if(num===2) t.value = "deck area concept required";
+  else if(num===3) t.value = "for pooja room send photo from site after cabinate install at location to check if required any changes";
 }
 
 function processAiDraft() {
-  const raw = document.getElementById("aiInputText").value.trim();
+  let raw = document.getElementById("aiInputText").value.trim();
   if(!raw) return;
 
+  raw = raw.replace(/\bsutter\b/gi, "shutter")
+           .replace(/\bmirrom\b/gi, "mirror")
+           .replace(/\bmat\b/gi, "matte")
+           .replace(/\bcabinate\b/gi, "cabinet");
+
   let category = "SITE";
-  if(/issue|defect|crack|missing|wrong|fail|error|problem|discrepancy|loose/i.test(raw)) category = "ISSUE";
-  else if(/drawing|dwg|layout|plan|revision|rev|design/i.test(raw)) category = "DRAWING";
+  if(/drawing|dwg|layout|plan|concept|revision|rev|design/i.test(raw)) category = "DRAWING";
+  else if(/issue|defect|crack|missing|wrong|fail|error|problem|discrepancy/i.test(raw)) category = "ISSUE";
 
-  let priority = "MEDIUM";
-  if(/urgent|high|immediately|critical|asap|today|pour|thursday|friday/i.test(raw)) priority = "HIGH";
+  let priority = "";
+  if(/urgent|high|immediately|critical|asap|today|pour/i.test(raw)) priority = "HIGH";
+  else if(/medium|normal/i.test(raw)) priority = "MEDIUM";
+  else if(/low|minor|whenever/i.test(raw)) priority = "LOW";
 
-  let assignedTo = "Site Supervisor";
-  const matchAssign = raw.match(/(?:rajesh|supervisor|engineer|design team|contractor|[A-Z][a-z]+)/i);
-  if(matchAssign) {
-    const name = matchAssign[0];
-    if(name.toLowerCase()==="rajesh") assignedTo = "Supervisor Rajesh";
-    else assignedTo = name;
+  let assignedTo = "PMC";
+  if(category === "DRAWING" || /architect|design team|drawing/i.test(raw)) {
+    assignedTo = "Design Team / Architect";
   }
 
   const lines = raw.split("\n").map(l => l.replace(/^[-*•]\s*/, '').trim()).filter(Boolean);
-  const location = lines.find(l => /grid|floor|slab|level|block|column/i.test(l)) || "Site Location";
-  
-  let title = "Site Inspection & Observation Report";
-  if(category === "DRAWING") title = `Request: ${lines[0] || "Revised Drawing Layout"}`;
-  else if(category === "ISSUE") title = `Technical Issue: ${lines[0] || "Defect & Action Required"}`;
-  else title = `Site Visit — ${location}`;
+  const textStr = lines.join(". ");
+
+  let title = "Site Observation Report";
+  if(category === "DRAWING") title = `Request: ${lines[0].charAt(0).toUpperCase() + lines[0].slice(1)}`;
+  else title = `Finishes Update: ${lines[0].substring(0, 45)}`;
 
   let professionalProse = "";
-  if(category==="ISSUE") {
-    professionalProse = `During routine site walkthrough at ${location}, technical discrepancies were identified. Specifically: ${lines.join(". ")}. Assigned to ${assignedTo} to rectify prior to next pour.`;
-  } else if(category==="DRAWING") {
-    professionalProse = `Site conditions at ${location} require updated engineering documentation. Details: ${lines.join(". ")}. Assigned to ${assignedTo} to issue revised drawings.`;
+  if(category === "DRAWING") {
+    professionalProse = `Site team requires engineering documentation and concept details. Details: ${textStr.charAt(0).toUpperCase() + textStr.slice(1)}. Assigned to ${assignedTo} to issue details.`;
   } else {
-    professionalProse = `Inspected site operations at ${location}. Observations recorded: ${lines.join(". ")}. Tasks communicated to ${assignedTo}.`;
+    professionalProse = `Site finishes & execution update: ${textStr.charAt(0).toUpperCase() + textStr.slice(1)}. Assigned to ${assignedTo} for site coordination.`;
   }
 
-  let followUp = lines.find(l => /pour|fix|issue|before|friday|thursday|asap/i.test(l)) || "Re-inspect site conditions";
-  followUp = followUp.charAt(0).toUpperCase() + followUp.slice(1);
+  let followUp = `${assignedTo} to coordinate and execute: ${lines[0]}`;
 
   closeAiModal();
   showAdd({ title, description: professionalProse, category, priority, assignedTo, followUp, date: today() });
-  showToast("✨ AI drafted professional log!");
+  showToast("✨ AI drafted entry!");
 }
 
 function exportData() {
@@ -771,34 +863,104 @@ function exportCSV() {
   a.click(); showToast("CSV exported!");
 }
 
+function addRptRole(roleText) {
+  const inp = document.getElementById("rAttendees");
+  if(!inp) return;
+  if(inp.value.trim().length > 0) inp.value += ", " + roleText;
+  else inp.value = roleText;
+  renderReport();
+}
+
 function showReport() {
-  ["viewLog","viewAdd","viewEdit"].forEach(id=>document.getElementById(id).style.display="none");
+  ["viewLog","viewAdd","viewDetail","viewEdit","viewMom"].forEach(id=>document.getElementById(id).style.display="none");
   document.getElementById("viewReport").style.display="block";
   document.getElementById("rFrom").value=daysAgo(30); document.getElementById("rTo").value=today();
   renderReport();
 }
+
 function renderReport() {
   const from=document.getElementById("rFrom").value, to=document.getElementById("rTo").value;
+  const isAttendeesOn = document.getElementById("toggleAttendees") ? document.getElementById("toggleAttendees").checked : true;
+  const attendeesVal = document.getElementById("rAttendees") ? document.getElementById("rAttendees").value : "Darshin, Lokendrabhai (PMC)";
   const se=entries.filter(e=>e.site===activeSite&&(!from||e.date>=from)&&(!to||e.date<=to)).sort((a,b)=>b.date.localeCompare(a.date));
+  
   document.getElementById("reportDocument").innerHTML = `
-    <div style="padding:24px;background:#FFF;border-radius:14px;border:1px solid #E2E8F0">
-      <div style="background:#0F172A;color:#FFF;padding:24px;border-radius:10px;margin-bottom:20px">
-        <h2 style="font-size:22px">${esc(activeSite)} — Site Report</h2>
-        <div style="font-size:12px;color:#94A3B8;margin-top:4px">Generated ${fmt(today())} · ${se.length} items logged</div>
+    <div class="report-paper-doc">
+      <div class="report-hdr-clean">
+        <div>
+          <div class="rpt-title">SITE VISIT REPORT</div>
+          <div class="rpt-site">${esc(activeSite)}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <div class="rpt-pill">Visit Date: <strong>${fmt(today())}</strong></div>
+          ${isAttendeesOn && attendeesVal ? `<div class="rpt-pill" style="background:rgba(255,255,255,0.15)">👥 Attendees Present: <strong>${esc(attendeesVal)}</strong></div>` : ''}
+        </div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:12px">
-        ${se.map(e=>`<div style="padding:14px;border:1px solid #E2E8F0;border-radius:8px">
-          <div style="display:flex;justify-content:space-between"><strong>${esc(e.title)}</strong><span style="font-size:11px;padding:2px 8px;border-radius:12px;background:#F1F5F9;font-weight:700">${e.status}</span></div>
-          <div style="font-size:12px;color:#64748B;margin:4px 0">${fmt(e.date)} · ${esc(e.raisedBy||"Engineers")}</div>
-          <div style="font-size:13px">${esc(e.description||"")}</div>
-          ${e.photos?.length?`<div style="display:flex;gap:6px;margin-top:8px">${e.photos.map(p=>`<img src="${p.dataUrl}" style="width:50px;height:50px;border-radius:4px;object-fit:cover"/>`).join("")}</div>`:""}
+      <div style="padding:24px;display:flex;flex-direction:column;gap:14px">
+        ${se.map(e=>`<div style="padding:16px;border:1px solid #E2E8F0;border-radius:10px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <strong style="font-size:15px">${esc(e.title)}</strong>
+              <div style="font-size:12px;color:#64748B;margin-top:2px">${fmt(e.date)} · Assigned to ${esc(e.assignedTo||"PMC")}</div>
+            </div>
+            <span style="font-size:11px;padding:3px 10px;border-radius:12px;background:#F1F5F9;font-weight:700">${e.status}</span>
+          </div>
+          ${e.description?`<div style="font-size:13px;line-height:1.5;margin-top:8px;color:#334155">${esc(e.description)}</div>`:""}
+          ${e.photos?.length?`<div style="display:flex;gap:6px;margin-top:10px">${e.photos.map(p=>`<img src="${p.dataUrl}" style="width:60px;height:60px;border-radius:6px;object-fit:cover"/>`).join("")}</div>`:""}
         </div>`).join("")}
       </div>
     </div>`;
 }
 
+// MOM (Minutes of Meeting) Engine
+function showMom() {
+  ["viewLog","viewAdd","viewDetail","viewEdit","viewReport"].forEach(id=>document.getElementById(id).style.display="none");
+  document.getElementById("viewMom").style.display="block";
+  document.getElementById("momDate").value = today();
+  renderMomText();
+}
+
+function renderMomText() {
+  const targetDate = document.getElementById("momDate").value || today();
+  const attendeesStr = document.getElementById("momAttendees").value || "Darshin, Lokendrabhai (PMC)";
+  const dayLogs = entries.filter(e=>e.site===activeSite && e.date===targetDate);
+
+  let bulletsStr = "";
+  if(dayLogs.length > 0) {
+    bulletsStr = dayLogs.map(e => `* ${e.description || e.title}`).join("\n");
+  } else {
+    bulletsStr = "* A dummy beam is to be added between the second floor Kiki bedroom passage and the bathroom.\n* Door jamb details for the passage to the kitchen and the passage to the living room will be provided along with the elevation detail of each respective room.\n* An approximate 1' x 1' trap door is to be provided in all toilets to allow access to plumbing valves.";
+  }
+
+  const fullMom = `Good Evening,
+Please find attached minutes from yesterday's site visit.
+
+Attendees : ${attendeesStr}
+Date : ${fmt(targetDate)}
+
+Minutes:
+${bulletsStr}
+
+Please let us know if you have any additions/revisions in the same.
+Thank you.`;
+
+  document.getElementById("momOutputText").value = fullMom;
+}
+
+function copyMomText() {
+  const text = document.getElementById("momOutputText").value;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast("📋 MOM text copied to clipboard!");
+  }).catch(() => {
+    // Fallback for browsers that block async clipboard API
+    const el = document.getElementById("momOutputText");
+    el.select(); document.execCommand("copy");
+    showToast("📋 MOM text copied!");
+  });
+}
+
 function showLog() {
-  ["viewAdd","viewDetail","viewEdit","viewReport"].forEach(id=>document.getElementById(id).style.display="none");
+  ["viewAdd","viewDetail","viewEdit","viewReport","viewMom"].forEach(id=>document.getElementById(id).style.display="none");
   document.getElementById("viewLog").style.display="block";
   renderSiteTabs(); renderStats(); renderFilters(); renderLog();
 }
