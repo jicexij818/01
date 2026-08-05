@@ -2,488 +2,635 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Site Ledger Pro</title>
-<link rel="manifest" href="manifest.json"/>
-<meta name="theme-color" content="#1C1917"/>
-<link rel="icon" href="icon-192.png"/>
-<link rel="apple-touch-icon" href="icon-192.png"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>Site Report — Material Design 3</title>
+<meta name="theme-color" content="#1F1B16"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="apple-mobile-web-app-title" content="Site Ledger"/>
+<meta name="apple-mobile-web-app-title" content="Site Report"/>
+
+<!-- Google Fonts & Material Symbols -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Segoe UI', sans-serif; background: #F0EDE8; color: #1C1917; min-height: 100vh; }
+:root {
+  /* Google Material Design 3 (M3) Color System */
+  --md-sys-color-primary: #1F1B16;
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-primary-container: #36302B;
+  --md-sys-color-on-primary-container: #F5EEE6;
+  
+  --md-sys-color-surface: #F9F6F0;
+  --md-sys-color-surface-dim: #EFECE6;
+  --md-sys-color-surface-container: #FFFFFF;
+  --md-sys-color-surface-container-high: #F3EFE9;
+  --md-sys-color-on-surface: #1F1B16;
+  --md-sys-color-on-surface-variant: #635D57;
 
-/* ── Header ── */
-#appHeader { background: #1C1917; color: #F0EDE8; padding: 0 20px; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-.logo { font-family: monospace; font-size: 13px; letter-spacing: 3px; }
-.logo span { color: #44403C; }
-#siteTabsWrap { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
-.site-tab { padding: 4px 13px; border-radius: 4px; border: none; cursor: pointer; font-size: 12px; font-family: inherit; font-weight: 500; background: transparent; color: #A8A29E; transition: all .12s; }
-.site-tab.active { background: #F0EDE8; color: #1C1917; }
-.add-site-btn { padding: 4px 10px; border-radius: 4px; border: 1px dashed #44403C; background: transparent; color: #78716C; font-size: 12px; cursor: pointer; }
-#newSiteInput { width: 130px; padding: 4px 8px; border-radius: 4px; border: 1px solid #44403C; background: #292524; color: #F0EDE8; font-size: 12px; font-family: inherit; outline: none; }
-#confirmSiteBtn { padding: 4px 10px; border-radius: 4px; border: none; background: #F0EDE8; color: #1C1917; font-size: 12px; cursor: pointer; }
+  --md-sys-color-outline: #857D75;
+  --md-sys-color-outline-variant: #E5DFC8;
 
-/* ── Storage Warning ── */
-.storage-warning { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 10px 16px; margin-bottom: 16px; border-radius: 6px; font-size: 13px; color: #92400E; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-.storage-warning button { background: #92400E; color: white; border: none; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+  /* Category & Status Tokens */
+  --cat-site-bg: #E6F4EA; --cat-site-color: #137333;
+  --cat-issue-bg: #FCE8E6; --cat-issue-color: #C5221F;
+  --cat-drawing-bg: #E8F0FE; --cat-drawing-color: #1A73E8;
 
-/* ── App Layout ── */
-#appMain { max-width: 1000px; margin: 0 auto; padding: 20px 16px; }
+  --stat-open-bg: #FEF3D6; --stat-open-color: #B06000;
+  --stat-prog-bg: #E8F0FE; --stat-prog-color: #1A73E8;
+  --stat-res-bg: #E6F4EA; --stat-res-color: #137333;
 
-/* ── Stats ── */
-.stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 18px; }
-.stat-card { border-radius: 8px; padding: 12px 14px; cursor: pointer; transition: transform 0.1s; }
-.stat-card:hover { transform: translateY(-2px); }
-.stat-num { font-family: monospace; font-size: 26px; font-weight: 600; }
-.stat-lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.8px; margin-top: 2px; color: #78716C; }
+  --pri-high: #D93025; --pri-med: #E37400; --pri-low: #5F6368;
 
-/* ── Toolbar ── */
-.toolbar { margin-bottom: 14px; }
-.trow { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; align-items: center; }
-#searchInput { flex: 1; min-width: 140px; padding: 8px 12px; border-radius: 6px; border: 1px solid #D6D3D1; background: #fff; font-size: 13px; font-family: inherit; outline: none; }
-.filters { display: flex; gap: 6px; flex-wrap: wrap; }
-.fbtn { padding: 5px 12px; border-radius: 20px; border: 1px solid #D6D3D1; background: #fff; color: #57534E; font-size: 12px; cursor: pointer; font-family: inherit; font-weight: 500; transition: all .12s; }
-.fbtn.active { background: #1C1917; color: #F0EDE8; border-color: #1C1917; }
-.btn-primary { padding: 8px 16px; border-radius: 6px; border: none; background: #1C1917; color: #F0EDE8; font-size: 13px; cursor: pointer; font-family: inherit; font-weight: 500; white-space: nowrap; }
-.btn-primary:hover { background: #292524; }
-.btn-outline { padding: 8px 16px; border-radius: 6px; border: 1px solid #57534E; background: #fff; color: #1C1917; font-size: 13px; cursor: pointer; font-family: inherit; font-weight: 500; white-space: nowrap; }
+  --md-radius-small: 8px;
+  --md-radius-medium: 16px;
+  --md-radius-large: 24px;
+  --md-radius-full: 9999px;
 
-/* ── Entry Cards (Log View) ── */
-.entries { display: flex; flex-direction: column; gap: 8px; }
-.ecard { background: #fff; border-radius: 8px; padding: 14px 16px; border: 1px solid #E7E5E4; cursor: pointer; display: flex; gap: 12px; transition: box-shadow .15s; }
-.ecard:hover { box-shadow: 0 2px 10px rgba(0,0,0,.08); }
-.eicon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
-.ebody { flex: 1; min-width: 0; }
-.etop { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: flex-start; }
-.etitle { font-weight: 600; font-size: 14px; }
-.badges { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; }
-.badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
-.edesc { font-size: 12px; color: #78716C; margin-top: 4px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-.emeta { display: flex; gap: 14px; margin-top: 8px; font-size: 11px; color: #A8A29E; flex-wrap: wrap; }
-.empty { text-align: center; padding: 60px 20px; color: #A8A29E; font-size: 14px; }
-
-/* ── Panel (Add/Edit/Detail) ── */
-.panel { background: #fff; border-radius: 10px; padding: 24px; border: 1px solid #E7E5E4; }
-.panel-title { font-weight: 600; font-size: 16px; margin-bottom: 20px; }
-.fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.s2 { grid-column: span 2; }
-.flabel { display: block; font-size: 11px; font-weight: 600; color: #78716C; letter-spacing: 0.5px; margin-bottom: 6px; text-transform: uppercase; }
-.finput { width: 100%; padding: 9px 12px; border-radius: 6px; border: 1px solid #D6D3D1; background: #FAFAF9; font-size: 13px; font-family: inherit; outline: none; color: #1C1917; }
-textarea.finput { resize: vertical; }
-.faction { display: flex; gap: 10px; margin-top: 20px; }
-.btn-save { padding: 10px 24px; border-radius: 6px; border: none; background: #1C1917; color: #F0EDE8; font-size: 14px; cursor: pointer; font-family: inherit; font-weight: 500; }
-.btn-cancel { padding: 10px 24px; border-radius: 6px; border: 1px solid #D6D3D1; background: transparent; color: #57534E; font-size: 14px; cursor: pointer; font-family: inherit; }
-.btn-back { font-size: 13px; color: #78716C; background: none; border: none; cursor: pointer; font-family: inherit; padding: 0; }
-.btn-del { font-size: 12px; color: #DC2626; background: none; border: none; cursor: pointer; font-family: inherit; }
-.btn-edit { font-size: 12px; color: #2563EB; background: none; border: none; cursor: pointer; font-family: inherit; margin-right: 12px; }
-hr.div { border: none; border-top: 1px solid #F5F5F4; margin: 14px 0; }
-.slabel { font-size: 11px; font-weight: 600; color: #A8A29E; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px; }
-.sval { font-size: 14px; margin-top: 2px; }
-.fu-box { background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 8px; padding: 12px 14px; margin-bottom: 16px; }
-.fu-lbl { font-size: 11px; font-weight: 700; color: #92400E; letter-spacing: 0.5px; margin-bottom: 4px; }
-.fu-val { font-size: 14px; color: #78350F; }
-.status-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-.sbtn { padding: 7px 16px; border-radius: 6px; border: 1px solid #D6D3D1; background: #fff; color: #78716C; font-size: 13px; cursor: pointer; font-family: inherit; transition: all .12s; }
-.sbtn:hover { background: #F5F5F4; }
-
-/* ── Photo upload ── */
-.photo-upload-area { border: 2px dashed #D6D3D1; border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; background: #FAFAF9; }
-.photo-upload-area:hover { border-color: #1C1917; }
-.photo-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap: 10px; margin-top: 12px; }
-.photo-thumb-wrap { position: relative; border-radius: 6px; overflow: hidden; background: #F5F5F4; }
-.photo-thumb-wrap img { width: 100%; height: 90px; object-fit: cover; display: block; }
-.photo-caption-input { width: 100%; padding: 4px 6px; font-size: 11px; border: none; border-top: 1px solid #E7E5E4; font-family: inherit; background: #fff; outline: none; }
-.photo-remove { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,.55); color: #fff; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 13px; cursor: pointer; line-height: 1; display: flex; align-items: center; justify-content: center; }
-
-/* ── Report Toolbar ── */
-#viewReport { display: none; }
-.report-toolbar { display: flex; gap: 10px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
-.date-range { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.date-range label { font-size: 12px; color: #78716C; font-weight: 500; }
-.date-range input[type=date] { padding: 7px 10px; border-radius: 6px; border: 1px solid #D6D3D1; font-size: 12px; font-family: inherit; background: #fff; outline: none; }
-.format-toggle { display: flex; background: #E7E5E4; padding: 3px; border-radius: 8px; gap: 2px; }
-.format-option { padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; background: transparent; border: none; color: #78716C; transition: all 0.15s; font-family: inherit; letter-spacing: 0.3px; }
-.format-option.active { background: #1C1917; color: #F0EDE8; box-shadow: 0 1px 4px rgba(0,0,0,.18); }
-
-/* ── Report Document wrapper ── */
-#reportDocument { background: #fff; border: 1px solid #D6D3D1; border-radius: 10px; overflow: hidden; }
-
-/* ── Photo Modal ── */
-.photo-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.92); display: flex; align-items: center; justify-content: center; z-index: 1000; cursor: pointer; }
-.photo-modal img { max-width: 90%; max-height: 85%; border-radius: 8px; box-shadow: 0 8px 40px rgba(0,0,0,.5); }
-.photo-modal-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 28px; cursor: pointer; font-family: sans-serif; opacity: 0.8; }
-.photo-modal-caption { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: white; background: rgba(0,0,0,0.6); padding: 8px 20px; border-radius: 20px; font-size: 13px; white-space: nowrap; }
-
-/* ── Toast ── */
-.toast { position: fixed; bottom: 20px; right: 20px; background: #1C1917; color: white; padding: 10px 16px; border-radius: 8px; font-size: 12px; z-index: 1001; animation: slideIn 0.3s ease; }
-@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-/* ══════════════════════════════════════════════════════
-   CARDS REPORT — Professional
-══════════════════════════════════════════════════════ */
-.rfc { font-family: 'Segoe UI', sans-serif; color: #1C1917; }
-
-/* Cover strip */
-.rfc-cover { background: #1C1917; padding: 32px 36px 28px; }
-.rfc-cover-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: #78716C; margin-bottom: 8px; text-transform: uppercase; }
-.rfc-cover-title { font-size: 26px; font-weight: 700; color: #F0EDE8; margin-bottom: 4px; }
-.rfc-cover-sub { font-size: 13px; color: #A8A29E; }
-.rfc-cover-meta { display: flex; gap: 32px; margin-top: 24px; flex-wrap: wrap; }
-.rfc-cover-meta-item .mk { font-size: 10px; color: #57534E; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 3px; }
-.rfc-cover-meta-item .mv { font-size: 13px; color: #D6D3D1; font-weight: 500; }
-
-/* Summary row */
-.rfc-summary { display: grid; grid-template-columns: repeat(4,1fr); border-bottom: 1px solid #E7E5E4; }
-.rfc-sum-box { padding: 18px 20px; border-right: 1px solid #E7E5E4; text-align: center; }
-.rfc-sum-box:last-child { border-right: none; }
-.rfc-sum-num { font-family: monospace; font-size: 28px; font-weight: 700; }
-.rfc-sum-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; color: #78716C; margin-top: 4px; text-transform: uppercase; }
-
-/* Section heading */
-.rfc-section-head { display: flex; align-items: center; gap: 10px; padding: 20px 36px 12px; border-top: 1px solid #F0EDE8; }
-.rfc-section-head:first-of-type { border-top: none; }
-.rfc-section-pill { font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; }
-.rfc-section-label { font-size: 13px; font-weight: 700; color: #1C1917; letter-spacing: 0.3px; }
-.rfc-section-count { font-size: 12px; color: #A8A29E; margin-left: auto; }
-
-/* Cards */
-.rfc-cards { display: flex; flex-direction: column; gap: 12px; padding: 0 36px 28px; }
-.rfc-card { border-radius: 10px; border: 1px solid #E7E5E4; overflow: hidden; page-break-inside: avoid; }
-.rfc-card-top { display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px 14px; }
-.rfc-card-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
-.rfc-card-main { flex: 1; min-width: 0; }
-.rfc-card-title { font-weight: 700; font-size: 14px; color: #1C1917; margin-bottom: 6px; }
-.rfc-card-meta { display: flex; gap: 14px; flex-wrap: wrap; font-size: 11px; color: #78716C; }
-.rfc-card-meta span { display: flex; align-items: center; gap: 3px; }
-.rfc-card-badges { display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; align-items: flex-end; }
-.rfc-card-body { padding: 0 18px 14px; }
-.rfc-card-desc { font-size: 13px; color: #3D3835; line-height: 1.7; margin-bottom: 10px; }
-.rfc-card-followup { display: flex; gap: 8px; align-items: flex-start; background: #FFFBEB; border-left: 3px solid #F59E0B; padding: 8px 12px; border-radius: 0 6px 6px 0; font-size: 12px; color: #78350F; margin-bottom: 10px; }
-.rfc-card-followup-label { font-weight: 700; flex-shrink: 0; }
-.rfc-card-photos { display: flex; gap: 8px; flex-wrap: wrap; padding: 10px 18px 16px; border-top: 1px solid #F5F5F4; background: #FAFAF9; }
-.rfc-photo-thumb { width: 72px; height: 72px; border-radius: 6px; object-fit: cover; cursor: pointer; border: 1px solid #E7E5E4; transition: transform 0.15s, box-shadow 0.15s; }
-.rfc-photo-thumb:hover { transform: scale(1.04); box-shadow: 0 2px 8px rgba(0,0,0,.15); }
-.rfc-photo-more { width: 72px; height: 72px; border-radius: 6px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #2563EB; }
-.rfc-empty { text-align: center; padding: 48px; color: #A8A29E; font-size: 13px; }
-
-/* Common badges */
-.rbadge { font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px; letter-spacing: 0.3px; white-space: nowrap; }
-.rbadge-open { background: #FEF3C7; color: #92400E; }
-.rbadge-prog { background: #DBEAFE; color: #1E40AF; }
-.rbadge-res  { background: #D1FAE5; color: #065F46; }
-.rpri-high   { color: #DC2626; font-weight: 700; font-size: 11px; }
-.rpri-med    { color: #D97706; font-weight: 700; font-size: 11px; }
-.rpri-low    { color: #6B7280; font-weight: 700; font-size: 11px; }
-
-/* Sign-off */
-.rfc-signoff { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 24px 36px; background: #F7F6F4; border-top: 2px solid #1C1917; margin-top: 8px; }
-.rfc-sig-block .sig-line { border-bottom: 1px solid #A8A29E; height: 36px; margin-bottom: 8px; }
-.rfc-sig-block .sig-name { font-size: 13px; font-weight: 600; color: #1C1917; }
-.rfc-sig-block .sig-role { font-size: 11px; color: #78716C; margin-top: 2px; }
-
-/* ══════════════════════════════════════════════════════
-   TABLE REPORT — Professional
-══════════════════════════════════════════════════════ */
-.rft { font-family: 'Segoe UI', sans-serif; color: #1C1917; }
-
-/* Cover */
-.rft-cover { background: #1C1917; padding: 28px 36px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; }
-.rft-cover-left .eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: #78716C; margin-bottom: 8px; }
-.rft-cover-left .title { font-size: 22px; font-weight: 700; color: #F0EDE8; }
-.rft-cover-right { text-align: right; }
-.rft-cover-right table { border-collapse: collapse; }
-.rft-cover-right td { font-size: 12px; padding: 2px 0 2px 20px; color: #A8A29E; }
-.rft-cover-right td:first-child { color: #57534E; font-weight: 600; padding-left: 0; font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; }
-
-/* Summary strip */
-.rft-summary { display: grid; grid-template-columns: repeat(4,1fr); border-bottom: 2px solid #E7E5E4; }
-.rft-sum-box { padding: 16px 20px; border-right: 1px solid #E7E5E4; }
-.rft-sum-box:last-child { border-right: none; }
-.rft-sum-num { font-family: monospace; font-size: 24px; font-weight: 700; }
-.rft-sum-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; color: #78716C; margin-top: 3px; text-transform: uppercase; }
-
-/* Section heading */
-.rft-sec-head { display: flex; align-items: center; gap: 10px; padding: 22px 36px 10px; }
-.rft-sec-num { background: #1C1917; color: #F0EDE8; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; font-family: monospace; letter-spacing: 1px; }
-.rft-sec-title { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #1C1917; }
-.rft-sec-count { margin-left: auto; font-size: 11px; color: #A8A29E; }
-
-/* Tables */
-.rft-table-wrap { padding: 0 36px 24px; }
-.rft-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-.rft-table thead tr { background: #1C1917; }
-.rft-table thead th { padding: 10px 12px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: #F0EDE8; }
-.rft-table tbody tr { border-bottom: 1px solid #F0EDE8; }
-.rft-table tbody tr:nth-child(even) { background: #FAFAF9; }
-.rft-table tbody tr:last-child { border-bottom: none; }
-.rft-table tbody td { padding: 11px 12px; vertical-align: top; color: #1C1917; line-height: 1.5; }
-.rft-table .td-num { font-family: monospace; font-size: 10px; color: #A8A29E; width: 30px; }
-.rft-cell-title { font-weight: 600; font-size: 12px; color: #1C1917; }
-.rft-cell-desc { font-size: 11px; color: #78716C; margin-top: 3px; line-height: 1.5; }
-.rft-cell-fu { font-size: 11px; color: #92400E; margin-top: 5px; }
-.rft-cell-fu::before { content: "↳ "; font-weight: 700; }
-.rft-photos { display: flex; gap: 5px; flex-wrap: wrap; }
-.rft-photo-mini { width: 52px; height: 52px; border-radius: 5px; object-fit: cover; cursor: pointer; border: 1px solid #E7E5E4; }
-.rft-photo-more { font-size: 10px; color: #2563EB; font-weight: 700; margin-top: 4px; }
-.rft-no-photo { font-size: 11px; color: #D6D3D1; }
-.rft-empty-row td { text-align: center; padding: 32px; color: #A8A29E; font-style: italic; font-size: 12px; }
-
-/* Observations section */
-.rft-obs-list { padding: 0 36px 24px; display: flex; flex-direction: column; gap: 14px; }
-.rft-obs-item { padding: 14px 16px; background: #FAFAF9; border-radius: 8px; border: 1px solid #E7E5E4; }
-.rft-obs-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; }
-.rft-obs-date { font-family: monospace; font-size: 11px; color: #A8A29E; flex-shrink: 0; }
-.rft-obs-title { font-weight: 700; font-size: 13px; color: #1C1917; }
-.rft-obs-body { font-size: 12px; color: #3D3835; line-height: 1.7; white-space: pre-wrap; }
-.rft-obs-fu { font-size: 11px; color: #92400E; background: #FFFBEB; border-left: 3px solid #F59E0B; padding: 5px 10px; border-radius: 0 4px 4px 0; margin-top: 8px; }
-
-/* Sign-off */
-.rft-signoff { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 24px 36px; background: #F7F6F4; border-top: 2px solid #1C1917; }
-.rft-sig-block .sig-line { border-bottom: 1px solid #A8A29E; height: 36px; margin-bottom: 8px; }
-.rft-sig-block .sig-name { font-size: 13px; font-weight: 600; color: #1C1917; }
-.rft-sig-block .sig-role { font-size: 11px; color: #78716C; margin-top: 2px; }
-
-/* ── Print ── */
-@media print {
-  #appHeader, .report-toolbar, #viewLog, #viewAdd, #viewDetail, #viewEdit, .storage-warning, .toast { display: none !important; }
-  #viewReport { display: block !important; }
-  #appMain { padding: 0; max-width: 100%; }
-  body { background: #fff; }
-  #reportDocument { border: none; border-radius: 0; }
-  .rfc-card, .rft-obs-item { page-break-inside: avoid; }
-  .rfc-cover, .rft-cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .rfc-summary, .rft-summary { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .rft-table thead tr { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  --md-elevation-1: 0px 2px 6px rgba(31,27,22, 0.06);
+  --md-elevation-2: 0px 4px 12px rgba(31,27,22, 0.10);
+  --md-elevation-3: 0px 8px 24px rgba(31,27,22, 0.14);
 }
 
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  min-height: 100vh;
+  padding-bottom: 80px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Material Icon styling */
+.ms {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  vertical-align: middle;
+}
+
+/* ── Top Header App Bar ── */
+#appHeader {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  padding: 0 20px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--md-elevation-2);
+}
+.brand-wrap { display: flex; align-items: center; gap: 10px; }
+.brand-icon {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  width: 36px; height: 36px;
+  border-radius: var(--md-radius-small);
+  display: flex; align-items: center; justify-content: center;
+}
+.brand-title { font-size: 17px; font-weight: 700; letter-spacing: -0.2px; }
+.brand-title span { color: #A8A29E; font-weight: 400; font-size: 13px; margin-left: 4px; }
+
+#siteTabsWrap { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.site-tab {
+  padding: 6px 14px;
+  border-radius: var(--md-radius-full);
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  font-weight: 600;
+  background: transparent;
+  color: #A8A29E;
+  transition: all .15s ease;
+}
+.site-tab.active {
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  box-shadow: var(--md-elevation-1);
+}
+.add-site-btn {
+  padding: 5px 12px;
+  border-radius: var(--md-radius-full);
+  border: 1px dashed #78716C;
+  background: transparent;
+  color: #A8A29E;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 4px;
+}
+
+/* ── App Layout ── */
+#appMain { max-width: 1040px; margin: 0 auto; padding: 20px 16px; }
+
+/* ── Stats Section ── */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+.stat-card {
+  background: var(--md-sys-color-surface-container);
+  border-radius: var(--md-radius-medium);
+  padding: 14px 16px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: var(--md-elevation-1);
+}
+.stat-card:hover { transform: translateY(-2px); box-shadow: var(--md-elevation-2); }
+.stat-card:active { transform: scale(0.98); }
+.stat-head { display: flex; align-items: center; justify-content: space-between; }
+.stat-num { font-family: monospace; font-size: 28px; font-weight: 700; margin-top: 4px; }
+.stat-lbl { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; color: var(--md-sys-color-on-surface-variant); text-transform: uppercase; }
+
+/* ── Smart AI Card Banner ── */
+.ai-banner {
+  background: linear-gradient(135deg, #1F1B16 0%, #36302B 100%);
+  color: #FFFFFF;
+  border-radius: var(--md-radius-medium);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: var(--md-elevation-2);
+}
+.ai-banner-left { display: flex; align-items: center; gap: 12px; }
+.ai-icon-bubble {
+  background: rgba(255,255,255,0.15);
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.ai-banner-title { font-size: 14px; font-weight: 700; }
+.ai-banner-sub { font-size: 12px; color: #D6D3D1; margin-top: 2px; }
+.btn-ai-trigger {
+  background: #FFFFFF;
+  color: #1F1B16;
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--md-radius-full);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+.btn-ai-trigger:hover { opacity: 0.9; }
+
+/* ── Toolbar & Filters ── */
+.toolbar { margin-bottom: 16px; }
+.trow { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+.search-box {
+  flex: 1; min-width: 180px;
+  display: flex; align-items: center;
+  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-radius-full);
+  padding: 0 14px;
+  box-shadow: var(--md-elevation-1);
+}
+.search-box input {
+  width: 100%; padding: 10px 8px;
+  border: none; background: transparent;
+  font-size: 13px; font-family: inherit; outline: none;
+  color: var(--md-sys-color-on-surface);
+}
+.filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.fbtn {
+  padding: 6px 14px;
+  border-radius: var(--md-radius-full);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 12px; cursor: pointer; font-family: inherit; font-weight: 600;
+  transition: all .15s ease;
+  display: flex; align-items: center; gap: 4px;
+}
+.fbtn.active {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+.btn-primary {
+  padding: 9px 18px;
+  border-radius: var(--md-radius-full);
+  border: none;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  font-size: 13px; cursor: pointer; font-family: inherit; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  box-shadow: var(--md-elevation-1);
+  transition: box-shadow 0.15s ease, opacity 0.15s ease;
+}
+.btn-primary:hover { box-shadow: var(--md-elevation-2); opacity: 0.95; }
+.btn-outline {
+  padding: 8px 14px;
+  border-radius: var(--md-radius-full);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+  font-size: 12px; cursor: pointer; font-family: inherit; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+}
+
+/* ── Entry Cards (Log View) ── */
+.entries-list { display: flex; flex-direction: column; gap: 10px; }
+.ecard {
+  background: var(--md-sys-color-surface-container);
+  border-radius: var(--md-radius-medium);
+  padding: 16px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  cursor: pointer;
+  display: flex; gap: 14px;
+  transition: box-shadow .15s ease, transform .15s ease;
+  box-shadow: var(--md-elevation-1);
+}
+.ecard:hover { box-shadow: var(--md-elevation-2); transform: translateY(-1px); }
+.eicon-box {
+  width: 44px; height: 44px;
+  border-radius: var(--md-radius-small);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.ebody { flex: 1; min-width: 0; }
+.etop { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; flex-wrap: wrap; }
+.etitle { font-weight: 700; font-size: 15px; color: var(--md-sys-color-on-surface); line-height: 1.3; }
+.badges { display: flex; gap: 6px; flex-shrink: 0; align-items: center; flex-wrap: wrap; }
+.badge {
+  font-size: 11px; padding: 3px 10px;
+  border-radius: var(--md-radius-full); font-weight: 700;
+  letter-spacing: 0.2px;
+}
+.edesc { font-size: 13px; color: var(--md-sys-color-on-surface-variant); margin-top: 6px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.emeta { display: flex; gap: 16px; margin-top: 10px; font-size: 12px; color: var(--md-sys-color-on-surface-variant); flex-wrap: wrap; align-items: center; }
+.emeta span { display: inline-flex; align-items: center; gap: 4px; }
+.empty-state { text-align: center; padding: 60px 20px; color: var(--md-sys-color-outline); font-size: 14px; }
+
+/* ── Panel Forms & Modals ── */
+.panel {
+  background: var(--md-sys-color-surface-container);
+  border-radius: var(--md-radius-large);
+  padding: 24px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: var(--md-elevation-2);
+}
+.panel-title { font-weight: 700; font-size: 18px; margin-bottom: 20px; color: var(--md-sys-color-on-surface); }
+.fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.s2 { grid-column: span 2; }
+.flabel { display: block; font-size: 11px; font-weight: 700; color: var(--md-sys-color-on-surface-variant); letter-spacing: 0.5px; margin-bottom: 6px; text-transform: uppercase; }
+.finput {
+  width: 100%; padding: 11px 14px;
+  border-radius: var(--md-radius-small);
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-dim);
+  font-size: 14px; font-family: inherit; outline: none;
+  color: var(--md-sys-color-on-surface);
+}
+.finput:focus { border-color: var(--md-sys-color-primary); background: #FFFFFF; }
+textarea.finput { resize: vertical; }
+.faction { display: flex; gap: 12px; margin-top: 24px; }
+.btn-save {
+  padding: 12px 28px; border-radius: var(--md-radius-full); border: none;
+  background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary);
+  font-size: 14px; cursor: pointer; font-family: inherit; font-weight: 700; flex: 1;
+}
+.btn-cancel {
+  padding: 12px 24px; border-radius: var(--md-radius-full); border: 1px solid var(--md-sys-color-outline);
+  background: transparent; color: var(--md-sys-color-on-surface); font-size: 14px; cursor: pointer; font-family: inherit; font-weight: 600;
+}
+
+/* Photo upload area */
+.photo-upload-area {
+  border: 2px dashed var(--md-sys-color-outline);
+  border-radius: var(--md-radius-medium);
+  padding: 24px; text-align: center; cursor: pointer;
+  background: var(--md-sys-color-surface-dim);
+  transition: border-color .15s ease;
+}
+.photo-upload-area:hover { border-color: var(--md-sys-color-primary); }
+.photo-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap: 10px; margin-top: 14px; }
+.photo-thumb-wrap { position: relative; border-radius: var(--md-radius-small); overflow: hidden; background: #EFECE6; border: 1px solid var(--md-sys-color-outline-variant); }
+.photo-thumb-wrap img { width: 100%; height: 95px; object-fit: cover; display: block; }
+.photo-caption-input { width: 100%; padding: 5px 6px; font-size: 11px; border: none; border-top: 1px solid var(--md-sys-color-outline-variant); font-family: inherit; background: #fff; outline: none; }
+.photo-remove { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,.65); color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+/* ── Floating Action Button (FAB) ── */
+.fab {
+  position: fixed; bottom: 84px; right: 20px;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  width: 56px; height: 56px;
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--md-elevation-3);
+  cursor: pointer; z-index: 90;
+  transition: transform 0.15s ease;
+}
+.fab:active { transform: scale(0.92); }
+
+/* ── Mobile Bottom Navigation Bar ── */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: var(--md-sys-color-surface-container);
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  display: flex; justify-around: space-around; align-items: center;
+  z-index: 99;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+}
+.nav-item {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 11px; font-weight: 600; text-decoration: none;
+  background: none; border: none; cursor: pointer; font-family: inherit;
+  padding: 6px 12px; border-radius: var(--md-radius-full);
+}
+.nav-item.active { color: var(--md-sys-color-primary); }
+.nav-item .ms { font-size: 22px; }
+
+/* ── AI Modal ── */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 200; padding: 16px;
+}
+.modal-card {
+  background: #FFFFFF;
+  border-radius: var(--md-radius-large);
+  width: 100%; max-width: 520px;
+  padding: 24px;
+  box-shadow: var(--md-elevation-3);
+}
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 84px; left: 50%; transform: translateX(-50%);
+  background: #1F1B16; color: #FFFFFF; padding: 10px 20px;
+  border-radius: var(--md-radius-full); font-size: 13px; font-weight: 600;
+  z-index: 1001; animation: slideUp 0.25s ease;
+}
+@keyframes slideUp { from { transform: translate(-50%, 20px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+
+/* Report Document CSS */
+#reportDocument { background: #FFFFFF; border-radius: var(--md-radius-medium); overflow: hidden; border: 1px solid var(--md-sys-color-outline-variant); }
+.rfc-cover { background: var(--md-sys-color-primary); color: #FFFFFF; padding: 32px; }
+.rfc-cover-title { font-size: 26px; font-weight: 700; }
+.rfc-cover-sub { font-size: 13px; color: #A8A29E; margin-top: 4px; }
+.rfc-summary { display: grid; grid-template-columns: repeat(4,1fr); border-bottom: 1px solid #E5DFC8; background: #FAFAF9; }
+.rfc-sum-box { padding: 16px; border-right: 1px solid #E5DFC8; text-align: center; }
+.rfc-sum-num { font-family: monospace; font-size: 26px; font-weight: 700; }
+.rfc-sum-lbl { font-size: 10px; font-weight: 700; color: #635D57; margin-top: 2px; }
+.rfc-cards { display: flex; flex-direction: column; gap: 12px; padding: 24px; }
+.rfc-card { border-radius: 12px; border: 1px solid #E5DFC8; padding: 16px; page-break-inside: avoid; }
+.rfc-signoff { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 24px 32px; background: #F9F6F0; border-top: 2px solid #1F1B16; }
+.sig-line { border-bottom: 1px solid #857D75; height: 32px; margin-bottom: 6px; }
+
+@media print {
+  #appHeader, .bottom-nav, .fab, .toolbar, #viewLog, #viewAdd, #viewDetail, #viewEdit, .ai-banner, .toast { display: none !important; }
+  #viewReport { display: block !important; }
+  #appMain { padding: 0; max-width: 100%; }
+  body { background: #fff; padding-bottom: 0; }
+  #reportDocument { border: none; }
+}
 @media (max-width: 600px) {
-  .stats { grid-template-columns: repeat(2,1fr); }
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
   .fgrid { grid-template-columns: 1fr; }
   .s2 { grid-column: span 1; }
-  .rfc-summary, .rft-summary { grid-template-columns: repeat(2,1fr); }
-  .rfc-cards, .rft-table-wrap, .rft-obs-list { padding-left: 16px; padding-right: 16px; }
-  .rfc-cover, .rft-cover { padding: 20px 16px; }
-  .rfc-section-head, .rft-sec-head { padding-left: 16px; padding-right: 16px; }
-  .rfc-signoff, .rft-signoff { grid-template-columns: 1fr; padding: 16px; }
-  .rft-photo-mini { width: 42px; height: 42px; }
+  .rfc-summary { grid-template-columns: repeat(2,1fr); }
 }
 </style>
 </head>
 <body>
 
+<!-- Header -->
 <div id="appHeader">
-  <div class="logo">SITE <span>|</span> LEDGER PRO</div>
+  <div class="brand-wrap">
+    <div class="brand-icon"><span class="ms">engineering</span></div>
+    <div class="brand-title">Site Report <span>v2.0</span></div>
+  </div>
   <div id="siteTabsWrap"></div>
 </div>
 
 <div id="appMain">
-  <div id="storageWarning" style="display:none" class="storage-warning"></div>
-  <div class="stats" id="statsRow"></div>
 
+  <!-- AI Smart Logging Banner -->
+  <div class="ai-banner">
+    <div class="ai-banner-left">
+      <div class="ai-icon-bubble"><span class="ms">auto_awesome</span></div>
+      <div>
+        <div class="ai-banner-title">Smart AI Log Assistant</div>
+        <div class="ai-banner-sub">Paste or dictate raw field notes to auto-fill entry details</div>
+      </div>
+    </div>
+    <button class="btn-ai-trigger" onclick="openAiModal()">
+      <span class="ms">mic</span> Auto-Parse Note
+    </button>
+  </div>
+
+  <!-- Dashboard Stats -->
+  <div class="stats-grid" id="statsRow"></div>
+
+  <!-- Main Log View -->
   <div id="viewLog">
     <div class="toolbar">
       <div class="trow">
-        <input id="searchInput" placeholder="Search entries…" oninput="renderLog()"/>
-        <button class="btn-outline" onclick="exportData()">📤 Export Data</button>
-        <button class="btn-outline" onclick="showReport()">📋 Generate Report</button>
-        <button class="btn-primary" onclick="showAdd()">+ New Entry</button>
+        <div class="search-box">
+          <span class="ms" style="color:var(--md-sys-color-outline)">search</span>
+          <input id="searchInput" placeholder="Search entries, keywords, assignees…" oninput="renderLog()"/>
+        </div>
+        <button class="btn-outline" onclick="exportData()"><span class="ms">file_download</span> Backup</button>
+        <button class="btn-outline" onclick="triggerImport()"><span class="ms">file_upload</span> Restore</button>
+        <button class="btn-outline" onclick="exportCSV()"><span class="ms">table_chart</span> CSV</button>
+        <button class="btn-outline" onclick="showReport()"><span class="ms">description</span> Report</button>
+        <button class="btn-primary" onclick="showAdd()"><span class="ms">add</span> New Entry</button>
+        <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="importData(event)"/>
       </div>
-      <div class="filters" id="filterBtns"></div>
+      <div class="filter-pills" id="filterBtns"></div>
     </div>
-    <div class="entries" id="entriesList"></div>
+    <div class="entries-list" id="entriesList"></div>
   </div>
 
+  <!-- Panels -->
   <div id="viewAdd" style="display:none"></div>
   <div id="viewEdit" style="display:none"></div>
   <div id="viewDetail" style="display:none"></div>
 
-  <div id="viewReport">
-    <div class="report-toolbar">
-      <button class="btn-back" onclick="showLog()">← Back to Log</button>
-      <div class="date-range">
-        <label>From</label><input type="date" id="rFrom" onchange="renderReport()"/>
-        <label>To</label><input type="date" id="rTo" onchange="renderReport()"/>
+  <!-- Report View -->
+  <div id="viewReport" style="display:none">
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:20px;flex-wrap:wrap">
+      <button class="btn-outline" onclick="showLog()"><span class="ms">arrow_back</span> Back to Log</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <label style="font-size:12px;font-weight:600">From</label><input type="date" class="finput" style="padding:6px 10px;font-size:12px" id="rFrom" onchange="renderReport()"/>
+        <label style="font-size:12px;font-weight:600">To</label><input type="date" class="finput" style="padding:6px 10px;font-size:12px" id="rTo" onchange="renderReport()"/>
       </div>
-      <div class="format-toggle" id="formatToggle">
-        <button class="format-option active" data-format="cards" onclick="setReportFormat('cards')">Cards</button>
-        <button class="format-option" data-format="table" onclick="setReportFormat('table')">Table</button>
-      </div>
-      <button class="btn-primary" onclick="printReport()">🖨️ Print / Save PDF</button>
+      <button class="btn-primary" onclick="window.print()"><span class="ms">print</span> Print / Save PDF</button>
     </div>
     <div id="reportDocument"></div>
   </div>
 </div>
 
-<script>
-// ── IndexedDB storage layer (replaces localStorage — much higher capacity, works offline) ──
-const DB_NAME = "site-ledger-db";
-const STORE = "kv";
-let _dbPromise = null;
-function openDB() {
-  if (_dbPromise) return _dbPromise;
-  _dbPromise = new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, 1);
-    req.onupgradeneeded = () => { req.result.createObjectStore(STORE); };
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-  return _dbPromise;
-}
-async function idbGet(key) {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE, "readonly");
-    const req = tx.objectStore(STORE).get(key);
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
-async function idbSet(key, value) {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE, "readwrite");
-    tx.objectStore(STORE).put(value, key);
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
-  });
-}
-async function idbEstimateUsage() {
-  if (navigator.storage && navigator.storage.estimate) {
-    try { return await navigator.storage.estimate(); } catch (e) { return null; }
-  }
-  return null;
-}
+<!-- Floating Action Button -->
+<div class="fab" onclick="showAdd()"><span class="ms">add</span></div>
 
+<!-- Mobile Bottom Navigation -->
+<div class="bottom-nav">
+  <button class="nav-item active" onclick="showLog()"><span class="ms">dashboard</span><span>Logs</span></button>
+  <button class="nav-item" onclick="showAdd()"><span class="ms">add_circle</span><span>+ New</span></button>
+  <button class="nav-item" onclick="showReport()"><span class="ms">description</span><span>Report</span></button>
+  <button class="nav-item" onclick="exportData()"><span class="ms">cloud_download</span><span>Backup</span></button>
+</div>
+
+<!-- AI Modal -->
+<div class="modal-overlay" id="aiModal" style="display:none">
+  <div class="modal-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div style="font-weight:700;font-size:16px;display:flex;align-items:center;gap:6px">
+        <span class="ms" style="color:var(--md-sys-color-primary)">auto_awesome</span> Smart AI Field Logger
+      </div>
+      <button style="border:none;background:none;cursor:pointer" onclick="closeAiModal()"><span class="ms">close</span></button>
+    </div>
+    <div style="font-size:12px;color:var(--md-sys-color-on-surface-variant);margin-bottom:12px">
+      Paste or type raw voice notes. The smart parser will extract title, category, priority, and assignees.
+    </div>
+    <textarea class="finput" id="aiInputText" rows="4" placeholder="e.g. Inspected grid B columns on 2nd floor. Rebar cover blocks missing near column 4. Tell supervisor Rajesh to fix before Thursday concrete pour."></textarea>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn-primary" style="flex:1" onclick="processAiNote()"><span class="ms">bolt</span> Parse & Fill Form</button>
+      <button class="btn-cancel" onclick="closeAiModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
 const CATS = {
-  DRAWING:{ label:"Drawing Request", color:"#2563EB", bg:"#EFF6FF", icon:"📐" },
-  ISSUE:  { label:"Technical Issue",  color:"#DC2626", bg:"#FEF2F2", icon:"⚠️" },
-  SITE:   { label:"Site Visit",       color:"#059669", bg:"#ECFDF5", icon:"🏗️" },
+  DRAWING:{ label:"Drawing Request", color:"#1A73E8", bg:"#E8F0FE", icon:"architecture" },
+  ISSUE:  { label:"Technical Issue",  color:"#C5221F", bg:"#FCE8E6", icon:"warning" },
+  SITE:   { label:"Site Visit",       color:"#137333", bg:"#E6F4EA", icon:"construction" },
 };
 const STATS = {
-  OPEN:      { label:"Open",        color:"#92400E", bg:"#FEF3C7" },
-  INPROGRESS:{ label:"In Progress", color:"#1E40AF", bg:"#DBEAFE" },
-  RESOLVED:  { label:"Resolved",    color:"#065F46", bg:"#D1FAE5" },
+  OPEN:      { label:"Open",        color:"#B06000", bg:"#FEF3D6" },
+  INPROGRESS:{ label:"In Progress", color:"#1A73E8", bg:"#E8F0FE" },
+  RESOLVED:  { label:"Resolved",    color:"#137333", bg:"#E6F4EA" },
 };
 const PRIS = {
-  HIGH:  { label:"High",   color:"#DC2626" },
-  MEDIUM:{ label:"Medium", color:"#D97706" },
-  LOW:   { label:"Low",    color:"#6B7280" },
+  HIGH:  { label:"High",   color:"#D93025" },
+  MEDIUM:{ label:"Medium", color:"#E37400" },
+  LOW:   { label:"Low",    color:"#5F6368" },
 };
 
-let sites    = ["Site A","Site B"];
-let entries  = makeSample();
-let settings = { firmName:"Your Firm Name", preparedBy:"Engineer Name", reportNo:1 };
+let sites    = JSON.parse(localStorage.getItem("sr-sites")   || "null") || ["Site A","Site B"];
+let entries  = JSON.parse(localStorage.getItem("sr-entries") || "null") || makeSample();
+let settings = JSON.parse(localStorage.getItem("sr-settings")|| "null") || { firmName:"Your Firm Name" };
 let activeSite = sites[0];
 let filterCat  = "ALL";
 let filterStat = "ALL";
 let addPhotos  = [];
 let editId     = null;
-let currentReportFormat = "cards";
 
 function makeSample() {
   return [
     { id:1, site:"Site A", date:today(), category:"SITE", status:"INPROGRESS", priority:"HIGH",
       title:"Foundation inspection — Grid A to D",
-      description:"Inspected column footings on grid lines A through D. Reinforcement placement confirmed as per structural drawings. Minor issue: cover blocks missing at 3 locations. Instructed site supervisor to rectify before pour.",
-      raisedBy:"Site Engineer", assignedTo:"Site Supervisor", followUp:"Re-inspect before concrete pour Thursday",
-      photos:[{dataUrl:"https://picsum.photos/id/13/300/200", caption:"Foundation excavation"},{dataUrl:"https://picsum.photos/id/15/300/200", caption:"Reinforcement layout"}] },
+      description:"Inspected column footings on grid lines A through D. Reinforcement placement confirmed. Cover blocks missing at 3 locations.",
+      raisedBy:"Site Engineer", assignedTo:"Site Supervisor Rajesh", followUp:"Re-inspect cover blocks before Thursday concrete pour", photos:[] },
     { id:2, site:"Site A", date:daysAgo(1), category:"DRAWING", status:"OPEN", priority:"HIGH",
-      title:"Request: Revised beam layout — 2nd floor",
-      description:"Site team needs updated beam layout drawing for 2nd floor slab. DWG-S-022 Rev 0 does not match site conditions near staircase.",
-      raisedBy:"Site Engineer", assignedTo:"Design Team", followUp:"Design team to issue Rev 1 by end of week", photos:[] },
-    { id:3, site:"Site A", date:daysAgo(2), category:"ISSUE", status:"OPEN", priority:"MEDIUM",
-      title:"Wall thickness discrepancy — Block B Level 1",
-      description:"Client noticed wall thickness in Block B Level 1: 200mm actual vs 230mm on architectural drawing. Raised with design team to confirm tolerance.",
-      raisedBy:"Client", assignedTo:"Design Team", followUp:"Awaiting written clarification from structural engineer",
-      photos:[{dataUrl:"https://picsum.photos/id/20/300/200", caption:"Wall measurement"}] },
-    { id:4, site:"Site B", date:today(), category:"SITE", status:"OPEN", priority:"MEDIUM",
-      title:"Roof slab shuttering inspection",
-      description:"Shuttering for roof slab at Block C inspected. Formwork alignment satisfactory. Recommended additional props at mid-span before pour.",
-      raisedBy:"Site Visit", assignedTo:"Site Supervisor", followUp:"Confirm props installed before pour",
-      photos:[{dataUrl:"https://picsum.photos/id/30/300/200", caption:"Formwork inspection"},{dataUrl:"https://picsum.photos/id/31/300/200", caption:"Shuttering details"}] },
+      title:"Revised beam layout — 2nd Floor Slab",
+      description:"Updated beam layout drawing needed for 2nd floor slab near staircase shaft.",
+      raisedBy:"Site Engineer", assignedTo:"Structural Design Team", followUp:"Issue DWG Rev 1 by Friday", photos:[] }
   ];
 }
 
 function save() {
-  idbSet("sl5-entries", entries);
-  idbSet("sl5-sites",   sites);
-  idbSet("sl5-settings",settings);
-  checkStorageSize();
+  localStorage.setItem("sr-entries", JSON.stringify(entries));
+  localStorage.setItem("sr-sites",   JSON.stringify(sites));
+  localStorage.setItem("sr-settings",JSON.stringify(settings));
 }
-function saveSettings() { idbSet("sl5-settings", settings); }
+
 function today() { return new Date().toISOString().split("T")[0]; }
 function daysAgo(n) { return new Date(Date.now()-n*86400000).toISOString().split("T")[0]; }
 function fmt(d) { if(!d)return""; return new Date(d+"T00:00:00").toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"}); }
 function esc(s) { return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
-function pad2(n){ return String(n).padStart(2,"0"); }
 
-// ── Storage ──
-async function checkStorageSize() {
-  const el = document.getElementById("storageWarning");
-  const est = await idbEstimateUsage();
-  if (est && est.quota) {
-    const usedPct = est.usage / est.quota;
-    const usedMB = Math.round(est.usage/1024/1024*10)/10;
-    const quotaMB = Math.round(est.quota/1024/1024);
-    if (usedPct > 0.8) {
-      el.innerHTML = `<span>⚠️ Storage approaching limit (${usedMB}MB of ~${quotaMB}MB). Consider exporting data.</span><button onclick="exportData()">Export Now</button>`;
-      el.style.display = "flex";
-      return;
-    }
-  }
-  el.style.display = "none";
-}
-function exportData() {
-  const blob = new Blob([JSON.stringify({entries,sites,settings,exportDate:new Date().toISOString()},null,2)],{type:"application/json"});
-  const a = Object.assign(document.createElement("a"),{href:URL.createObjectURL(blob),download:`site-ledger-backup-${today()}.json`});
-  a.click(); URL.revokeObjectURL(a.href);
-  showToast("Data exported successfully!");
-}
 function showToast(msg) {
   const t = Object.assign(document.createElement("div"),{className:"toast",textContent:msg});
-  document.body.appendChild(t); setTimeout(()=>t.remove(),3000);
+  document.body.appendChild(t); setTimeout(()=>t.remove(),2600);
 }
 
-// ── Site Tabs ──
+// Canvas Image Compression (Max 1280px, 75% quality)
+function compressImage(file, callback) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      let w = img.width, h = img.height;
+      const maxDim = 1280;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+        else { w = Math.round((w * maxDim) / h); h = maxDim; }
+      }
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, w, h);
+      callback(canvas.toDataURL("image/jpeg", 0.75));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// Site Tabs
 function renderSiteTabs() {
   document.getElementById("siteTabsWrap").innerHTML =
     sites.map(s=>`<button class="site-tab ${s===activeSite?"active":""}" onclick="switchSite('${esc(s)}')">${esc(s)}</button>`).join("") +
-    `<button class="add-site-btn" id="addSiteBtn" onclick="startAddSite()">+ Site</button>
+    `<button class="add-site-btn" id="addSiteBtn" onclick="startAddSite()"><span class="ms" style="font-size:16px">add</span> Site</button>
      <span id="newSiteForm" style="display:none;gap:4px;align-items:center">
-       <input id="newSiteInput" placeholder="Site name…" onkeydown="if(event.key==='Enter')confirmSite()"/>
-       <button id="confirmSiteBtn" onclick="confirmSite()">Add</button>
+       <input id="newSiteInput" style="padding:4px 8px;border-radius:4px;border:1px solid #78716C;font-size:12px" placeholder="Site name…" onkeydown="if(event.key==='Enter')confirmSite()"/>
+       <button style="padding:4px 8px;border-radius:4px;border:none;background:#fff;font-size:12px;cursor:pointer" onclick="confirmSite()">Add</button>
      </span>`;
 }
 function switchSite(s){ activeSite=s; filterCat="ALL"; filterStat="ALL"; document.getElementById("searchInput").value=""; renderSiteTabs(); showLog(); }
 function startAddSite(){ document.getElementById("addSiteBtn").style.display="none"; const f=document.getElementById("newSiteForm"); f.style.display="flex"; setTimeout(()=>document.getElementById("newSiteInput").focus(),50); }
-function confirmSite(){ const v=document.getElementById("newSiteInput").value.trim(); if(!v)return; if(sites.includes(v)){alert("Site already exists!");return;} sites.push(v); save(); activeSite=v; renderSiteTabs(); showLog(); }
+function confirmSite(){ const v=document.getElementById("newSiteInput").value.trim(); if(!v)return; if(sites.includes(v)){alert("Site exists!");return;} sites.push(v); save(); activeSite=v; renderSiteTabs(); showLog(); }
 
-// ── Stats ──
+// Stats
 function renderStats() {
   const se=entries.filter(e=>e.site===activeSite);
   document.getElementById("statsRow").innerHTML=[
-    ["Total",se.length,"#E7E5E4","#1C1917",()=>{filterCat="ALL";filterStat="ALL";renderFilters();renderLog();}],
-    ["Open",se.filter(e=>e.status==="OPEN").length,"#FEF3C7","#92400E",()=>{filterCat="ALL";filterStat="OPEN";renderFilters();renderLog();}],
-    ["In Progress",se.filter(e=>e.status==="INPROGRESS").length,"#DBEAFE","#1E40AF",()=>{filterCat="ALL";filterStat="INPROGRESS";renderFilters();renderLog();}],
-    ["Resolved",se.filter(e=>e.status==="RESOLVED").length,"#D1FAE5","#065F46",()=>{filterCat="ALL";filterStat="RESOLVED";renderFilters();renderLog();}],
+    ["Total Logs",se.length,"#FFFFFF","var(--md-sys-color-primary)",()=>{filterCat="ALL";filterStat="ALL";renderFilters();renderLog();}],
+    ["Open Items",se.filter(e=>e.status==="OPEN").length,"#FEF3D6","#B06000",()=>{filterCat="ALL";filterStat="OPEN";renderFilters();renderLog();}],
+    ["In Progress",se.filter(e=>e.status==="INPROGRESS").length,"#E8F0FE","#1A73E8",()=>{filterCat="ALL";filterStat="INPROGRESS";renderFilters();renderLog();}],
+    ["Resolved",se.filter(e=>e.status==="RESOLVED").length,"#E6F4EA","#137333",()=>{filterCat="ALL";filterStat="RESOLVED";renderFilters();renderLog();}],
   ].map(([l,v,bg,c,click])=>`<div class="stat-card" style="background:${bg}" onclick="(${click.toString()})()">
-    <div class="stat-num" style="color:${c}">${v}</div><div class="stat-lbl">${l.toUpperCase()}</div></div>`).join("");
+    <div class="stat-head"><span class="stat-lbl">${l}</span></div>
+    <div class="stat-num" style="color:${c}">${v}</div></div>`).join("");
 }
 
-// ── Filters ──
+// Filters
 function renderFilters() {
   document.getElementById("filterBtns").innerHTML=
-    [["ALL","All Types"],["DRAWING","📐 Drawing"],["ISSUE","⚠️ Issue"],["SITE","🏗️ Site Visit"]]
+    [["ALL","All Types"],["SITE","🏗️ Site Visit"],["ISSUE","⚠️ Issue"],["DRAWING","📐 Drawing"]]
       .map(([k,l])=>`<button class="fbtn ${filterCat===k?"active":""}" onclick="setF('cat','${k}')">${l}</button>`).join("")+
     [["ALL","All Status"],["OPEN","Open"],["INPROGRESS","In Progress"],["RESOLVED","Resolved"]]
       .map(([k,l])=>`<button class="fbtn ${filterStat===k?"active":""}" onclick="setF('stat','${k}')">${l}</button>`).join("");
 }
 function setF(t,v){ if(t==="cat")filterCat=v; else filterStat=v; renderFilters(); renderLog(); }
 
-// ── Log ──
+// Log Rendering
 function renderLog() {
   const q=(document.getElementById("searchInput")?.value||"").toLowerCase();
   const list=entries.filter(e=>e.site===activeSite)
@@ -491,35 +638,44 @@ function renderLog() {
     .filter(e=>filterStat==="ALL"||e.status===filterStat)
     .filter(e=>!q||[e.title,e.description,e.raisedBy,e.assignedTo].some(f=>(f||"").toLowerCase().includes(q)))
     .sort((a,b)=>b.date.localeCompare(a.date));
-  if(!list.length){document.getElementById("entriesList").innerHTML=`<div class="empty">No entries found. Click <strong>+ New Entry</strong> to start logging.</div>`;return;}
+
+  if(!list.length){
+    document.getElementById("entriesList").innerHTML=`<div class="empty-state">No site logs found. Tap <strong>+ New Entry</strong> to create one.</div>`;
+    return;
+  }
+
   document.getElementById("entriesList").innerHTML=list.map(e=>{
     const cat=CATS[e.category],st=STATS[e.status],pr=PRIS[e.priority];
     return `<div class="ecard" onclick="showDetail(${e.id})">
-      <div class="eicon">${cat.icon}</div>
+      <div class="eicon-box" style="background:${cat.bg};color:${cat.color}"><span class="ms">${cat.icon}</span></div>
       <div class="ebody">
-        <div class="etop"><div class="etitle">${esc(e.title)}</div>
+        <div class="etop">
+          <div class="etitle">${esc(e.title)}</div>
           <div class="badges">
             <span class="badge" style="background:${st.bg};color:${st.color}">${st.label}</span>
             <span class="badge" style="background:${cat.bg};color:${cat.color}">${cat.label}</span>
-          </div></div>
+          </div>
+        </div>
         ${e.description?`<div class="edesc">${esc(e.description)}</div>`:""}
         <div class="emeta">
-          <span>📅 ${fmt(e.date)}</span>
-          ${e.raisedBy?`<span>👤 ${esc(e.raisedBy)}</span>`:""}
-          ${e.assignedTo?`<span>→ ${esc(e.assignedTo)}</span>`:""}
-          <span style="color:${pr.color};font-weight:600">● ${pr.label}</span>
-          ${e.photos?.length?`<span>📷 ${e.photos.length} photo${e.photos.length>1?"s":""}</span>`:""}
+          <span><span class="ms" style="font-size:14px">calendar_today</span> ${fmt(e.date)}</span>
+          ${e.raisedBy?`<span><span class="ms" style="font-size:14px">person</span> ${esc(e.raisedBy)}</span>`:""}
+          ${e.assignedTo?`<span><span class="ms" style="font-size:14px">arrow_forward</span> ${esc(e.assignedTo)}</span>`:""}
+          <span style="color:${pr.color};font-weight:700">● ${pr.label}</span>
+          ${e.photos?.length?`<span><span class="ms" style="font-size:14px">photo_camera</span> ${e.photos.length}</span>`:""}
         </div>
-      </div></div>`;
+      </div>
+    </div>`;
   }).join("");
 }
 
-// ── Add / Edit ──
-function showAdd() {
+// Add/Edit Form
+function showAdd(prefillData = null) {
   editId=null; addPhotos=[];
   ["viewLog","viewDetail","viewEdit","viewReport"].forEach(id=>document.getElementById(id).style.display="none");
   document.getElementById("viewAdd").style.display="block";
-  document.getElementById("viewAdd").innerHTML=getEntryForm("New Log Entry","Save Entry","saveNewEntry()");
+  document.getElementById("viewAdd").innerHTML=getEntryForm("New Site Entry","Save Log Entry","saveNewEntry()", prefillData);
+  if(prefillData && prefillData.photos) { addPhotos = prefillData.photos; renderPhotoGrid(); }
 }
 function showEdit(id) {
   const entry=entries.find(e=>e.id===id); if(!entry)return;
@@ -529,22 +685,23 @@ function showEdit(id) {
   document.getElementById("viewEdit").innerHTML=getEntryForm("Edit Entry","Update Entry","updateEntry()",entry);
   setTimeout(()=>renderPhotoGrid(),50);
 }
+
 function getEntryForm(title,btnText,onSubmit,entry=null) {
   const v=(f)=>entry?esc(entry[f]||""):"";
-  const sel=(f,k)=>entry?.[ f]===k?"selected":"";
+  const sel=(f,k)=>entry?.[f]===k?"selected":"";
   return `<div class="panel">
     <div class="panel-title">${title} — ${esc(activeSite)}</div>
     <div class="fgrid">
       <div><label class="flabel">Date</label><input class="finput" type="date" id="fDate" value="${entry?entry.date:today()}"/></div>
       <div><label class="flabel">Category</label><select class="finput" id="fCat">
         <option value="SITE" ${sel("category","SITE")}>🏗️ Site Visit</option>
-        <option value="DRAWING" ${sel("category","DRAWING")}>📐 Drawing Request</option>
         <option value="ISSUE" ${sel("category","ISSUE")}>⚠️ Technical Issue</option>
+        <option value="DRAWING" ${sel("category","DRAWING")}>📐 Drawing Request</option>
       </select></div>
-      <div class="s2"><label class="flabel">Title / Subject *</label><input class="finput" id="fTitle" placeholder="Brief subject" value="${v("title")}"/></div>
-      <div class="s2"><label class="flabel">Description / Details</label><textarea class="finput" id="fDesc" rows="4" placeholder="What was discussed, observed, or requested?">${v("description")}</textarea></div>
-      <div><label class="flabel">Raised By</label><input class="finput" id="fBy" placeholder="Client / Site / Design team" value="${v("raisedBy")}"/></div>
-      <div><label class="flabel">Assigned To</label><input class="finput" id="fTo" placeholder="Who should action this?" value="${v("assignedTo")}"/></div>
+      <div class="s2"><label class="flabel">Title / Subject *</label><input class="finput" id="fTitle" placeholder="Brief subject heading" value="${v("title")}"/></div>
+      <div class="s2"><label class="flabel">Description & Observations</label><textarea class="finput" id="fDesc" rows="4" placeholder="Detailed site notes...">${v("description")}</textarea></div>
+      <div><label class="flabel">Raised By</label><input class="finput" id="fBy" placeholder="Client / Engineer" value="${v("raisedBy")}"/></div>
+      <div><label class="flabel">Assigned To</label><input class="finput" id="fTo" placeholder="Supervisor / Contractor" value="${v("assignedTo")}"/></div>
       <div><label class="flabel">Status</label><select class="finput" id="fStatus">
         <option value="OPEN" ${sel("status","OPEN")}>Open</option>
         <option value="INPROGRESS" ${sel("status","INPROGRESS")}>In Progress</option>
@@ -555,12 +712,12 @@ function getEntryForm(title,btnText,onSubmit,entry=null) {
         <option value="MEDIUM" ${sel("priority","MEDIUM")||(!entry?"selected":"")}>Medium</option>
         <option value="LOW" ${sel("priority","LOW")}>Low</option>
       </select></div>
-      <div class="s2"><label class="flabel">Follow-up / Next Action</label><input class="finput" id="fFollow" placeholder="What needs to happen next?" value="${v("followUp")}"/></div>
-      <div class="s2"><label class="flabel">Site Photos</label>
+      <div class="s2"><label class="flabel">Action / Follow-up Needed</label><input class="finput" id="fFollow" placeholder="What needs to be done next?" value="${v("followUp")}"/></div>
+      <div class="s2"><label class="flabel">Photos</label>
         <div class="photo-upload-area" onclick="document.getElementById('photoFile').click()">
-          <input type="file" id="photoFile" multiple accept="image/*" style="display:none" onchange="handlePhotos(event)"/>
-          <div style="font-size:26px;margin-bottom:5px">📷</div>
-          <div style="font-size:13px;color:#78716C">Click to upload photos (optional)</div>
+          <input type="file" id="photoFile" multiple accept="image/*" capture="environment" style="display:none" onchange="handlePhotos(event)"/>
+          <span class="ms" style="font-size:32px;color:var(--md-sys-color-outline)">photo_camera</span>
+          <div style="font-size:13px;color:var(--md-sys-color-on-surface-variant);margin-top:4px">Tap to take photo or choose from device</div>
         </div>
         <div class="photo-preview-grid" id="photoGrid"></div>
       </div>
@@ -570,321 +727,165 @@ function getEntryForm(title,btnText,onSubmit,entry=null) {
       <button class="btn-cancel" onclick="showLog()">Cancel</button>
     </div></div>`;
 }
-function handlePhotos(ev){ Array.from(ev.target.files).forEach(f=>{const r=new FileReader();r.onload=e=>{addPhotos.push({dataUrl:e.target.result,caption:""});renderPhotoGrid();};r.readAsDataURL(f);}); }
-function renderPhotoGrid(){ const g=document.getElementById("photoGrid");if(!g)return;g.innerHTML=addPhotos.map((p,i)=>`<div class="photo-thumb-wrap"><img src="${p.dataUrl}"/><button class="photo-remove" onclick="removePhoto(${i})">×</button><input class="photo-caption-input" placeholder="Caption…" value="${esc(p.caption)}" oninput="addPhotos[${i}].caption=this.value"/></div>`).join(""); }
+
+function handlePhotos(ev){
+  Array.from(ev.target.files).forEach(f => {
+    compressImage(f, (compressedDataUrl) => {
+      addPhotos.push({ dataUrl: compressedDataUrl, caption: "" });
+      renderPhotoGrid();
+    });
+  });
+}
+function renderPhotoGrid(){
+  const g=document.getElementById("photoGrid");if(!g)return;
+  g.innerHTML=addPhotos.map((p,i)=>`<div class="photo-thumb-wrap"><img src="${p.dataUrl}"/><button class="photo-remove" onclick="removePhoto(${i})">×</button><input class="photo-caption-input" placeholder="Caption…" value="${esc(p.caption)}" oninput="addPhotos[${i}].caption=this.value"/></div>`).join("");
+}
 function removePhoto(i){ addPhotos.splice(i,1); renderPhotoGrid(); }
-function getFormData(){ return { date:document.getElementById("fDate").value, category:document.getElementById("fCat").value, title:document.getElementById("fTitle").value.trim(), description:document.getElementById("fDesc").value, raisedBy:document.getElementById("fBy").value, assignedTo:document.getElementById("fTo").value, status:document.getElementById("fStatus").value, priority:document.getElementById("fPri").value, followUp:document.getElementById("fFollow").value, photos:[...addPhotos] }; }
+
+function getFormData(){
+  return { date:document.getElementById("fDate").value, category:document.getElementById("fCat").value, title:document.getElementById("fTitle").value.trim(), description:document.getElementById("fDesc").value, raisedBy:document.getElementById("fBy").value, assignedTo:document.getElementById("fTo").value, status:document.getElementById("fStatus").value, priority:document.getElementById("fPri").value, followUp:document.getElementById("fFollow").value, photos:[...addPhotos] };
+}
 function saveNewEntry(){ const d=getFormData();if(!d.title){alert("Please enter a title.");return;} entries.unshift({id:Date.now(),site:activeSite,...d}); save();showToast("Entry saved.");showLog(); }
 function updateEntry(){ const d=getFormData();if(!d.title){alert("Please enter a title.");return;} entries=entries.map(e=>e.id===editId?{...e,...d}:e); save();showToast("Entry updated.");showLog(); }
 
-// ── Detail ──
+// Detail View
 function showDetail(id) {
   const e=entries.find(x=>x.id===id);if(!e)return;
   const cat=CATS[e.category],st=STATS[e.status],pr=PRIS[e.priority];
   ["viewLog","viewAdd","viewEdit","viewReport"].forEach(id=>document.getElementById(id).style.display="none");
   const d=document.getElementById("viewDetail");d.style.display="block";
   d.innerHTML=`<div class="panel">
-    <div style="display:flex;justify-content:space-between;margin-bottom:18px">
-      <button class="btn-back" onclick="showLog()">← Back to Log</button>
-      <div><button class="btn-edit" onclick="showEdit(${e.id})">✏️ Edit</button><button class="btn-del" onclick="delEntry(${e.id})">Delete</button></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <button class="btn-outline" onclick="showLog()"><span class="ms">arrow_back</span> Back</button>
+      <div><button class="btn-outline" onclick="showEdit(${e.id})">✏️ Edit</button> <button class="btn-outline" style="color:var(--pri-high)" onclick="delEntry(${e.id})">Delete</button></div>
     </div>
-    <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap">
-      <span style="font-size:28px">${cat.icon}</span>
-      <div style="flex:1"><div style="font-weight:700;font-size:17px">${esc(e.title)}</div>
-        <div style="font-size:12px;color:#A8A29E;margin-top:3px">${fmt(e.date)} · ${esc(e.site)}</div></div>
+    <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap">
+      <div class="eicon-box" style="background:${cat.bg};color:${cat.color}"><span class="ms">${cat.icon}</span></div>
+      <div style="flex:1"><div style="font-weight:700;font-size:18px">${esc(e.title)}</div>
+        <div style="font-size:12px;color:var(--md-sys-color-on-surface-variant);margin-top:2px">${fmt(e.date)} · ${esc(e.site)}</div></div>
       <div class="badges">
         <span class="badge" style="background:${st.bg};color:${st.color}">${st.label}</span>
         <span class="badge" style="background:${cat.bg};color:${cat.color}">${cat.label}</span>
-        <span class="badge" style="background:#F5F5F4;color:${pr.color}">● ${pr.label}</span>
       </div>
     </div>
-    <hr class="div"/>
-    ${e.description?`<div class="slabel">Details</div><div style="font-size:14px;color:#292524;line-height:1.75;white-space:pre-wrap;margin-bottom:16px">${esc(e.description)}</div>`:""}
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
-      ${e.raisedBy?`<div><div class="slabel">Raised By</div><div class="sval">${esc(e.raisedBy)}</div></div>`:""}
-      ${e.assignedTo?`<div><div class="slabel">Assigned To</div><div class="sval">${esc(e.assignedTo)}</div></div>`:""}
-    </div>
-    ${e.followUp?`<div class="fu-box"><div class="fu-lbl">Follow-up / Next Action</div><div class="fu-val">${esc(e.followUp)}</div></div>`:""}
-    ${e.photos?.length?`<hr class="div"/><div class="slabel">Photos</div>
-      <div class="photo-preview-grid" style="margin-top:10px">${e.photos.map(p=>`<div class="photo-thumb-wrap"><img src="${p.dataUrl}" onclick="showPhotoModal('${p.dataUrl}','${esc(p.caption)}')"/>
-        ${p.caption?`<div class="photo-caption-input" style="padding:4px 6px;font-size:11px;color:#78716C;border-top:1px solid #E7E5E4">${esc(p.caption)}</div>`:""}</div>`).join("")}</div>`:""}
-    <hr class="div"/>
-    <div class="slabel">Update Status</div>
-    <div class="status-btns">
-      ${Object.entries(STATS).map(([k,v])=>`<button class="sbtn" style="${e.status===k?`background:${v.bg};color:${v.color};border-color:#1C1917;font-weight:700`:""}" onclick="updateStatus(${e.id},'${k}')">${v.label}</button>`).join("")}
+    <hr style="border:none;border-top:1px solid var(--md-sys-color-outline-variant);margin:14px 0"/>
+    ${e.description?`<div class="flabel">Details</div><div style="font-size:14px;line-height:1.7;white-space:pre-wrap;margin-bottom:16px">${esc(e.description)}</div>`:""}
+    ${e.followUp?`<div style="background:#FEF3D6;border-left:4px solid #B06000;padding:12px 14px;border-radius:6px;margin-bottom:16px"><div style="font-size:11px;font-weight:700;color:#B06000">ACTION REQUIRED</div><div style="font-size:13px;color:#78350F;margin-top:2px">${esc(e.followUp)}</div></div>`:""}
+    ${e.photos?.length?`<div class="flabel">Photos</div><div class="photo-preview-grid" style="margin-top:8px">${e.photos.map(p=>`<div class="photo-thumb-wrap"><img src="${p.dataUrl}"/></div>`).join("")}</div>`:""}
+    <hr style="border:none;border-top:1px solid var(--md-sys-color-outline-variant);margin:16px 0"/>
+    <div class="flabel">Quick Update Status</div>
+    <div style="display:flex;gap:8px;margin-top:6px">
+      ${Object.entries(STATS).map(([k,v])=>`<button class="fbtn" style="${e.status===k?`background:${v.bg};color:${v.color};font-weight:700`:""}" onclick="updateStatus(${e.id},'${k}')">${v.label}</button>`).join("")}
     </div></div>`;
 }
 function updateStatus(id,status){ entries=entries.map(e=>e.id===id?{...e,status}:e); save();showDetail(id);showToast("Status updated"); }
-function delEntry(id){ if(!confirm("Delete this entry?"))return; entries=entries.filter(e=>e.id!==id); save();showLog();showToast("Entry deleted"); }
+function delEntry(id){ if(!confirm("Delete this entry?"))return; entries=entries.filter(e=>e.id!==id); save();showLog();showToast("Deleted"); }
 
-// ── Photo Modal ──
-function showPhotoModal(src,caption) {
-  const m=document.createElement("div");m.className="photo-modal";
-  m.innerHTML=`<div class="photo-modal-close" onclick="this.parentElement.remove()">✕</div><img src="${src}"><div class="photo-modal-caption">${esc(caption)||"Site photograph"}</div>`;
-  m.onclick=e=>{if(e.target===m)m.remove();};
-  document.body.appendChild(m);
+// Smart AI Assistant Parser (Client-side NLP Extraction)
+function openAiModal(){ document.getElementById("aiModal").style.display="flex"; }
+function closeAiModal(){ document.getElementById("aiModal").style.display="none"; }
+function processAiNote() {
+  const text = document.getElementById("aiInputText").value.trim();
+  if(!text) return;
+  
+  // Intelligent extraction rules
+  let category = "SITE";
+  if(/issue|defect|crack|missing|wrong|fail|error|problem/i.test(text)) category = "ISSUE";
+  else if(/drawing|dwg|layout|plan|revision|rev/i.test(text)) category = "DRAWING";
+
+  let priority = "MEDIUM";
+  if(/urgent|high|immediately|critical|asap|today|pour/i.test(text)) priority = "HIGH";
+  else if(/low|minor|whenever/i.test(text)) priority = "LOW";
+
+  let assignedTo = "";
+  const matchAssign = text.match(/(?:tell|assign|inform|supervisor|engineer)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i);
+  if(matchAssign) assignedTo = matchAssign[1];
+
+  let title = text.split(".")[0];
+  if(title.length > 55) title = title.substring(0,55) + "...";
+
+  closeAiModal();
+  showAdd({ title, description: text, category, priority, assignedTo, date: today() });
+  showToast("Parsed note into form!");
 }
 
-// ── Report ──
+// Backup & Import
+function exportData() {
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({entries,sites,settings,exportDate:new Date().toISOString()}));
+  const a = Object.assign(document.createElement("a"),{href:dataStr,download:`site-report-backup-${today()}.json`});
+  a.click(); showToast("Backup downloaded!");
+}
+function triggerImport(){ document.getElementById("importFileInput").click(); }
+function importData(ev) {
+  const file = ev.target.files[0]; if(!file)return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if(data.entries && data.sites) {
+        entries = data.entries; sites = data.sites; save(); renderSiteTabs(); showLog(); showToast("Data restored!");
+      } else alert("Invalid backup format.");
+    } catch(err) { alert("Failed to read file."); }
+  };
+  reader.readAsText(file);
+}
+
+// CSV Export
+function exportCSV() {
+  const headers = ["ID","Site","Date","Category","Status","Priority","Title","Description","RaisedBy","AssignedTo","ActionItem"];
+  const rows = entries.map(e=>[e.id,e.site,e.date,e.category,e.status,e.priority,`"${(e.title||"").replace(/"/g,'""')}"`,`"${(e.description||"").replace(/"/g,'""')}"`,`"${e.raisedBy||""}"`,`"${e.assignedTo||""}"`,`"${e.followUp||""}"`]);
+  const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","),...rows.map(r=>r.join(","))].join("\n");
+  const a = Object.assign(document.createElement("a"),{href:encodeURI(csvContent),download:`site-report-${activeSite}-${today()}.csv`});
+  a.click(); showToast("CSV exported!");
+}
+
+// Report
 function showReport() {
   ["viewLog","viewAdd","viewDetail","viewEdit"].forEach(id=>document.getElementById(id).style.display="none");
   document.getElementById("viewReport").style.display="block";
-  document.getElementById("rFrom").value=daysAgo(30);
-  document.getElementById("rTo").value=today();
-  // ensure Cards is active on open
-  setReportFormat("cards");
-}
-
-function setReportFormat(format) {
-  currentReportFormat=format;
-  document.querySelectorAll(".format-option").forEach(b=>{
-    b.classList.toggle("active", b.dataset.format===format);
-  });
+  document.getElementById("rFrom").value=daysAgo(30); document.getElementById("rTo").value=today();
   renderReport();
 }
-
 function renderReport() {
-  const from=document.getElementById("rFrom").value;
-  const to=document.getElementById("rTo").value;
-  const se=entries.filter(e=>e.site===activeSite&&(!from||e.date>=from)&&(!to||e.date<=to))
-    .sort((a,b)=>b.date.localeCompare(a.date));
-  const dateLabel=from&&to?`${fmt(from)} – ${fmt(to)}`:from?`From ${fmt(from)}`:to?`Up to ${fmt(to)}`:"All Dates";
-  document.getElementById("reportDocument").innerHTML =
-    currentReportFormat==="cards" ? buildCardsReport(se,dateLabel) : buildTableReport(se,dateLabel);
-}
-
-function statusBadge(s){
-  if(s==="OPEN")    return `<span class="rbadge rbadge-open">Open</span>`;
-  if(s==="INPROGRESS") return `<span class="rbadge rbadge-prog">In Progress</span>`;
-  return `<span class="rbadge rbadge-res">Resolved</span>`;
-}
-function priClass(p){ return p==="HIGH"?"rpri-high":p==="MEDIUM"?"rpri-med":"rpri-low"; }
-
-// ── CARDS REPORT ──────────────────────────────────────────────
-function buildCardsReport(data, dateLabel) {
-  const issues   = data.filter(e=>e.category==="ISSUE");
-  const drawings = data.filter(e=>e.category==="DRAWING");
-  const visits   = data.filter(e=>e.category==="SITE");
-  const allPhotos= data.flatMap(e=>(e.photos||[]).map(p=>({...p,entryTitle:e.title,entryDate:e.date})));
-
-  const sections = [
-    { key:"SITE",    label:"Site Observations",    pill:"🏗️ Site Visit",    pillBg:"#ECFDF5", pillC:"#059669", items:visits    },
-    { key:"ISSUE",   label:"Technical Issues",     pill:"⚠️ Issue",         pillBg:"#FEF2F2", pillC:"#DC2626", items:issues    },
-    { key:"DRAWING", label:"Drawing Requests",     pill:"📐 Drawing",       pillBg:"#EFF6FF", pillC:"#2563EB", items:drawings  },
-  ];
-
-  return `<div class="rfc">
-    <!-- Cover -->
-    <div class="rfc-cover">
-      <div class="rfc-cover-eyebrow">Site Visit Report</div>
-      <div class="rfc-cover-title">${esc(activeSite)}</div>
-      <div class="rfc-cover-sub">${dateLabel} &nbsp;·&nbsp; Generated ${fmt(today())}</div>
-      <div class="rfc-cover-meta">
-        <div class="rfc-cover-meta-item"><div class="mk">Total Entries</div><div class="mv">${data.length}</div></div>
-        <div class="rfc-cover-meta-item"><div class="mk">Site Visits</div><div class="mv">${visits.length}</div></div>
-        <div class="rfc-cover-meta-item"><div class="mk">Issues</div><div class="mv">${issues.length}</div></div>
-        <div class="rfc-cover-meta-item"><div class="mk">Drawing Requests</div><div class="mv">${drawings.length}</div></div>
-        <div class="rfc-cover-meta-item"><div class="mk">Photos</div><div class="mv">${allPhotos.length}</div></div>
+  const from=document.getElementById("rFrom").value, to=document.getElementById("rTo").value;
+  const se=entries.filter(e=>e.site===activeSite&&(!from||e.date>=from)&&(!to||e.date<=to)).sort((a,b)=>b.date.localeCompare(a.date));
+  document.getElementById("reportDocument").innerHTML = `
+    <div class="rfc">
+      <div class="rfc-cover">
+        <div class="rfc-cover-title">${esc(activeSite)} — Site Report</div>
+        <div class="rfc-cover-sub">Generated on ${fmt(today())} · ${se.length} items logged</div>
       </div>
-    </div>
-    <!-- Summary -->
-    <div class="rfc-summary">
-      <div class="rfc-sum-box"><div class="rfc-sum-num" style="color:#1C1917">${data.length}</div><div class="rfc-sum-lbl">Total</div></div>
-      <div class="rfc-sum-box"><div class="rfc-sum-num" style="color:#92400E">${data.filter(e=>e.status==="OPEN").length}</div><div class="rfc-sum-lbl">Open</div></div>
-      <div class="rfc-sum-box"><div class="rfc-sum-num" style="color:#1E40AF">${data.filter(e=>e.status==="INPROGRESS").length}</div><div class="rfc-sum-lbl">In Progress</div></div>
-      <div class="rfc-sum-box"><div class="rfc-sum-num" style="color:#065F46">${data.filter(e=>e.status==="RESOLVED").length}</div><div class="rfc-sum-lbl">Resolved</div></div>
-    </div>
-    <!-- Sections -->
-    ${sections.map(sec=>`
-      <div class="rfc-section-head">
-        <span class="rfc-section-pill" style="background:${sec.pillBg};color:${sec.pillC}">${sec.pill}</span>
-        <span class="rfc-section-label">${sec.label}</span>
-        <span class="rfc-section-count">${sec.items.length} item${sec.items.length!==1?"s":""}</span>
+      <div class="rfc-summary">
+        <div class="rfc-sum-box"><div class="rfc-sum-num">${se.length}</div><div class="rfc-sum-lbl">TOTAL LOGS</div></div>
+        <div class="rfc-sum-box"><div class="rfc-sum-num" style="color:#B06000">${se.filter(e=>e.status==="OPEN").length}</div><div class="rfc-sum-lbl">OPEN</div></div>
+        <div class="rfc-sum-box"><div class="rfc-sum-num" style="color:#1A73E8">${se.filter(e=>e.status==="INPROGRESS").length}</div><div class="rfc-sum-lbl">IN PROGRESS</div></div>
+        <div class="rfc-sum-box"><div class="rfc-sum-num" style="color:#137333">${se.filter(e=>e.status==="RESOLVED").length}</div><div class="rfc-sum-lbl">RESOLVED</div></div>
       </div>
       <div class="rfc-cards">
-        ${sec.items.length ? sec.items.map(e=>{
-          const cat=CATS[e.category],pr=PRIS[e.priority];
-          return `<div class="rfc-card">
-            <div class="rfc-card-top">
-              <div class="rfc-card-icon">${cat.icon}</div>
-              <div class="rfc-card-main">
-                <div class="rfc-card-title">${esc(e.title)}</div>
-                <div class="rfc-card-meta">
-                  <span>📅 ${fmt(e.date)}</span>
-                  ${e.raisedBy?`<span>👤 ${esc(e.raisedBy)}</span>`:""}
-                  ${e.assignedTo?`<span>→ ${esc(e.assignedTo)}</span>`:""}
-                </div>
-              </div>
-              <div class="rfc-card-badges">
-                ${statusBadge(e.status)}
-                <span class="${priClass(e.priority)}">● ${pr.label}</span>
-              </div>
-            </div>
-            ${e.description||e.followUp?`<div class="rfc-card-body">
-              ${e.description?`<div class="rfc-card-desc">${esc(e.description)}</div>`:""}
-              ${e.followUp?`<div class="rfc-card-followup"><span class="rfc-card-followup-label">↳ Action:</span>${esc(e.followUp)}</div>`:""}
-            </div>`:""}
-            ${e.photos?.length?`<div class="rfc-card-photos">
-              ${e.photos.slice(0,5).map(p=>`<img class="rfc-photo-thumb" src="${p.dataUrl}" title="${esc(p.caption)}" onclick="showPhotoModal('${p.dataUrl}','${esc(p.caption)}')">`).join("")}
-              ${e.photos.length>5?`<div class="rfc-photo-more">+${e.photos.length-5}</div>`:""}
-            </div>`:""}
-          </div>`;
-        }).join("") : `<div class="rfc-empty">No ${sec.label.toLowerCase()} recorded for this period.</div>`}
-      </div>`).join("")}
-    <!-- Sign-off -->
-    <div class="rfc-signoff">
-      <div class="rfc-sig-block"><div class="sig-line"></div><div class="sig-name">____________________</div><div class="sig-role">Prepared By &nbsp;·&nbsp; ${fmt(today())}</div></div>
-      <div class="rfc-sig-block"><div class="sig-line"></div><div class="sig-name">____________________</div><div class="sig-role">Reviewed &amp; Approved By</div></div>
-    </div>
-  </div>`;
+        ${se.map(e=>`<div class="rfc-card">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <strong style="font-size:15px">${esc(e.title)}</strong>
+            <span class="badge" style="background:${STATS[e.status].bg};color:${STATS[e.status].color}">${e.status}</span>
+          </div>
+          <div style="font-size:12px;color:#635D57;margin-bottom:8px">${fmt(e.date)} · Raised by ${esc(e.raisedBy||"Engineers")}</div>
+          ${e.description?`<div style="font-size:13px;line-height:1.5">${esc(e.description)}</div>`:""}
+        </div>`).join("")}
+      </div>
+      <div class="rfc-signoff">
+        <div class="sig-block"><div class="sig-line"></div><div style="font-size:12px">Site Engineer Signature</div></div>
+        <div class="sig-block"><div class="sig-line"></div><div style="font-size:12px">Project Manager Approval</div></div>
+      </div>
+    </div>`;
 }
 
-// ── TABLE REPORT ──────────────────────────────────────────────
-function buildTableReport(data, dateLabel) {
-  const issues   = data.filter(e=>e.category==="ISSUE");
-  const drawings = data.filter(e=>e.category==="DRAWING");
-  const visits   = data.filter(e=>e.category==="SITE");
-
-  const issueTable = (rows) => `
-    <table class="rft-table">
-      <thead><tr>
-        <th style="width:28px">#</th>
-        <th>Issue Title &amp; Description</th>
-        <th style="width:95px">Date</th>
-        <th style="width:110px">Raised By</th>
-        <th style="width:115px">Assigned To</th>
-        <th style="width:95px">Status</th>
-        <th style="width:70px">Priority</th>
-        <th style="width:90px">Photos</th>
-      </tr></thead>
-      <tbody>${rows.length?rows.map((e,i)=>`<tr>
-        <td class="td-num">${pad2(i+1)}</td>
-        <td><div class="rft-cell-title">${esc(e.title)}</div>
-            ${e.description?`<div class="rft-cell-desc">${esc(e.description)}</div>`:""}
-            ${e.followUp?`<div class="rft-cell-fu">${esc(e.followUp)}</div>`:""}</td>
-        <td style="white-space:nowrap;font-size:11px">${fmt(e.date)}</td>
-        <td style="font-size:11px">${esc(e.raisedBy||"—")}</td>
-        <td style="font-size:11px">${esc(e.assignedTo||"—")}</td>
-        <td>${statusBadge(e.status)}</td>
-        <td class="${priClass(e.priority)}" style="font-size:11px">● ${PRIS[e.priority].label}</td>
-        <td>${e.photos?.length?`<div class="rft-photos">${e.photos.slice(0,2).map(p=>`<img class="rft-photo-mini" src="${p.dataUrl}" title="${esc(p.caption)}" onclick="showPhotoModal('${p.dataUrl}','${esc(p.caption)}')">`).join("")}</div>${e.photos.length>2?`<div class="rft-photo-more">+${e.photos.length-2} more</div>`:""}`:`<span class="rft-no-photo">—</span>`}</td>
-      </tr>`).join(""):`<tr class="rft-empty-row"><td colspan="8">No entries recorded for this period.</td></tr>`}
-      </tbody></table>`;
-
-  const drawingTable = (rows) => `
-    <table class="rft-table">
-      <thead><tr>
-        <th style="width:28px">#</th>
-        <th>Drawing Title &amp; Details</th>
-        <th style="width:95px">Date</th>
-        <th style="width:120px">Requested By</th>
-        <th style="width:130px">Assigned To</th>
-        <th style="width:95px">Status</th>
-      </tr></thead>
-      <tbody>${rows.length?rows.map((e,i)=>`<tr>
-        <td class="td-num">${pad2(i+1)}</td>
-        <td><div class="rft-cell-title">${esc(e.title)}</div>
-            ${e.description?`<div class="rft-cell-desc">${esc(e.description)}</div>`:""}
-            ${e.followUp?`<div class="rft-cell-fu">${esc(e.followUp)}</div>`:""}</td>
-        <td style="white-space:nowrap;font-size:11px">${fmt(e.date)}</td>
-        <td style="font-size:11px">${esc(e.raisedBy||"—")}</td>
-        <td style="font-size:11px">${esc(e.assignedTo||"—")}</td>
-        <td>${statusBadge(e.status)}</td>
-      </tr>`).join(""):`<tr class="rft-empty-row"><td colspan="6">No drawing requests for this period.</td></tr>`}
-      </tbody></table>`;
-
-  return `<div class="rft">
-    <!-- Cover -->
-    <div class="rft-cover">
-      <div class="rft-cover-left">
-        <div class="eyebrow">Site Visit Report</div>
-        <div class="title">${esc(activeSite)}</div>
-      </div>
-      <div class="rft-cover-right">
-        <table><tbody>
-          <tr><td>Period</td><td>${dateLabel}</td></tr>
-          <tr><td>Generated</td><td>${fmt(today())}</td></tr>
-          <tr><td>Open Issues</td><td>${issues.filter(e=>e.status!=="RESOLVED").length}</td></tr>
-          <tr><td>Pending Drawings</td><td>${drawings.filter(e=>e.status!=="RESOLVED").length}</td></tr>
-        </tbody></table>
-      </div>
-    </div>
-    <!-- Summary -->
-    <div class="rft-summary">
-      <div class="rft-sum-box"><div class="rft-sum-num" style="color:#1C1917">${data.length}</div><div class="rft-sum-lbl">Total Entries</div></div>
-      <div class="rft-sum-box"><div class="rft-sum-num" style="color:#059669">${visits.length}</div><div class="rft-sum-lbl">Site Visits</div></div>
-      <div class="rft-sum-box"><div class="rft-sum-num" style="color:#DC2626">${issues.length}</div><div class="rft-sum-lbl">Issues</div></div>
-      <div class="rft-sum-box"><div class="rft-sum-num" style="color:#2563EB">${drawings.length}</div><div class="rft-sum-lbl">Drawing Requests</div></div>
-    </div>
-    <!-- Section 01: Observations -->
-    <div class="rft-sec-head">
-      <span class="rft-sec-num">01</span>
-      <span class="rft-sec-title">Site Observations &amp; Remarks</span>
-      <span class="rft-sec-count">${visits.length} visit${visits.length!==1?"s":""}</span>
-    </div>
-    <div class="rft-obs-list">
-      ${visits.length?visits.map(e=>`<div class="rft-obs-item">
-        <div class="rft-obs-header">
-          <span class="rft-obs-date">${fmt(e.date)}</span>
-          <span class="rft-obs-title">${esc(e.title)}</span>
-          ${statusBadge(e.status)}
-        </div>
-        ${e.description?`<div class="rft-obs-body">${esc(e.description)}</div>`:""}
-        ${e.followUp?`<div class="rft-obs-fu">↳ ${esc(e.followUp)}</div>`:""}
-        ${e.photos?.length?`<div class="rft-photos" style="margin-top:10px">${e.photos.slice(0,4).map(p=>`<img class="rft-photo-mini" src="${p.dataUrl}" title="${esc(p.caption)}" onclick="showPhotoModal('${p.dataUrl}','${esc(p.caption)}')">`).join("")}${e.photos.length>4?`<div class="rft-photo-more">+${e.photos.length-4} more</div>`:""}</div>`:""}
-      </div>`).join(""):`<div class="rft-obs-list" style="padding-bottom:16px"><div class="rfc-empty">No site visit observations for this period.</div></div>`}
-    </div>
-    <!-- Section 02: Issues -->
-    <div class="rft-sec-head">
-      <span class="rft-sec-num">02</span>
-      <span class="rft-sec-title">Technical Issues</span>
-      <span class="rft-sec-count">${issues.length} issue${issues.length!==1?"s":""}</span>
-    </div>
-    <div class="rft-table-wrap">${issueTable(issues)}</div>
-    <!-- Section 03: Drawings -->
-    <div class="rft-sec-head">
-      <span class="rft-sec-num">03</span>
-      <span class="rft-sec-title">Drawing Requests</span>
-      <span class="rft-sec-count">${drawings.length} request${drawings.length!==1?"s":""}</span>
-    </div>
-    <div class="rft-table-wrap">${drawingTable(drawings)}</div>
-    <!-- Sign-off -->
-    <div class="rft-signoff">
-      <div class="rft-sig-block"><div class="sig-line"></div><div class="sig-name">____________________</div><div class="sig-role">Prepared By &nbsp;·&nbsp; ${fmt(today())}</div></div>
-      <div class="rft-sig-block"><div class="sig-line"></div><div class="sig-name">____________________</div><div class="sig-role">Reviewed &amp; Approved By</div></div>
-    </div>
-  </div>`;
-}
-
-function printReport(){ settings.reportNo++; saveSettings(); window.print(); showToast("Report ready to print."); }
-
-// ── Show Log ──
 function showLog() {
   ["viewAdd","viewDetail","viewEdit","viewReport"].forEach(id=>document.getElementById(id).style.display="none");
   document.getElementById("viewLog").style.display="block";
-  renderStats(); renderFilters(); renderLog();
+  renderSiteTabs(); renderStats(); renderFilters(); renderLog();
 }
 
-// ── Init ──
-async function initApp() {
-  const [savedSites, savedEntries, savedSettings] = await Promise.all([
-    idbGet("sl5-sites"), idbGet("sl5-entries"), idbGet("sl5-settings")
-  ]);
-  if (savedSites)    sites = savedSites;
-  if (savedEntries)  entries = savedEntries;
-  if (savedSettings) settings = savedSettings;
-  activeSite = sites[0];
-  renderSiteTabs();
-  showLog();
-  checkStorageSize();
-}
-initApp();
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("service-worker.js").catch(() => {});
-  });
-}
+// Init
+renderSiteTabs(); showLog();
 </script>
 </body>
 </html>
