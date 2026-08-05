@@ -3,68 +3,46 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>Site Report — Material Design 3</title>
-<meta name="theme-color" content="#1F1B16"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="apple-mobile-web-app-title" content="Site Report"/>
+<title>SITE REPORT — Modern Field Ledger</title>
+<meta name="theme-color" content="#0F172A"/>
 
 <!-- Google Fonts & Material Symbols -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 <style>
 :root {
-  /* Google Material Design 3 (M3) Color System */
-  --md-sys-color-primary: #1F1B16;
-  --md-sys-color-on-primary: #FFFFFF;
-  --md-sys-color-primary-container: #36302B;
-  --md-sys-color-on-primary-container: #F5EEE6;
+  --bg-main: #F8FAFC;
+  --surface-card: #FFFFFF;
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --border-color: #E2E8F0;
   
-  --md-sys-color-surface: #F9F6F0;
-  --md-sys-color-surface-dim: #EFECE6;
-  --md-sys-color-surface-container: #FFFFFF;
-  --md-sys-color-surface-container-high: #F3EFE9;
-  --md-sys-color-on-surface: #1F1B16;
-  --md-sys-color-on-surface-variant: #635D57;
+  --primary-accent: #2563EB;
+  --primary-gradient: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #334155 100%);
+  --ai-gradient: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #EC4899 100%);
+  
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
 
-  --md-sys-color-outline: #857D75;
-  --md-sys-color-outline-variant: #E5DFC8;
-
-  /* Category & Status Tokens */
-  --cat-site-bg: #E6F4EA; --cat-site-color: #137333;
-  --cat-issue-bg: #FCE8E6; --cat-issue-color: #C5221F;
-  --cat-drawing-bg: #E8F0FE; --cat-drawing-color: #1A73E8;
-
-  --stat-open-bg: #FEF3D6; --stat-open-color: #B06000;
-  --stat-prog-bg: #E8F0FE; --stat-prog-color: #1A73E8;
-  --stat-res-bg: #E6F4EA; --stat-res-color: #137333;
-
-  --pri-high: #D93025; --pri-med: #E37400; --pri-low: #5F6368;
-
-  --md-radius-small: 8px;
-  --md-radius-medium: 16px;
-  --md-radius-large: 24px;
-  --md-radius-full: 9999px;
-
-  --md-elevation-1: 0px 2px 6px rgba(31,27,22, 0.06);
-  --md-elevation-2: 0px 4px 12px rgba(31,27,22, 0.10);
-  --md-elevation-3: 0px 8px 24px rgba(31,27,22, 0.14);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 14px rgba(0,0,0,0.07);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-  background-color: var(--md-sys-color-surface);
-  color: var(--md-sys-color-on-surface);
+  background-color: var(--bg-main);
+  color: var(--text-main);
   min-height: 100vh;
-  padding-bottom: 80px;
-  -webkit-tap-highlight-color: transparent;
+  padding-bottom: 24px;
 }
 
-/* Material Icon styling */
 .ms {
   font-family: 'Material Symbols Outlined';
   font-weight: normal;
@@ -72,392 +50,298 @@ body {
   font-size: 20px;
   line-height: 1;
   display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  -webkit-font-smoothing: antialiased;
   vertical-align: middle;
 }
 
-/* ── Top Header App Bar ── */
+/* Header */
 #appHeader {
-  background: var(--md-sys-color-primary);
-  color: var(--md-sys-color-on-primary);
-  padding: 0 20px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: var(--md-elevation-2);
+  background: var(--primary-gradient);
+  color: #FFFFFF;
+  padding: 0 24px;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
 }
-.brand-wrap { display: flex; align-items: center; gap: 10px; }
-.brand-icon {
-  background: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-on-primary-container);
-  width: 36px; height: 36px;
-  border-radius: var(--md-radius-small);
+
+.logo-badge { display: flex; align-items: center; gap: 10px; }
+.logo-icon-bg {
+  background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+  color: #FFF; width: 38px; height: 38px;
+  border-radius: var(--radius-sm);
   display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 10px rgba(59,130,246,0.4);
 }
-.brand-title { font-size: 17px; font-weight: 700; letter-spacing: -0.2px; }
-.brand-title span { color: #A8A29E; font-weight: 400; font-size: 13px; margin-left: 4px; }
+.logo-text { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
+.logo-tag { background: rgba(255,255,255,0.15); color: #93C5FD; font-size: 11px; padding: 2px 8px; border-radius: var(--radius-full); margin-left: 6px; font-weight: 700; }
 
 #siteTabsWrap { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .site-tab {
-  padding: 6px 14px;
-  border-radius: var(--md-radius-full);
-  border: none;
-  cursor: pointer;
-  font-size: 12px;
-  font-family: inherit;
-  font-weight: 600;
-  background: transparent;
-  color: #A8A29E;
-  transition: all .15s ease;
+  padding: 6px 14px; border-radius: var(--radius-full); border: none; cursor: pointer;
+  font-size: 12px; font-family: inherit; font-weight: 600; background: rgba(255,255,255,0.1); color: #94A3B8;
+  transition: all .2s ease;
 }
-.site-tab.active {
-  background: var(--md-sys-color-surface);
-  color: var(--md-sys-color-on-surface);
-  box-shadow: var(--md-elevation-1);
-}
-.add-site-btn {
-  padding: 5px 12px;
-  border-radius: var(--md-radius-full);
-  border: 1px dashed #78716C;
-  background: transparent;
-  color: #A8A29E;
-  font-size: 12px;
-  cursor: pointer;
-  display: flex; align-items: center; gap: 4px;
-}
+.site-tab.active { background: #FFFFFF; color: #0F172A; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
 
-/* ── App Layout ── */
-#appMain { max-width: 1040px; margin: 0 auto; padding: 20px 16px; }
+/* Main Container */
+#appMain { max-width: 1060px; margin: 0 auto; padding: 24px 16px; }
 
-/* ── Stats Section ── */
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
-.stat-card {
-  background: var(--md-sys-color-surface-container);
-  border-radius: var(--md-radius-medium);
-  padding: 14px 16px;
-  border: 1px solid var(--md-sys-color-outline-variant);
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-  box-shadow: var(--md-elevation-1);
-}
-.stat-card:hover { transform: translateY(-2px); box-shadow: var(--md-elevation-2); }
-.stat-card:active { transform: scale(0.98); }
-.stat-head { display: flex; align-items: center; justify-content: space-between; }
-.stat-num { font-family: monospace; font-size: 28px; font-weight: 700; margin-top: 4px; }
-.stat-lbl { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; color: var(--md-sys-color-on-surface-variant); text-transform: uppercase; }
-
-/* ── Smart AI Card Banner ── */
+/* AI Assistant Banner */
 .ai-banner {
-  background: linear-gradient(135deg, #1F1B16 0%, #36302B 100%);
+  background: var(--ai-gradient);
   color: #FFFFFF;
-  border-radius: var(--md-radius-medium);
-  padding: 16px 20px;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  box-shadow: var(--md-elevation-2);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  box-shadow: 0 8px 25px rgba(124,58,237,0.25);
 }
-.ai-banner-left { display: flex; align-items: center; gap: 12px; }
-.ai-icon-bubble {
-  background: rgba(255,255,255,0.15);
-  width: 42px; height: 42px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
+.ai-info { display: flex; align-items: center; gap: 14px; }
+.ai-sparkle {
+  background: rgba(255,255,255,0.2); width: 46px; height: 46px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
 }
-.ai-banner-title { font-size: 14px; font-weight: 700; }
-.ai-banner-sub { font-size: 12px; color: #D6D3D1; margin-top: 2px; }
-.btn-ai-trigger {
-  background: #FFFFFF;
-  color: #1F1B16;
-  border: none;
-  padding: 8px 16px;
-  border-radius: var(--md-radius-full);
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex; align-items: center; gap: 6px;
-  white-space: nowrap;
-  transition: opacity 0.15s ease;
+.ai-title { font-size: 16px; font-weight: 800; }
+.ai-sub { font-size: 12px; color: #F3E8FF; margin-top: 2px; }
+.btn-ai {
+  background: #FFFFFF; color: #6D28D9; border: none;
+  padding: 10px 20px; border-radius: var(--radius-full);
+  font-size: 13px; font-weight: 800; cursor: pointer;
+  display: flex; align-items: center; gap: 6px; white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform 0.15s ease;
 }
-.btn-ai-trigger:hover { opacity: 0.9; }
+.btn-ai:active { transform: scale(0.96); }
 
-/* ── Toolbar & Filters ── */
-.toolbar { margin-bottom: 16px; }
-.trow { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+/* Stats Grid */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+.stat-card {
+  background: var(--surface-card);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.stat-num { font-size: 32px; font-weight: 800; font-family: monospace; margin-top: 4px; }
+.stat-lbl { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* Toolbar & Filters */
+.toolbar { margin-bottom: 24px; }
+.trow { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
 .search-box {
-  flex: 1; min-width: 180px;
-  display: flex; align-items: center;
-  background: var(--md-sys-color-surface-container);
-  border: 1px solid var(--md-sys-color-outline-variant);
-  border-radius: var(--md-radius-full);
-  padding: 0 14px;
-  box-shadow: var(--md-elevation-1);
+  flex: 1; min-width: 220px; display: flex; align-items: center; gap: 8px;
+  background: var(--surface-card); border: 1px solid var(--border-color);
+  border-radius: var(--radius-full); padding: 0 16px; box-shadow: var(--shadow-sm);
 }
 .search-box input {
-  width: 100%; padding: 10px 8px;
-  border: none; background: transparent;
-  font-size: 13px; font-family: inherit; outline: none;
-  color: var(--md-sys-color-on-surface);
+  width: 100%; padding: 11px 0; border: none; background: transparent;
+  font-size: 13px; font-family: inherit; outline: none; color: var(--text-main);
 }
 .filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
 .fbtn {
-  padding: 6px 14px;
-  border-radius: var(--md-radius-full);
-  border: 1px solid var(--md-sys-color-outline-variant);
-  background: var(--md-sys-color-surface-container);
-  color: var(--md-sys-color-on-surface-variant);
-  font-size: 12px; cursor: pointer; font-family: inherit; font-weight: 600;
-  transition: all .15s ease;
-  display: flex; align-items: center; gap: 4px;
+  padding: 7px 15px; border-radius: var(--radius-full);
+  border: 1px solid var(--border-color); background: var(--surface-card);
+  color: var(--text-muted); font-size: 12px; cursor: pointer; font-family: inherit; font-weight: 700;
+  display: inline-flex; align-items: center; gap: 5px; transition: all 0.15s ease;
 }
-.fbtn.active {
-  background: var(--md-sys-color-primary);
-  color: var(--md-sys-color-on-primary);
-  border-color: var(--md-sys-color-primary);
-}
+.fbtn.active { background: #0F172A; color: #FFFFFF; border-color: #0F172A; }
 
 .btn-primary {
-  padding: 9px 18px;
-  border-radius: var(--md-radius-full);
-  border: none;
-  background: var(--md-sys-color-primary);
-  color: var(--md-sys-color-on-primary);
-  font-size: 13px; cursor: pointer; font-family: inherit; font-weight: 600;
-  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
-  box-shadow: var(--md-elevation-1);
-  transition: box-shadow 0.15s ease, opacity 0.15s ease;
+  padding: 10px 20px; border-radius: var(--radius-full); border: none;
+  background: #0F172A; color: #FFFFFF; font-size: 13px; cursor: pointer;
+  font-family: inherit; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;
+  box-shadow: var(--shadow-sm); transition: opacity 0.15s ease;
 }
-.btn-primary:hover { box-shadow: var(--md-elevation-2); opacity: 0.95; }
+.btn-primary:hover { opacity: 0.9; }
 .btn-outline {
-  padding: 8px 14px;
-  border-radius: var(--md-radius-full);
-  border: 1px solid var(--md-sys-color-outline-variant);
-  background: var(--md-sys-color-surface-container);
-  color: var(--md-sys-color-on-surface);
-  font-size: 12px; cursor: pointer; font-family: inherit; font-weight: 600;
-  display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+  padding: 9px 16px; border-radius: var(--radius-full);
+  border: 1px solid var(--border-color); background: var(--surface-card);
+  color: var(--text-main); font-size: 12px; cursor: pointer; font-family: inherit; font-weight: 700;
+  display: inline-flex; align-items: center; gap: 5px;
 }
 
-/* ── Entry Cards (Log View) ── */
-.entries-list { display: flex; flex-direction: column; gap: 10px; }
+/* Entry Cards */
+.entries-list { display: flex; flex-direction: column; gap: 14px; }
 .ecard {
-  background: var(--md-sys-color-surface-container);
-  border-radius: var(--md-radius-medium);
-  padding: 16px;
-  border: 1px solid var(--md-sys-color-outline-variant);
-  cursor: pointer;
-  display: flex; gap: 14px;
-  transition: box-shadow .15s ease, transform .15s ease;
-  box-shadow: var(--md-elevation-1);
+  background: var(--surface-card);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  cursor: pointer; display: flex; gap: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.ecard:hover { box-shadow: var(--md-elevation-2); transform: translateY(-1px); }
-.eicon-box {
-  width: 44px; height: 44px;
-  border-radius: var(--md-radius-small);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+.ecard:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.eicon {
+  width: 48px; height: 48px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 .ebody { flex: 1; min-width: 0; }
-.etop { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; flex-wrap: wrap; }
-.etitle { font-weight: 700; font-size: 15px; color: var(--md-sys-color-on-surface); line-height: 1.3; }
-.badges { display: flex; gap: 6px; flex-shrink: 0; align-items: center; flex-wrap: wrap; }
-.badge {
-  font-size: 11px; padding: 3px 10px;
-  border-radius: var(--md-radius-full); font-weight: 700;
-  letter-spacing: 0.2px;
-}
-.edesc { font-size: 13px; color: var(--md-sys-color-on-surface-variant); margin-top: 6px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.emeta { display: flex; gap: 16px; margin-top: 10px; font-size: 12px; color: var(--md-sys-color-on-surface-variant); flex-wrap: wrap; align-items: center; }
-.emeta span { display: inline-flex; align-items: center; gap: 4px; }
-.empty-state { text-align: center; padding: 60px 20px; color: var(--md-sys-color-outline); font-size: 14px; }
+.etop { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.etitle { font-size: 16px; font-weight: 800; color: var(--text-main); line-height: 1.3; }
+.badges { display: flex; gap: 6px; flex-shrink: 0; align-items: center; }
+.badge { font-size: 11px; padding: 4px 10px; border-radius: var(--radius-full); font-weight: 800; }
+.edesc { font-size: 13px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.emeta { display: flex; gap: 16px; margin-top: 12px; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; align-items: center; }
 
-/* ── Panel Forms & Modals ── */
+/* Panels */
 .panel {
-  background: var(--md-sys-color-surface-container);
-  border-radius: var(--md-radius-large);
-  padding: 24px;
-  border: 1px solid var(--md-sys-color-outline-variant);
-  box-shadow: var(--md-elevation-2);
+  background: var(--surface-card);
+  border-radius: var(--radius-lg);
+  padding: 28px; border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
 }
-.panel-title { font-weight: 700; font-size: 18px; margin-bottom: 20px; color: var(--md-sys-color-on-surface); }
-.fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.panel-title { font-size: 20px; font-weight: 800; margin-bottom: 20px; color: var(--text-main); }
+.fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .s2 { grid-column: span 2; }
-.flabel { display: block; font-size: 11px; font-weight: 700; color: var(--md-sys-color-on-surface-variant); letter-spacing: 0.5px; margin-bottom: 6px; text-transform: uppercase; }
+.flabel { display: block; font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
 .finput {
-  width: 100%; padding: 11px 14px;
-  border-radius: var(--md-radius-small);
-  border: 1px solid var(--md-sys-color-outline);
-  background: var(--md-sys-color-surface-dim);
-  font-size: 14px; font-family: inherit; outline: none;
-  color: var(--md-sys-color-on-surface);
+  width: 100%; padding: 12px 16px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color); background: var(--bg-main);
+  font-size: 14px; font-family: inherit; outline: none; color: var(--text-main);
 }
-.finput:focus { border-color: var(--md-sys-color-primary); background: #FFFFFF; }
+.finput:focus { border-color: var(--primary-accent); background: var(--surface-card); }
 textarea.finput { resize: vertical; }
-.faction { display: flex; gap: 12px; margin-top: 24px; }
-.btn-save {
-  padding: 12px 28px; border-radius: var(--md-radius-full); border: none;
-  background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary);
-  font-size: 14px; cursor: pointer; font-family: inherit; font-weight: 700; flex: 1;
-}
-.btn-cancel {
-  padding: 12px 24px; border-radius: var(--md-radius-full); border: 1px solid var(--md-sys-color-outline);
-  background: transparent; color: var(--md-sys-color-on-surface); font-size: 14px; cursor: pointer; font-family: inherit; font-weight: 600;
-}
 
-/* Photo upload area */
+/* Photo Upload Box */
 .photo-upload-area {
-  border: 2px dashed var(--md-sys-color-outline);
-  border-radius: var(--md-radius-medium);
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-md);
   padding: 24px; text-align: center; cursor: pointer;
-  background: var(--md-sys-color-surface-dim);
-  transition: border-color .15s ease;
+  background: var(--bg-main);
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
-.photo-upload-area:hover { border-color: var(--md-sys-color-primary); }
-.photo-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap: 10px; margin-top: 14px; }
-.photo-thumb-wrap { position: relative; border-radius: var(--md-radius-small); overflow: hidden; background: #EFECE6; border: 1px solid var(--md-sys-color-outline-variant); }
-.photo-thumb-wrap img { width: 100%; height: 95px; object-fit: cover; display: block; }
-.photo-caption-input { width: 100%; padding: 5px 6px; font-size: 11px; border: none; border-top: 1px solid var(--md-sys-color-outline-variant); font-family: inherit; background: #fff; outline: none; }
+.photo-upload-area:hover { border-color: var(--primary-accent); background: #EFF6FF; }
+.photo-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px,1fr)); gap: 10px; margin-top: 14px; }
+.photo-thumb-wrap { position: relative; border-radius: var(--radius-sm); overflow: hidden; background: #E2E8F0; border: 1px solid var(--border-color); }
+.photo-thumb-wrap img { width: 100%; height: 95px; object-fit: cover; display: block; cursor: pointer; }
+.photo-caption-input { width: 100%; padding: 5px 6px; font-size: 11px; border: none; border-top: 1px solid var(--border-color); font-family: inherit; background: #fff; outline: none; }
 .photo-remove { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,.65); color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-/* ── Floating Action Button (FAB) ── */
-.fab {
-  position: fixed; bottom: 84px; right: 20px;
-  background: var(--md-sys-color-primary);
-  color: var(--md-sys-color-on-primary);
-  width: 56px; height: 56px;
-  border-radius: 16px;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: var(--md-elevation-3);
-  cursor: pointer; z-index: 90;
-  transition: transform 0.15s ease;
-}
-.fab:active { transform: scale(0.92); }
-
-/* ── Mobile Bottom Navigation Bar ── */
-.bottom-nav {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  height: 64px;
-  background: var(--md-sys-color-surface-container);
-  border-top: 1px solid var(--md-sys-color-outline-variant);
-  display: flex; justify-around: space-around; align-items: center;
-  z-index: 99;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-}
-.nav-item {
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
-  color: var(--md-sys-color-on-surface-variant);
-  font-size: 11px; font-weight: 600; text-decoration: none;
-  background: none; border: none; cursor: pointer; font-family: inherit;
-  padding: 6px 12px; border-radius: var(--md-radius-full);
-}
-.nav-item.active { color: var(--md-sys-color-primary); }
-.nav-item .ms { font-size: 22px; }
-
-/* ── AI Modal ── */
-.modal-overlay {
+/* Photo Modal Lightbox */
+.photo-modal {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.6);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 200; padding: 16px;
+  background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center;
+  z-index: 1000; cursor: pointer;
 }
-.modal-card {
-  background: #FFFFFF;
-  border-radius: var(--md-radius-large);
-  width: 100%; max-width: 520px;
-  padding: 24px;
-  box-shadow: var(--md-elevation-3);
-}
+.photo-modal img { max-width: 92%; max-height: 85%; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); }
 
-/* Toast */
-.toast {
-  position: fixed; bottom: 84px; left: 50%; transform: translateX(-50%);
-  background: #1F1B16; color: #FFFFFF; padding: 10px 20px;
-  border-radius: var(--md-radius-full); font-size: 13px; font-weight: 600;
-  z-index: 1001; animation: slideUp 0.25s ease;
-}
-@keyframes slideUp { from { transform: translate(-50%, 20px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+/* Desktop vs Mobile Navigation Rules */
+.bottom-nav { display: none; }
+.fab { display: flex; }
 
-/* Report Document CSS */
-#reportDocument { background: #FFFFFF; border-radius: var(--md-radius-medium); overflow: hidden; border: 1px solid var(--md-sys-color-outline-variant); }
-.rfc-cover { background: var(--md-sys-color-primary); color: #FFFFFF; padding: 32px; }
-.rfc-cover-title { font-size: 26px; font-weight: 700; }
-.rfc-cover-sub { font-size: 13px; color: #A8A29E; margin-top: 4px; }
-.rfc-summary { display: grid; grid-template-columns: repeat(4,1fr); border-bottom: 1px solid #E5DFC8; background: #FAFAF9; }
-.rfc-sum-box { padding: 16px; border-right: 1px solid #E5DFC8; text-align: center; }
-.rfc-sum-num { font-family: monospace; font-size: 26px; font-weight: 700; }
-.rfc-sum-lbl { font-size: 10px; font-weight: 700; color: #635D57; margin-top: 2px; }
-.rfc-cards { display: flex; flex-direction: column; gap: 12px; padding: 24px; }
-.rfc-card { border-radius: 12px; border: 1px solid #E5DFC8; padding: 16px; page-break-inside: avoid; }
-.rfc-signoff { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 24px 32px; background: #F9F6F0; border-top: 2px solid #1F1B16; }
-.sig-line { border-bottom: 1px solid #857D75; height: 32px; margin-bottom: 6px; }
-
-@media print {
-  #appHeader, .bottom-nav, .fab, .toolbar, #viewLog, #viewAdd, #viewDetail, #viewEdit, .ai-banner, .toast { display: none !important; }
-  #viewReport { display: block !important; }
-  #appMain { padding: 0; max-width: 100%; }
-  body { background: #fff; padding-bottom: 0; }
-  #reportDocument { border: none; }
-}
 @media (max-width: 600px) {
+  body { padding-bottom: 84px; }
   .stats-grid { grid-template-columns: repeat(2,1fr); }
   .fgrid { grid-template-columns: 1fr; }
   .s2 { grid-column: span 1; }
-  .rfc-summary { grid-template-columns: repeat(2,1fr); }
+
+  /* Mobile Bottom Nav */
+  .bottom-nav {
+    display: flex !important;
+    position: fixed; bottom: 0; left: 0; right: 0; height: 64px;
+    background: #FFFFFF; border-top: 1px solid var(--border-color);
+    justify-content: space-around; align-items: center; z-index: 99;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+  }
+  .nav-item {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    padding: 6px 12px; border-radius: 12px; color: var(--text-muted);
+    font-size: 11px; font-weight: 700; border: none; background: transparent; cursor: pointer;
+  }
+  .nav-item.active { color: var(--primary-accent); background: #EFF6FF; }
+
+  .fab {
+    position: fixed; bottom: 80px; right: 20px;
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+    color: #FFFFFF; width: 56px; height: 56px;
+    border-radius: 16px; align-items: center; justify-content: center;
+    box-shadow: 0 8px 25px rgba(37,99,235,0.4);
+    cursor: pointer; z-index: 90;
+  }
 }
+
+@media (min-width: 601px) {
+  .fab {
+    position: fixed; bottom: 32px; right: 32px;
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+    color: #FFFFFF; width: 60px; height: 60px;
+    border-radius: 18px; align-items: center; justify-content: center;
+    box-shadow: 0 8px 25px rgba(37,99,235,0.4);
+    cursor: pointer; z-index: 90;
+  }
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15,23,42,0.7); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center; z-index: 200; padding: 16px;
+}
+.modal-card {
+  background: var(--surface-card); border-radius: var(--radius-lg);
+  width: 100%; max-width: 540px; padding: 26px; box-shadow: var(--shadow-lg);
+}
+
+.chip-btn {
+  padding: 4px 10px; border-radius: var(--radius-full); border: 1px solid #C084FC;
+  background: #F3E8FF; color: #6D28D9; font-size: 11px; font-weight: 700; cursor: pointer;
+}
+
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: #0F172A; color: #FFFFFF; padding: 11px 22px;
+  border-radius: var(--radius-full); font-size: 13px; font-weight: 700;
+  z-index: 1001; animation: slideUp 0.25s ease;
+}
+@keyframes slideUp { from { transform: translate(-50%, 20px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
 </style>
 </head>
 <body>
 
-<!-- Header -->
 <div id="appHeader">
-  <div class="brand-wrap">
-    <div class="brand-icon"><span class="ms">engineering</span></div>
-    <div class="brand-title">Site Report <span>v2.0</span></div>
+  <div class="logo-badge">
+    <div class="logo-icon-bg"><span class="ms">engineering</span></div>
+    <div class="logo-text">SITE REPORT <span class="logo-tag">Clean Navigation v2.7</span></div>
   </div>
   <div id="siteTabsWrap"></div>
 </div>
 
 <div id="appMain">
 
-  <!-- AI Smart Logging Banner -->
+  <!-- AI Smart Rough Notes Banner -->
   <div class="ai-banner">
-    <div class="ai-banner-left">
-      <div class="ai-icon-bubble"><span class="ms">auto_awesome</span></div>
+    <div class="ai-info">
+      <div class="ai-sparkle"><span class="ms" style="font-size:26px">auto_awesome</span></div>
       <div>
-        <div class="ai-banner-title">Smart AI Log Assistant</div>
-        <div class="ai-banner-sub">Paste or dictate raw field notes to auto-fill entry details</div>
+        <div class="ai-title">Rough Points ➔ Professional AI Draft</div>
+        <div class="ai-sub">Type messy shorthand bullets — AI expands them into a clean engineering log</div>
       </div>
     </div>
-    <button class="btn-ai-trigger" onclick="openAiModal()">
-      <span class="ms">mic</span> Auto-Parse Note
+    <button class="btn-ai" onclick="openAiModal()">
+      <span class="ms">edit_note</span> Draft Log Entry
     </button>
   </div>
 
   <!-- Dashboard Stats -->
   <div class="stats-grid" id="statsRow"></div>
 
-  <!-- Main Log View -->
+  <!-- Log View -->
   <div id="viewLog">
     <div class="toolbar">
       <div class="trow">
         <div class="search-box">
-          <span class="ms" style="color:var(--md-sys-color-outline)">search</span>
-          <input id="searchInput" placeholder="Search entries, keywords, assignees…" oninput="renderLog()"/>
+          <span class="ms" style="color:var(--text-muted)">search</span>
+          <input id="searchInput" placeholder="Search logs, keywords, assignees…" oninput="renderLog()"/>
         </div>
         <button class="btn-outline" onclick="exportData()"><span class="ms">file_download</span> Backup</button>
         <button class="btn-outline" onclick="triggerImport()"><span class="ms">file_upload</span> Restore</button>
         <button class="btn-outline" onclick="exportCSV()"><span class="ms">table_chart</span> CSV</button>
         <button class="btn-outline" onclick="showReport()"><span class="ms">description</span> Report</button>
-        <button class="btn-primary" onclick="showAdd()"><span class="ms">add</span> New Entry</button>
+        <button class="btn-primary" onclick="showAdd()"><span class="ms">add</span> New Log</button>
         <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="importData(event)"/>
       </div>
       <div class="filter-pills" id="filterBtns"></div>
@@ -472,22 +356,21 @@ textarea.finput { resize: vertical; }
 
   <!-- Report View -->
   <div id="viewReport" style="display:none">
-    <div style="display:flex;gap:10px;align-items:center;margin-bottom:20px;flex-wrap:wrap">
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:20px;flex-wrap:wrap">
       <button class="btn-outline" onclick="showLog()"><span class="ms">arrow_back</span> Back to Log</button>
       <div style="display:flex;gap:8px;align-items:center">
-        <label style="font-size:12px;font-weight:600">From</label><input type="date" class="finput" style="padding:6px 10px;font-size:12px" id="rFrom" onchange="renderReport()"/>
-        <label style="font-size:12px;font-weight:600">To</label><input type="date" class="finput" style="padding:6px 10px;font-size:12px" id="rTo" onchange="renderReport()"/>
+        <label style="font-size:12px;font-weight:700">From</label><input type="date" class="finput" style="padding:6px 12px;font-size:12px" id="rFrom" onchange="renderReport()"/>
+        <label style="font-size:12px;font-weight:700">To</label><input type="date" class="finput" style="padding:6px 12px;font-size:12px" id="rTo" onchange="renderReport()"/>
       </div>
-      <button class="btn-primary" onclick="window.print()"><span class="ms">print</span> Print / Save PDF</button>
+      <button class="btn-primary" onclick="window.print()"><span class="ms">print</span> Print / Export PDF</button>
     </div>
     <div id="reportDocument"></div>
   </div>
 </div>
 
-<!-- Floating Action Button -->
-<div class="fab" onclick="showAdd()"><span class="ms">add</span></div>
+<div class="fab" onclick="showAdd()"><span class="ms" style="font-size:28px">add</span></div>
 
-<!-- Mobile Bottom Navigation -->
+<!-- Mobile Bottom Navigation (Visible ONLY on Mobile < 600px) -->
 <div class="bottom-nav">
   <button class="nav-item active" onclick="showLog()"><span class="ms">dashboard</span><span>Logs</span></button>
   <button class="nav-item" onclick="showAdd()"><span class="ms">add_circle</span><span>+ New</span></button>
@@ -495,41 +378,55 @@ textarea.finput { resize: vertical; }
   <button class="nav-item" onclick="exportData()"><span class="ms">cloud_download</span><span>Backup</span></button>
 </div>
 
-<!-- AI Modal -->
+<!-- AI Rough Points Modal -->
 <div class="modal-overlay" id="aiModal" style="display:none">
   <div class="modal-card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <div style="font-weight:700;font-size:16px;display:flex;align-items:center;gap:6px">
-        <span class="ms" style="color:var(--md-sys-color-primary)">auto_awesome</span> Smart AI Field Logger
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div style="font-weight:800;font-size:17px;display:flex;align-items:center;gap:6px">
+        <span class="ms" style="color:#7C3AED">auto_awesome</span> AI Rough Points Auto-Drafter
       </div>
       <button style="border:none;background:none;cursor:pointer" onclick="closeAiModal()"><span class="ms">close</span></button>
     </div>
-    <div style="font-size:12px;color:var(--md-sys-color-on-surface-variant);margin-bottom:12px">
-      Paste or type raw voice notes. The smart parser will extract title, category, priority, and assignees.
+    
+    <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px">
+      Type quick messy points (e.g. location, issue, who to fix, deadline). AI will auto-draft a complete, professional engineering report entry!
     </div>
-    <textarea class="finput" id="aiInputText" rows="4" placeholder="e.g. Inspected grid B columns on 2nd floor. Rebar cover blocks missing near column 4. Tell supervisor Rajesh to fix before Thursday concrete pour."></textarea>
+
+    <!-- Quick Sample Buttons -->
+    <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+      <span style="font-size:11px;font-weight:700;color:var(--text-muted);align-self:center">Try Sample:</span>
+      <button class="chip-btn" onclick="fillSample(1)">🏗️ Footing Defect</button>
+      <button class="chip-btn" onclick="fillSample(2)">📐 DWG Request</button>
+      <button class="chip-btn" onclick="fillSample(3)">⚠️ Wall Discrepancy</button>
+    </div>
+
+    <textarea class="finput" id="aiInputText" rows="5" placeholder="- grid b 2nd floor slab
+- cover blocks missing 3 spots
+- rebar loose near column 4
+- rajesh fix before thursday pour"></textarea>
+
     <div style="display:flex;gap:10px;margin-top:16px">
-      <button class="btn-primary" style="flex:1" onclick="processAiNote()"><span class="ms">bolt</span> Parse & Fill Form</button>
-      <button class="btn-cancel" onclick="closeAiModal()">Cancel</button>
+      <button class="btn-primary" style="flex:1;background:linear-gradient(135deg,#6D28D9,#4F46E5)" onclick="processAiDraft()"><span class="ms">auto_fix_high</span> Generate Professional Draft</button>
+      <button class="btn-outline" onclick="closeAiModal()">Cancel</button>
     </div>
   </div>
 </div>
 
 <script>
 const CATS = {
-  DRAWING:{ label:"Drawing Request", color:"#1A73E8", bg:"#E8F0FE", icon:"architecture" },
-  ISSUE:  { label:"Technical Issue",  color:"#C5221F", bg:"#FCE8E6", icon:"warning" },
-  SITE:   { label:"Site Visit",       color:"#137333", bg:"#E6F4EA", icon:"construction" },
+  DRAWING:{ label:"Drawing Request", color:"#1D4ED8", bg:"#EFF6FF", icon:"architecture" },
+  ISSUE:  { label:"Technical Issue",  color:"#DC2626", bg:"#FEF2F2", icon:"warning" },
+  SITE:   { label:"Site Visit",       color:"#15803D", bg:"#F0FDF4", icon:"construction" },
 };
 const STATS = {
-  OPEN:      { label:"Open",        color:"#B06000", bg:"#FEF3D6" },
-  INPROGRESS:{ label:"In Progress", color:"#1A73E8", bg:"#E8F0FE" },
-  RESOLVED:  { label:"Resolved",    color:"#137333", bg:"#E6F4EA" },
+  OPEN:      { label:"Open",        color:"#B45309", bg:"#FEF3C7" },
+  INPROGRESS:{ label:"In Progress", color:"#1D4ED8", bg:"#EFF6FF" },
+  RESOLVED:  { label:"Resolved",    color:"#15803D", bg:"#F0FDF4" },
 };
 const PRIS = {
-  HIGH:  { label:"High",   color:"#D93025" },
-  MEDIUM:{ label:"Medium", color:"#E37400" },
-  LOW:   { label:"Low",    color:"#5F6368" },
+  HIGH:  { label:"High",   color:"#DC2626" },
+  MEDIUM:{ label:"Medium", color:"#D97706" },
+  LOW:   { label:"Low",    color:"#64748B" },
 };
 
 let sites    = JSON.parse(localStorage.getItem("sr-sites")   || "null") || ["Site A","Site B"];
@@ -545,8 +442,9 @@ function makeSample() {
   return [
     { id:1, site:"Site A", date:today(), category:"SITE", status:"INPROGRESS", priority:"HIGH",
       title:"Foundation inspection — Grid A to D",
-      description:"Inspected column footings on grid lines A through D. Reinforcement placement confirmed. Cover blocks missing at 3 locations.",
-      raisedBy:"Site Engineer", assignedTo:"Site Supervisor Rajesh", followUp:"Re-inspect cover blocks before Thursday concrete pour", photos:[] },
+      description:"Inspected column footings on grid lines A through D. Cover blocks missing at 3 locations.",
+      raisedBy:"Site Engineer", assignedTo:"Supervisor Rajesh", followUp:"Re-inspect cover blocks before Thursday concrete pour",
+      photos:[{dataUrl:"https://picsum.photos/id/13/300/200", caption:"Foundation excavation"}] },
     { id:2, site:"Site A", date:daysAgo(1), category:"DRAWING", status:"OPEN", priority:"HIGH",
       title:"Revised beam layout — 2nd Floor Slab",
       description:"Updated beam layout drawing needed for 2nd floor slab near staircase shaft.",
@@ -570,7 +468,6 @@ function showToast(msg) {
   document.body.appendChild(t); setTimeout(()=>t.remove(),2600);
 }
 
-// Canvas Image Compression (Max 1280px, 75% quality)
 function compressImage(file, callback) {
   const reader = new FileReader();
   reader.onload = (e) => {
@@ -593,34 +490,30 @@ function compressImage(file, callback) {
   reader.readAsDataURL(file);
 }
 
-// Site Tabs
 function renderSiteTabs() {
   document.getElementById("siteTabsWrap").innerHTML =
     sites.map(s=>`<button class="site-tab ${s===activeSite?"active":""}" onclick="switchSite('${esc(s)}')">${esc(s)}</button>`).join("") +
-    `<button class="add-site-btn" id="addSiteBtn" onclick="startAddSite()"><span class="ms" style="font-size:16px">add</span> Site</button>
+    `<button class="site-tab" id="addSiteBtn" onclick="startAddSite()">+ Site</button>
      <span id="newSiteForm" style="display:none;gap:4px;align-items:center">
-       <input id="newSiteInput" style="padding:4px 8px;border-radius:4px;border:1px solid #78716C;font-size:12px" placeholder="Site name…" onkeydown="if(event.key==='Enter')confirmSite()"/>
-       <button style="padding:4px 8px;border-radius:4px;border:none;background:#fff;font-size:12px;cursor:pointer" onclick="confirmSite()">Add</button>
+       <input id="newSiteInput" style="padding:4px 8px;border-radius:4px;border:1px solid #78716C;font-size:12px;color:#000" placeholder="Site name…" onkeydown="if(event.key==='Enter')confirmSite()"/>
+       <button style="padding:4px 8px;border-radius:4px;border:none;background:#fff;color:#000;font-size:12px;cursor:pointer" onclick="confirmSite()">Add</button>
      </span>`;
 }
 function switchSite(s){ activeSite=s; filterCat="ALL"; filterStat="ALL"; document.getElementById("searchInput").value=""; renderSiteTabs(); showLog(); }
 function startAddSite(){ document.getElementById("addSiteBtn").style.display="none"; const f=document.getElementById("newSiteForm"); f.style.display="flex"; setTimeout(()=>document.getElementById("newSiteInput").focus(),50); }
 function confirmSite(){ const v=document.getElementById("newSiteInput").value.trim(); if(!v)return; if(sites.includes(v)){alert("Site exists!");return;} sites.push(v); save(); activeSite=v; renderSiteTabs(); showLog(); }
 
-// Stats
 function renderStats() {
   const se=entries.filter(e=>e.site===activeSite);
   document.getElementById("statsRow").innerHTML=[
-    ["Total Logs",se.length,"#FFFFFF","var(--md-sys-color-primary)",()=>{filterCat="ALL";filterStat="ALL";renderFilters();renderLog();}],
-    ["Open Items",se.filter(e=>e.status==="OPEN").length,"#FEF3D6","#B06000",()=>{filterCat="ALL";filterStat="OPEN";renderFilters();renderLog();}],
-    ["In Progress",se.filter(e=>e.status==="INPROGRESS").length,"#E8F0FE","#1A73E8",()=>{filterCat="ALL";filterStat="INPROGRESS";renderFilters();renderLog();}],
-    ["Resolved",se.filter(e=>e.status==="RESOLVED").length,"#E6F4EA","#137333",()=>{filterCat="ALL";filterStat="RESOLVED";renderFilters();renderLog();}],
+    ["Total Logs",se.length,"#FFFFFF","#0F172A",()=>{filterCat="ALL";filterStat="ALL";renderFilters();renderLog();}],
+    ["Open Items",se.filter(e=>e.status==="OPEN").length,"#FEF3C7","#B45309",()=>{filterCat="ALL";filterStat="OPEN";renderFilters();renderLog();}],
+    ["In Progress",se.filter(e=>e.status==="INPROGRESS").length,"#EFF6FF","#1D4ED8",()=>{filterCat="ALL";filterStat="INPROGRESS";renderFilters();renderLog();}],
+    ["Resolved",se.filter(e=>e.status==="RESOLVED").length,"#F0FDF4","#15803D",()=>{filterCat="ALL";filterStat="RESOLVED";renderFilters();renderLog();}],
   ].map(([l,v,bg,c,click])=>`<div class="stat-card" style="background:${bg}" onclick="(${click.toString()})()">
-    <div class="stat-head"><span class="stat-lbl">${l}</span></div>
-    <div class="stat-num" style="color:${c}">${v}</div></div>`).join("");
+    <div class="stat-lbl">${l}</div><div class="stat-num" style="color:${c}">${v}</div></div>`).join("");
 }
 
-// Filters
 function renderFilters() {
   document.getElementById("filterBtns").innerHTML=
     [["ALL","All Types"],["SITE","🏗️ Site Visit"],["ISSUE","⚠️ Issue"],["DRAWING","📐 Drawing"]]
@@ -630,7 +523,6 @@ function renderFilters() {
 }
 function setF(t,v){ if(t==="cat")filterCat=v; else filterStat=v; renderFilters(); renderLog(); }
 
-// Log Rendering
 function renderLog() {
   const q=(document.getElementById("searchInput")?.value||"").toLowerCase();
   const list=entries.filter(e=>e.site===activeSite)
@@ -640,14 +532,14 @@ function renderLog() {
     .sort((a,b)=>b.date.localeCompare(a.date));
 
   if(!list.length){
-    document.getElementById("entriesList").innerHTML=`<div class="empty-state">No site logs found. Tap <strong>+ New Entry</strong> to create one.</div>`;
+    document.getElementById("entriesList").innerHTML=`<div style="text-align:center;padding:60px 20px;color:var(--text-muted)">No logs found. Tap <strong>+ New Log</strong> to start recording.</div>`;
     return;
   }
 
   document.getElementById("entriesList").innerHTML=list.map(e=>{
     const cat=CATS[e.category],st=STATS[e.status],pr=PRIS[e.priority];
     return `<div class="ecard" onclick="showDetail(${e.id})">
-      <div class="eicon-box" style="background:${cat.bg};color:${cat.color}"><span class="ms">${cat.icon}</span></div>
+      <div class="eicon" style="background:${cat.bg};color:${cat.color}"><span class="ms">${cat.icon}</span></div>
       <div class="ebody">
         <div class="etop">
           <div class="etitle">${esc(e.title)}</div>
@@ -661,28 +553,27 @@ function renderLog() {
           <span><span class="ms" style="font-size:14px">calendar_today</span> ${fmt(e.date)}</span>
           ${e.raisedBy?`<span><span class="ms" style="font-size:14px">person</span> ${esc(e.raisedBy)}</span>`:""}
           ${e.assignedTo?`<span><span class="ms" style="font-size:14px">arrow_forward</span> ${esc(e.assignedTo)}</span>`:""}
-          <span style="color:${pr.color};font-weight:700">● ${pr.label}</span>
-          ${e.photos?.length?`<span><span class="ms" style="font-size:14px">photo_camera</span> ${e.photos.length}</span>`:""}
+          <span style="color:${pr.color};font-weight:800">● ${pr.label}</span>
+          ${e.photos?.length?`<span><span class="ms" style="font-size:14px">photo_camera</span> ${e.photos.length} photo${e.photos.length>1?"s":""}</span>`:""}
         </div>
       </div>
     </div>`;
   }).join("");
 }
 
-// Add/Edit Form
 function showAdd(prefillData = null) {
-  editId=null; addPhotos=[];
+  editId=null; addPhotos=[...(prefillData?.photos||[])];
   ["viewLog","viewDetail","viewEdit","viewReport"].forEach(id=>document.getElementById(id).style.display="none");
   document.getElementById("viewAdd").style.display="block";
-  document.getElementById("viewAdd").innerHTML=getEntryForm("New Site Entry","Save Log Entry","saveNewEntry()", prefillData);
-  if(prefillData && prefillData.photos) { addPhotos = prefillData.photos; renderPhotoGrid(); }
+  document.getElementById("viewAdd").innerHTML=getEntryForm("New Site Log Entry","Save Log Entry","saveNewEntry()", prefillData);
+  setTimeout(()=>renderPhotoGrid(),50);
 }
 function showEdit(id) {
   const entry=entries.find(e=>e.id===id); if(!entry)return;
   editId=id; addPhotos=[...(entry.photos||[])];
   ["viewLog","viewDetail","viewAdd","viewReport"].forEach(id=>document.getElementById(id).style.display="none");
   document.getElementById("viewEdit").style.display="block";
-  document.getElementById("viewEdit").innerHTML=getEntryForm("Edit Entry","Update Entry","updateEntry()",entry);
+  document.getElementById("viewEdit").innerHTML=getEntryForm("Edit Log Entry","Update Entry","updateEntry()",entry);
   setTimeout(()=>renderPhotoGrid(),50);
 }
 
@@ -698,8 +589,8 @@ function getEntryForm(title,btnText,onSubmit,entry=null) {
         <option value="ISSUE" ${sel("category","ISSUE")}>⚠️ Technical Issue</option>
         <option value="DRAWING" ${sel("category","DRAWING")}>📐 Drawing Request</option>
       </select></div>
-      <div class="s2"><label class="flabel">Title / Subject *</label><input class="finput" id="fTitle" placeholder="Brief subject heading" value="${v("title")}"/></div>
-      <div class="s2"><label class="flabel">Description & Observations</label><textarea class="finput" id="fDesc" rows="4" placeholder="Detailed site notes...">${v("description")}</textarea></div>
+      <div class="s2"><label class="flabel">Title / Subject *</label><input class="finput" id="fTitle" placeholder="Brief subject..." value="${v("title")}"/></div>
+      <div class="s2"><label class="flabel">Professional Engineering Description</label><textarea class="finput" id="fDesc" rows="4" placeholder="Detailed notes...">${v("description")}</textarea></div>
       <div><label class="flabel">Raised By</label><input class="finput" id="fBy" placeholder="Client / Engineer" value="${v("raisedBy")}"/></div>
       <div><label class="flabel">Assigned To</label><input class="finput" id="fTo" placeholder="Supervisor / Contractor" value="${v("assignedTo")}"/></div>
       <div><label class="flabel">Status</label><select class="finput" id="fStatus">
@@ -712,19 +603,24 @@ function getEntryForm(title,btnText,onSubmit,entry=null) {
         <option value="MEDIUM" ${sel("priority","MEDIUM")||(!entry?"selected":"")}>Medium</option>
         <option value="LOW" ${sel("priority","LOW")}>Low</option>
       </select></div>
-      <div class="s2"><label class="flabel">Action / Follow-up Needed</label><input class="finput" id="fFollow" placeholder="What needs to be done next?" value="${v("followUp")}"/></div>
-      <div class="s2"><label class="flabel">Photos</label>
+      <div class="s2"><label class="flabel">Action Required / Follow-up</label><input class="finput" id="fFollow" placeholder="Next step required..." value="${v("followUp")}"/></div>
+      
+      <!-- Photo Upload Section -->
+      <div class="s2">
+        <label class="flabel">Site Photos</label>
         <div class="photo-upload-area" onclick="document.getElementById('photoFile').click()">
           <input type="file" id="photoFile" multiple accept="image/*" capture="environment" style="display:none" onchange="handlePhotos(event)"/>
-          <span class="ms" style="font-size:32px;color:var(--md-sys-color-outline)">photo_camera</span>
-          <div style="font-size:13px;color:var(--md-sys-color-on-surface-variant);margin-top:4px">Tap to take photo or choose from device</div>
+          <span class="ms" style="font-size:36px;color:var(--primary-accent)">photo_camera</span>
+          <div style="font-size:13px;font-weight:700;margin-top:4px">Tap to take photo or choose from device</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Auto-compressed for fast performance</div>
         </div>
         <div class="photo-preview-grid" id="photoGrid"></div>
       </div>
     </div>
-    <div class="faction">
-      <button class="btn-save" onclick="${onSubmit}">${btnText}</button>
-      <button class="btn-cancel" onclick="showLog()">Cancel</button>
+
+    <div style="display:flex;gap:12px;margin-top:24px">
+      <button class="btn-primary" style="flex:1" onclick="${onSubmit}">${btnText}</button>
+      <button class="btn-outline" onclick="showLog()">Cancel</button>
     </div></div>`;
 }
 
@@ -738,17 +634,20 @@ function handlePhotos(ev){
 }
 function renderPhotoGrid(){
   const g=document.getElementById("photoGrid");if(!g)return;
-  g.innerHTML=addPhotos.map((p,i)=>`<div class="photo-thumb-wrap"><img src="${p.dataUrl}"/><button class="photo-remove" onclick="removePhoto(${i})">×</button><input class="photo-caption-input" placeholder="Caption…" value="${esc(p.caption)}" oninput="addPhotos[${i}].caption=this.value"/></div>`).join("");
+  g.innerHTML=addPhotos.map((p,i)=>`<div class="photo-thumb-wrap">
+    <img src="${p.dataUrl}" onclick="showPhotoModal('${p.dataUrl}')"/>
+    <button class="photo-remove" onclick="removePhoto(${i})">×</button>
+    <input class="photo-caption-input" placeholder="Caption…" value="${esc(p.caption)}" oninput="addPhotos[${i}].caption=this.value"/>
+  </div>`).join("");
 }
 function removePhoto(i){ addPhotos.splice(i,1); renderPhotoGrid(); }
 
 function getFormData(){
   return { date:document.getElementById("fDate").value, category:document.getElementById("fCat").value, title:document.getElementById("fTitle").value.trim(), description:document.getElementById("fDesc").value, raisedBy:document.getElementById("fBy").value, assignedTo:document.getElementById("fTo").value, status:document.getElementById("fStatus").value, priority:document.getElementById("fPri").value, followUp:document.getElementById("fFollow").value, photos:[...addPhotos] };
 }
-function saveNewEntry(){ const d=getFormData();if(!d.title){alert("Please enter a title.");return;} entries.unshift({id:Date.now(),site:activeSite,...d}); save();showToast("Entry saved.");showLog(); }
-function updateEntry(){ const d=getFormData();if(!d.title){alert("Please enter a title.");return;} entries=entries.map(e=>e.id===editId?{...e,...d}:e); save();showToast("Entry updated.");showLog(); }
+function saveNewEntry(){ const d=getFormData();if(!d.title){alert("Please enter a title.");return;} entries.unshift({id:Date.now(),site:activeSite,...d}); save();showToast("Log saved.");showLog(); }
+function updateEntry(){ const d=getFormData();if(!d.title){alert("Please enter a title.");return;} entries=entries.map(e=>e.id===editId?{...e,...d}:e); save();showToast("Log updated.");showLog(); }
 
-// Detail View
 function showDetail(id) {
   const e=entries.find(x=>x.id===id);if(!e)return;
   const cat=CATS[e.category],st=STATS[e.status],pr=PRIS[e.priority];
@@ -757,61 +656,95 @@ function showDetail(id) {
   d.innerHTML=`<div class="panel">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
       <button class="btn-outline" onclick="showLog()"><span class="ms">arrow_back</span> Back</button>
-      <div><button class="btn-outline" onclick="showEdit(${e.id})">✏️ Edit</button> <button class="btn-outline" style="color:var(--pri-high)" onclick="delEntry(${e.id})">Delete</button></div>
+      <div><button class="btn-outline" onclick="showEdit(${e.id})">✏️ Edit</button> <button class="btn-outline" style="color:#DC2626" onclick="delEntry(${e.id})">Delete</button></div>
     </div>
-    <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap">
-      <div class="eicon-box" style="background:${cat.bg};color:${cat.color}"><span class="ms">${cat.icon}</span></div>
-      <div style="flex:1"><div style="font-weight:700;font-size:18px">${esc(e.title)}</div>
-        <div style="font-size:12px;color:var(--md-sys-color-on-surface-variant);margin-top:2px">${fmt(e.date)} · ${esc(e.site)}</div></div>
+    <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap">
+      <div class="eicon" style="background:${cat.bg};color:${cat.color}"><span class="ms">${cat.icon}</span></div>
+      <div style="flex:1"><div style="font-weight:800;font-size:18px">${esc(e.title)}</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px">${fmt(e.date)} · ${esc(e.site)}</div></div>
       <div class="badges">
         <span class="badge" style="background:${st.bg};color:${st.color}">${st.label}</span>
         <span class="badge" style="background:${cat.bg};color:${cat.color}">${cat.label}</span>
       </div>
     </div>
-    <hr style="border:none;border-top:1px solid var(--md-sys-color-outline-variant);margin:14px 0"/>
-    ${e.description?`<div class="flabel">Details</div><div style="font-size:14px;line-height:1.7;white-space:pre-wrap;margin-bottom:16px">${esc(e.description)}</div>`:""}
-    ${e.followUp?`<div style="background:#FEF3D6;border-left:4px solid #B06000;padding:12px 14px;border-radius:6px;margin-bottom:16px"><div style="font-size:11px;font-weight:700;color:#B06000">ACTION REQUIRED</div><div style="font-size:13px;color:#78350F;margin-top:2px">${esc(e.followUp)}</div></div>`:""}
-    ${e.photos?.length?`<div class="flabel">Photos</div><div class="photo-preview-grid" style="margin-top:8px">${e.photos.map(p=>`<div class="photo-thumb-wrap"><img src="${p.dataUrl}"/></div>`).join("")}</div>`:""}
-    <hr style="border:none;border-top:1px solid var(--md-sys-color-outline-variant);margin:16px 0"/>
-    <div class="flabel">Quick Update Status</div>
-    <div style="display:flex;gap:8px;margin-top:6px">
-      ${Object.entries(STATS).map(([k,v])=>`<button class="fbtn" style="${e.status===k?`background:${v.bg};color:${v.color};font-weight:700`:""}" onclick="updateStatus(${e.id},'${k}')">${v.label}</button>`).join("")}
+    <hr style="border:none;border-top:1px solid var(--border-color);margin:16px 0"/>
+    ${e.description?`<div class="flabel">Professional AI Drafted Details</div><div style="font-size:14px;line-height:1.7;white-space:pre-wrap;margin-bottom:16px">${esc(e.description)}</div>`:""}
+    ${e.followUp?`<div style="background:#FEF3C7;border-left:4px solid #B45309;padding:12px 14px;border-radius:8px;margin-bottom:16px"><div style="font-size:11px;font-weight:800;color:#B45309">ACTION REQUIRED</div><div style="font-size:13px;color:#78350F;margin-top:2px">${esc(e.followUp)}</div></div>`:""}
+    
+    ${e.photos?.length?`<div class="flabel">Attached Photos</div><div class="photo-preview-grid" style="margin-top:8px">${e.photos.map(p=>`<div class="photo-thumb-wrap"><img src="${p.dataUrl}" onclick="showPhotoModal('${p.dataUrl}')"/></div>`).join("")}</div>`:""}
+
+    <hr style="border:none;border-top:1px solid var(--border-color);margin:16px 0"/>
+    <div class="flabel">Update Status</div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      ${Object.entries(STATS).map(([k,v])=>`<button class="fbtn" style="${e.status===k?`background:${v.bg};color:${v.color};font-weight:800`:""}" onclick="updateStatus(${e.id},'${k}')">${v.label}</button>`).join("")}
     </div></div>`;
 }
 function updateStatus(id,status){ entries=entries.map(e=>e.id===id?{...e,status}:e); save();showDetail(id);showToast("Status updated"); }
-function delEntry(id){ if(!confirm("Delete this entry?"))return; entries=entries.filter(e=>e.id!==id); save();showLog();showToast("Deleted"); }
+function delEntry(id){ if(!confirm("Delete this log?"))return; entries=entries.filter(e=>e.id!==id); save();showLog();showToast("Deleted"); }
 
-// Smart AI Assistant Parser (Client-side NLP Extraction)
-function openAiModal(){ document.getElementById("aiModal").style.display="flex"; }
-function closeAiModal(){ document.getElementById("aiModal").style.display="none"; }
-function processAiNote() {
-  const text = document.getElementById("aiInputText").value.trim();
-  if(!text) return;
-  
-  // Intelligent extraction rules
-  let category = "SITE";
-  if(/issue|defect|crack|missing|wrong|fail|error|problem/i.test(text)) category = "ISSUE";
-  else if(/drawing|dwg|layout|plan|revision|rev/i.test(text)) category = "DRAWING";
-
-  let priority = "MEDIUM";
-  if(/urgent|high|immediately|critical|asap|today|pour/i.test(text)) priority = "HIGH";
-  else if(/low|minor|whenever/i.test(text)) priority = "LOW";
-
-  let assignedTo = "";
-  const matchAssign = text.match(/(?:tell|assign|inform|supervisor|engineer)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i);
-  if(matchAssign) assignedTo = matchAssign[1];
-
-  let title = text.split(".")[0];
-  if(title.length > 55) title = title.substring(0,55) + "...";
-
-  closeAiModal();
-  showAdd({ title, description: text, category, priority, assignedTo, date: today() });
-  showToast("Parsed note into form!");
+function showPhotoModal(src) {
+  const m=document.createElement("div");m.className="photo-modal";
+  m.innerHTML=`<img src="${src}">`;
+  m.onclick=()=>m.remove(); document.body.appendChild(m);
 }
 
-// Backup & Import
+// AI Rough Note Generator
+function openAiModal(){ document.getElementById("aiModal").style.display="flex"; }
+function closeAiModal(){ document.getElementById("aiModal").style.display="none"; }
+
+function fillSample(num) {
+  const t = document.getElementById("aiInputText");
+  if(num===1) t.value = "- grid b 2nd floor slab footing\n- rebar loose near column 4\n- cover blocks missing 3 places\n- rajesh fix before thursday pour";
+  else if(num===2) t.value = "- 2nd floor beam layout drawing needed\n- rev 0 dwg doesn't match site near staircase\n- ask design team to send rev 1 by friday";
+  else if(num===3) t.value = "- block b level 1 wall thickness\n- client noticed 200mm vs 230mm drawing\n- structural engineer to clarify tolerance asap";
+}
+
+function processAiDraft() {
+  const raw = document.getElementById("aiInputText").value.trim();
+  if(!raw) return;
+
+  let category = "SITE";
+  if(/issue|defect|crack|missing|wrong|fail|error|problem|discrepancy|loose/i.test(raw)) category = "ISSUE";
+  else if(/drawing|dwg|layout|plan|revision|rev|design/i.test(raw)) category = "DRAWING";
+
+  let priority = "MEDIUM";
+  if(/urgent|high|immediately|critical|asap|today|pour|thursday|friday/i.test(raw)) priority = "HIGH";
+
+  let assignedTo = "Site Supervisor";
+  const matchAssign = raw.match(/(?:rajesh|supervisor|engineer|design team|contractor|[A-Z][a-z]+)/i);
+  if(matchAssign) {
+    const name = matchAssign[0];
+    if(name.toLowerCase()==="rajesh") assignedTo = "Supervisor Rajesh";
+    else assignedTo = name;
+  }
+
+  const lines = raw.split("\n").map(l => l.replace(/^[-*•]\s*/, '').trim()).filter(Boolean);
+  const location = lines.find(l => /grid|floor|slab|level|block|column/i.test(l)) || "Site Location";
+  
+  let title = "Site Inspection & Observation Report";
+  if(category === "DRAWING") title = `Request: ${lines[0] || "Revised Drawing Layout"}`;
+  else if(category === "ISSUE") title = `Technical Issue: ${lines[0] || "Defect & Action Required"}`;
+  else title = `Site Visit — ${location}`;
+
+  let professionalProse = "";
+  if(category==="ISSUE") {
+    professionalProse = `During routine site walkthrough at ${location}, technical discrepancies were identified. Specifically: ${lines.join(". ")}. Assigned to ${assignedTo} to rectify prior to next pour.`;
+  } else if(category==="DRAWING") {
+    professionalProse = `Site conditions at ${location} require updated engineering documentation. Details: ${lines.join(". ")}. Assigned to ${assignedTo} to issue revised drawings.`;
+  } else {
+    professionalProse = `Inspected site operations at ${location}. Observations recorded: ${lines.join(". ")}. Tasks communicated to ${assignedTo}.`;
+  }
+
+  let followUp = lines.find(l => /pour|fix|issue|before|friday|thursday|asap/i.test(l)) || "Re-inspect site conditions";
+  followUp = followUp.charAt(0).toUpperCase() + followUp.slice(1);
+
+  closeAiModal();
+  showAdd({ title, description: professionalProse, category, priority, assignedTo, followUp, date: today() });
+  showToast("✨ AI drafted professional log!");
+}
+
 function exportData() {
-  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({entries,sites,settings,exportDate:new Date().toISOString()}));
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({entries,sites,settings,date:new Date().toISOString()}));
   const a = Object.assign(document.createElement("a"),{href:dataStr,download:`site-report-backup-${today()}.json`});
   a.click(); showToast("Backup downloaded!");
 }
@@ -824,13 +757,12 @@ function importData(ev) {
       const data = JSON.parse(e.target.result);
       if(data.entries && data.sites) {
         entries = data.entries; sites = data.sites; save(); renderSiteTabs(); showLog(); showToast("Data restored!");
-      } else alert("Invalid backup format.");
+      } else alert("Invalid backup file.");
     } catch(err) { alert("Failed to read file."); }
   };
   reader.readAsText(file);
 }
 
-// CSV Export
 function exportCSV() {
   const headers = ["ID","Site","Date","Category","Status","Priority","Title","Description","RaisedBy","AssignedTo","ActionItem"];
   const rows = entries.map(e=>[e.id,e.site,e.date,e.category,e.status,e.priority,`"${(e.title||"").replace(/"/g,'""')}"`,`"${(e.description||"").replace(/"/g,'""')}"`,`"${e.raisedBy||""}"`,`"${e.assignedTo||""}"`,`"${e.followUp||""}"`]);
@@ -839,9 +771,8 @@ function exportCSV() {
   a.click(); showToast("CSV exported!");
 }
 
-// Report
 function showReport() {
-  ["viewLog","viewAdd","viewDetail","viewEdit"].forEach(id=>document.getElementById(id).style.display="none");
+  ["viewLog","viewAdd","viewEdit"].forEach(id=>document.getElementById(id).style.display="none");
   document.getElementById("viewReport").style.display="block";
   document.getElementById("rFrom").value=daysAgo(30); document.getElementById("rTo").value=today();
   renderReport();
@@ -850,30 +781,18 @@ function renderReport() {
   const from=document.getElementById("rFrom").value, to=document.getElementById("rTo").value;
   const se=entries.filter(e=>e.site===activeSite&&(!from||e.date>=from)&&(!to||e.date<=to)).sort((a,b)=>b.date.localeCompare(a.date));
   document.getElementById("reportDocument").innerHTML = `
-    <div class="rfc">
-      <div class="rfc-cover">
-        <div class="rfc-cover-title">${esc(activeSite)} — Site Report</div>
-        <div class="rfc-cover-sub">Generated on ${fmt(today())} · ${se.length} items logged</div>
+    <div style="padding:24px;background:#FFF;border-radius:14px;border:1px solid #E2E8F0">
+      <div style="background:#0F172A;color:#FFF;padding:24px;border-radius:10px;margin-bottom:20px">
+        <h2 style="font-size:22px">${esc(activeSite)} — Site Report</h2>
+        <div style="font-size:12px;color:#94A3B8;margin-top:4px">Generated ${fmt(today())} · ${se.length} items logged</div>
       </div>
-      <div class="rfc-summary">
-        <div class="rfc-sum-box"><div class="rfc-sum-num">${se.length}</div><div class="rfc-sum-lbl">TOTAL LOGS</div></div>
-        <div class="rfc-sum-box"><div class="rfc-sum-num" style="color:#B06000">${se.filter(e=>e.status==="OPEN").length}</div><div class="rfc-sum-lbl">OPEN</div></div>
-        <div class="rfc-sum-box"><div class="rfc-sum-num" style="color:#1A73E8">${se.filter(e=>e.status==="INPROGRESS").length}</div><div class="rfc-sum-lbl">IN PROGRESS</div></div>
-        <div class="rfc-sum-box"><div class="rfc-sum-num" style="color:#137333">${se.filter(e=>e.status==="RESOLVED").length}</div><div class="rfc-sum-lbl">RESOLVED</div></div>
-      </div>
-      <div class="rfc-cards">
-        ${se.map(e=>`<div class="rfc-card">
-          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-            <strong style="font-size:15px">${esc(e.title)}</strong>
-            <span class="badge" style="background:${STATS[e.status].bg};color:${STATS[e.status].color}">${e.status}</span>
-          </div>
-          <div style="font-size:12px;color:#635D57;margin-bottom:8px">${fmt(e.date)} · Raised by ${esc(e.raisedBy||"Engineers")}</div>
-          ${e.description?`<div style="font-size:13px;line-height:1.5">${esc(e.description)}</div>`:""}
+      <div style="display:flex;flex-direction:column;gap:12px">
+        ${se.map(e=>`<div style="padding:14px;border:1px solid #E2E8F0;border-radius:8px">
+          <div style="display:flex;justify-content:space-between"><strong>${esc(e.title)}</strong><span style="font-size:11px;padding:2px 8px;border-radius:12px;background:#F1F5F9;font-weight:700">${e.status}</span></div>
+          <div style="font-size:12px;color:#64748B;margin:4px 0">${fmt(e.date)} · ${esc(e.raisedBy||"Engineers")}</div>
+          <div style="font-size:13px">${esc(e.description||"")}</div>
+          ${e.photos?.length?`<div style="display:flex;gap:6px;margin-top:8px">${e.photos.map(p=>`<img src="${p.dataUrl}" style="width:50px;height:50px;border-radius:4px;object-fit:cover"/>`).join("")}</div>`:""}
         </div>`).join("")}
-      </div>
-      <div class="rfc-signoff">
-        <div class="sig-block"><div class="sig-line"></div><div style="font-size:12px">Site Engineer Signature</div></div>
-        <div class="sig-block"><div class="sig-line"></div><div style="font-size:12px">Project Manager Approval</div></div>
       </div>
     </div>`;
 }
@@ -884,7 +803,6 @@ function showLog() {
   renderSiteTabs(); renderStats(); renderFilters(); renderLog();
 }
 
-// Init
 renderSiteTabs(); showLog();
 </script>
 </body>
