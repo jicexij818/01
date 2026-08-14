@@ -617,7 +617,7 @@ function compressImage(file, callback) {
     img.onload = () => {
       const canvas = document.createElement("canvas");
       let w = img.width, h = img.height;
-      const maxDim = 1280;
+      const maxDim = 1920; // Full HD 1080p high resolution
       if (w > maxDim || h > maxDim) {
         if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
         else { w = Math.round((w * maxDim) / h); h = maxDim; }
@@ -625,7 +625,7 @@ function compressImage(file, callback) {
       canvas.width = w; canvas.height = h;
       const ctx = canvas.getContext("2d");
       ctx.drawImage(img, 0, 0, w, h);
-      callback(canvas.toDataURL("image/jpeg", 0.75));
+      callback(canvas.toDataURL("image/jpeg", 0.88));
     };
     img.src = e.target.result;
   };
@@ -843,11 +843,22 @@ function getEntryForm(title,btnText,onSubmit,entry=null) {
     </div></div>`;
 }
 
-function handlePhotos(ev){
+function handlePhotos(ev, isCamera = false) {
   Array.from(ev.target.files).forEach(f => {
     compressImage(f, (compressedDataUrl) => {
-      addPhotos.push({ dataUrl: compressedDataUrl, originalUrl: compressedDataUrl, caption: "" });
+      addPhotos.push({ dataUrl: compressedDataUrl, caption: "" });
       renderPhotoGrid();
+      
+      // Auto-save original camera photo to phone gallery if taken via camera
+      if (isCamera || ev.target.id === "photoCamera") {
+        const a = document.createElement("a");
+        a.href = compressedDataUrl;
+        a.download = `site-photo-${activeSite}-${today()}-${Date.now()}.jpg`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast("📸 High-Res Photo saved to Phone Gallery!");
+      }
     });
   });
 }
