@@ -151,19 +151,28 @@ tailwind.config = {
 
   <!-- LOG FEED VIEW -->
   <section id="viewLog" class="space-y-6">
-    <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
-      <!-- Search Input -->
-      <div class="relative w-full md:w-96">
-        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-        <input type="text" id="searchInput" placeholder="Search site logs, keywords…" class="w-full h-12 pl-10 pr-4 bg-surface-container-lowest border border-outline-variant rounded focus:border-primary outline-none font-body-md" oninput="renderLog()"/>
-      </div>
-      
-      <!-- Filters -->
-      <div class="flex gap-2 overflow-x-auto w-full md:w-auto pb-1" id="filterPillsRow"></div>
+    <!-- Active Project Header -->
+    <div class="flex flex-col gap-1 cursor-pointer" onclick="showProjects()">
+      <span class="text-label-caps text-primary uppercase tracking-wider font-semibold">Active Project</span>
+      <h1 id="activeProjectTitle" class="text-[24px] font-bold text-on-surface tracking-tight flex items-center gap-2">
+        <span>Site A</span>
+        <span class="material-symbols-outlined text-secondary text-base">expand_more</span>
+      </h1>
     </div>
 
-    <!-- Stats Summary Row -->
-    <div id="statsRow" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+    <!-- Search Bar & Filters -->
+    <div class="flex flex-col gap-4">
+      <div class="relative w-full">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+        <input type="text" id="searchInput" placeholder="Search logs…" class="w-full h-[48px] pl-10 pr-4 bg-surface-container-lowest border border-[#B0BEC5] focus:border-primary focus:border-2 font-body-md text-on-surface placeholder:text-on-surface-variant outline-none transition-all rounded-xl" oninput="renderLog()"/>
+      </div>
+      
+      <!-- Circular Filter Chips -->
+      <div id="filterPillsRow" class="flex gap-4 overflow-x-auto no-scrollbar pb-2"></div>
+    </div>
+
+    <!-- Stats Summary Cards -->
+    <div id="statsRow" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
 
     <!-- Entry Cards List -->
     <div id="entriesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
@@ -522,7 +531,6 @@ function showEdit(id) {
   const entry = entries.find(e => e.id === id); if(!entry) return;
   editId = id; addPhotos = [...(entry.photos||[])];
   hideAllViews();
-  document.getElementById("viewEdit").style.display = "none";
   document.getElementById("viewAdd").style.display = "block";
   document.getElementById("formHeaderTitle").textContent = "Edit Log Entry — " + activeSite;
   document.getElementById("btnSubmitForm").textContent = "Update Entry";
@@ -638,26 +646,66 @@ function switchSite(s) {
   showLog();
 }
 
+function switchSite(s) {
+  activeSite = s; filterCat="ALL"; filterStat="ALL";
+  if(document.getElementById("searchInput")) document.getElementById("searchInput").value = "";
+  if(document.getElementById("activeProjectNameText")) document.getElementById("activeProjectNameText").textContent = activeSite;
+  if(document.getElementById("activeProjectTitle")) document.getElementById("activeProjectTitle").innerHTML = `<span>${esc(activeSite)}</span> <span class="material-symbols-outlined text-secondary text-base">expand_more</span>`;
+  showLog();
+}
+
 function renderStats() {
   const se = entries.filter(e => e.site === activeSite);
   document.getElementById("statsRow").innerHTML = [
-    ["Total Logs", se.length, "bg-white", "text-on-surface", () => {filterCat="ALL";filterStat="ALL";renderFilters();renderLog();}],
-    ["Open Items", se.filter(e=>e.status==="OPEN").length, "bg-amber-50", "text-amber-700", () => {filterCat="ALL";filterStat="OPEN";renderFilters();renderLog();}],
-    ["In Progress", se.filter(e=>e.status==="INPROGRESS").length, "bg-blue-50", "text-blue-700", () => {filterCat="ALL";filterStat="INPROGRESS";renderFilters();renderLog();}],
-    ["Resolved", se.filter(e=>e.status==="RESOLVED").length, "bg-emerald-50", "text-emerald-700", () => {filterCat="ALL";filterStat="RESOLVED";renderFilters();renderLog();}],
-  ].map(([l,v,bg,c,click]) => `<div class="${bg} p-3 rounded border border-outline-variant cursor-pointer hover:shadow-sm" onclick="(${click.toString()})()">
-    <div class="text-[10px] font-bold text-on-surface-variant uppercase">${l}</div>
-    <div class="text-2xl font-extrabold ${c} mt-0.5">${v}</div>
+    ["Total Logs", se.length, "bg-surface-container-lowest border border-outline-variant", "text-on-surface", () => {filterCat="ALL";filterStat="ALL";renderFilters();renderLog();}],
+    ["Open Items", se.filter(e=>e.status==="OPEN").length, "bg-primary-fixed border border-primary-fixed-dim", "text-primary", () => {filterCat="ALL";filterStat="OPEN";renderFilters();renderLog();}],
+    ["In Progress", se.filter(e=>e.status==="INPROGRESS").length, "bg-secondary-container border border-outline-variant", "text-primary", () => {filterCat="ALL";filterStat="INPROGRESS";renderFilters();renderLog();}],
+    ["Resolved", se.filter(e=>e.status==="RESOLVED").length, "bg-[#E8F5E9] border border-[#C8E6C9]", "text-[#2E7D32]", () => {filterCat="ALL";filterStat="RESOLVED";renderFilters();renderLog();}],
+  ].map(([l,v,bg,c,click]) => `<div class="${bg} rounded-xl p-4 flex flex-col gap-1 cursor-pointer hover:shadow-sm transition-all" onclick="(${click.toString()})()">
+    <span class="text-label-caps uppercase text-on-surface-variant font-bold text-[10px]">${l}</span>
+    <span class="text-[32px] font-bold ${c}">${v}</span>
   </div>`).join("");
 }
 
 function renderFilters() {
-  document.getElementById("filterPillsRow").innerHTML =
-    [["ALL","All Types"],["SITE","🏗️ Site Visit"],["ISSUE","⚠️ Issue"],["DRAWING","📐 Drawing"]]
-      .map(([k,l]) => `<button class="px-3 py-1 rounded-full text-xs font-bold border ${filterCat===k?'bg-primary text-on-primary border-primary':'bg-surface-container-lowest text-on-surface-variant border-outline-variant'}" onclick="setF('cat','${k}')">${l}</button>`).join("") +
-    [["ALL","All Status"],["OPEN","Open"],["INPROGRESS","In Progress"],["RESOLVED","Resolved"]]
-      .map(([k,l]) => `<button class="px-3 py-1 rounded-full text-xs font-bold border ${filterStat===k?'bg-primary text-on-primary border-primary':'bg-surface-container-lowest text-on-surface-variant border-outline-variant'}" onclick="setF('stat','${k}')">${l}</button>`).join("");
+  const catItems = [
+    ["ALL", "All<br>Types", "text-sm", ""],
+    ["SITE", "Site Visit", "construction", "text-primary"],
+    ["ISSUE", "Issue", "warning", "text-error"],
+    ["DRAWING", "Drawing", "architecture", "text-secondary"]
+  ];
+
+  const statItems = [
+    ["ALL", "All<br>Status"],
+    ["OPEN", "Open"],
+    ["INPROGRESS", "In Progress"],
+    ["RESOLVED", "Resolved"]
+  ];
+
+  let html = catItems.map(([k, label, icon, iconCol]) => {
+    const active = filterCat === k;
+    return `<div class="flex flex-col items-center gap-1.5 min-w-[68px] cursor-pointer" onclick="setF('cat','${k}')">
+      <button class="w-14 h-14 rounded-full ${active ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-container-lowest border border-outline-variant text-on-surface'} flex items-center justify-center transition-all">
+        ${icon ? `<span class="material-symbols-outlined ${active ? 'text-on-primary' : iconCol}">${icon}</span>` : `<span class="font-bold text-center leading-tight text-[11px]">${label}</span>`}
+      </button>
+      ${icon ? `<span class="text-[10px] font-bold uppercase text-center ${active ? 'text-primary' : 'text-on-surface-variant'}">${label}</span>` : ''}
+    </div>`;
+  }).join("");
+
+  html += `<div class="w-[1px] h-10 bg-outline-variant mx-1 self-center"></div>`;
+
+  html += statItems.map(([k, label]) => {
+    const active = filterStat === k;
+    return `<div class="flex flex-col items-center gap-1.5 min-w-[68px] cursor-pointer" onclick="setF('stat','${k}')">
+      <button class="w-14 h-14 rounded-full ${active ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-container-lowest border border-outline-variant text-on-surface'} flex items-center justify-center transition-all">
+        <span class="font-bold text-center leading-tight text-[11px]">${label}</span>
+      </button>
+    </div>`;
+  }).join("");
+
+  document.getElementById("filterPillsRow").innerHTML = html;
 }
+
 function setF(t,v) { if(t==="cat") filterCat=v; else filterStat=v; renderFilters(); renderLog(); }
 
 function renderLog() {
@@ -669,28 +717,40 @@ function renderLog() {
     .sort((a,b) => b.date.localeCompare(a.date));
 
   if(!list.length) {
-    document.getElementById("entriesList").innerHTML = `<div class="col-span-full text-center py-12 text-on-surface-variant">No logs found for <strong>${esc(activeSite)}</strong>. Tap <strong>+ New Log Entry</strong> to record observations.</div>`;
+    document.getElementById("entriesList").innerHTML = `<div class="col-span-full text-center py-12 text-on-surface-variant">No logs found for <strong>${esc(activeSite)}</strong>. Tap <strong>+</strong> to record an observation.</div>`;
     return;
   }
 
   document.getElementById("entriesList").innerHTML = list.map(e => {
     const cat = CATS[e.category], st = STATS[e.status], pr = PRIS[e.priority];
-    return `<div class="bg-surface-container-lowest border border-outline-variant rounded-md p-4 space-y-3 cursor-pointer hover:shadow-md transition-all" onclick="showDetail(${e.id})">
+    return `<article class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 flex flex-col gap-3 shadow-sm cursor-pointer hover:shadow-md transition-all" onclick="showDetail(${e.id})">
       <div class="flex justify-between items-start gap-2">
-        <div>
-          <div class="text-xs font-bold uppercase" style="color:${cat.color}">${cat.label}</div>
-          <h3 class="font-headline-md font-bold text-on-surface text-base">${esc(e.title)}</h3>
+        <div class="flex flex-col gap-0.5">
+          <span class="text-[11px] font-bold uppercase tracking-wider" style="color:${cat.color}">${cat.label}</span>
+          <h3 class="text-[17px] font-bold text-on-surface leading-snug">${esc(e.title)}</h3>
         </div>
-        <span class="text-xs px-2 py-0.5 rounded-full font-bold" style="background:${st.bg};color:${st.color}">${st.label}</span>
+        <span class="px-2.5 py-1 rounded-full text-[11px] font-bold shrink-0" style="background:${st.bg};color:${st.color}">${st.label}</span>
       </div>
-      ${e.description ? `<p class="text-xs text-on-surface-variant line-clamp-2">${esc(e.description)}</p>` : ''}
-      <div class="flex flex-wrap gap-2 text-xs text-on-surface-variant items-center pt-2 border-t border-surface-variant">
-        <span>📅 ${fmt(e.date)}</span>
-        ${e.assignedTo ? `<span>➡️ ${esc(e.assignedTo)}</span>` : ''}
-        ${pr ? `<span style="color:${pr.color};font-weight:800">● ${pr.label}</span>` : ''}
-        ${e.photos?.length ? `<span class="ml-auto">📷 ${e.photos.length}</span>` : ''}
+      
+      ${e.description ? `<p class="text-on-surface-variant text-[13px] leading-relaxed line-clamp-2">${esc(e.description)}</p>` : ''}
+
+      ${e.photos?.length ? `<div class="flex gap-2 mt-1">${e.photos.slice(0,3).map(p=>`<img src="${p.dataUrl}" class="w-14 h-14 object-cover rounded-lg border border-outline-variant"/>`).join('')}</div>` : ''}
+
+      <div class="flex items-center gap-3 pt-3 border-t border-surface-container text-xs text-on-surface-variant">
+        <div class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+          <span>${fmt(e.date)}</span>
+        </div>
+        ${e.assignedTo ? `<div class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+          <span>${esc(e.assignedTo)}</span>
+        </div>` : ''}
+        ${pr ? `<div class="flex items-center gap-1 ml-auto text-error font-bold">
+          <span class="w-2 h-2 rounded-full bg-error"></span>
+          <span>${pr.label}</span>
+        </div>` : ''}
       </div>
-    </div>`;
+    </article>`;
   }).join("");
 }
 
