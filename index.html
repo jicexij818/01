@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>SITE REPORT — Free AI Field Ledger, Reports & MOM</title>
+<title>SITE REPORT — Projects Dashboard, AI Field Ledger & MOM</title>
 <meta name="theme-color" content="#0F172A"/>
 
 <!-- Google Fonts & Material Symbols -->
@@ -64,7 +64,7 @@ body {
   box-shadow: 0 4px 20px rgba(0,0,0,0.15);
 }
 
-.logo-badge { display: flex; align-items: center; gap: 10px; }
+.logo-badge { display: flex; align-items: center; gap: 10px; cursor: pointer; }
 .logo-icon-bg {
   background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
   color: #FFF; width: 38px; height: 38px;
@@ -75,13 +75,12 @@ body {
 .logo-text { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
 .logo-tag { background: rgba(255,255,255,0.15); color: #93C5FD; font-size: 11px; padding: 2px 8px; border-radius: var(--radius-full); margin-left: 6px; font-weight: 700; }
 
-#siteTabsWrap { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-.site-tab {
-  padding: 6px 14px; border-radius: var(--radius-full); border: none; cursor: pointer;
-  font-size: 12px; font-family: inherit; font-weight: 600; background: rgba(255,255,255,0.1); color: #94A3B8;
-  transition: all .2s ease;
+#headerSitePill {
+  background: rgba(255,255,255,0.12); color: #E2E8F0; border: 1px solid rgba(255,255,255,0.2);
+  padding: 6px 14px; border-radius: var(--radius-full); font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; gap: 6px; cursor: pointer; transition: background 0.15s ease;
 }
-.site-tab.active { background: #FFFFFF; color: #0F172A; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+#headerSitePill:hover { background: rgba(255,255,255,0.22); }
 
 /* Main Container */
 #appMain { max-width: 1060px; margin: 0 auto; padding: 24px 16px; }
@@ -112,6 +111,19 @@ body {
   transition: transform 0.15s ease;
 }
 .btn-ai:active { transform: scale(0.96); }
+
+/* Projects Dashboard Grid */
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; margin-top: 16px; }
+.project-card {
+  background: var(--surface-card); border-radius: var(--radius-lg); padding: 22px;
+  border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease; position: relative;
+}
+.project-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.project-card.active-site { border: 2px solid var(--primary-accent); background: #F8FAFC; }
+.project-title { font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 6px; }
+.project-stats-row { display: flex; gap: 14px; margin-top: 14px; font-size: 12px; color: var(--text-muted); }
+.project-actions { display: flex; gap: 8px; margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 12px; }
 
 /* Stats Grid */
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
@@ -212,15 +224,14 @@ body {
 .finput:focus { border-color: var(--primary-accent); background: var(--surface-card); }
 textarea.finput { resize: vertical; }
 
-/* Photo Upload Box */
-.photo-upload-area {
-  border: 2px dashed var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 24px; text-align: center; cursor: pointer;
-  background: var(--bg-main);
-  transition: border-color 0.15s ease, background 0.15s ease;
+/* Dual Photo Buttons */
+.dual-photo-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+.photo-btn-box {
+  flex: 1; min-width: 140px; padding: 18px 12px; border-radius: var(--radius-md);
+  border: 2px dashed var(--border-color); background: var(--bg-main); text-align: center;
+  cursor: pointer; transition: all 0.15s ease;
 }
-.photo-upload-area:hover { border-color: var(--primary-accent); background: #EFF6FF; }
+.photo-btn-box:hover { border-color: var(--primary-accent); background: #EFF6FF; }
 .photo-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px,1fr)); gap: 10px; margin-top: 14px; }
 .photo-thumb-wrap { position: relative; border-radius: var(--radius-sm); overflow: hidden; background: #E2E8F0; border: 1px solid var(--border-color); }
 .photo-thumb-wrap img { width: 100%; height: 95px; object-fit: cover; display: block; cursor: pointer; }
@@ -330,14 +341,23 @@ textarea.finput { resize: vertical; }
   padding: 28px; box-shadow: var(--shadow-md); max-width: 860px; margin: 0 auto;
 }
 .mom-text-area {
-  width: 100%; min-height: 280px; padding: 18px; border-radius: 12px;
+  width: 100%; min-height: 260px; padding: 18px; border-radius: 12px;
   border: 1px solid var(--border-color); background: #F8FAFC;
   font-family: monospace; font-size: 13px; line-height: 1.6; color: #0F172A; outline: none;
 }
 
+/* ISOLATED PRINT STYLES */
 @media print {
-  #appHeader, .bottom-nav, .fab, .toolbar, #viewLog, #viewAdd, #viewDetail, #viewEdit, .ai-banner, .toast, .report-actions-bar, .mom-actions-bar { display: none !important; }
-  #viewReport, #viewMom { display: block !important; }
+  #appHeader, .bottom-nav, .fab, .toolbar, #viewProjects, #viewLog, #viewAdd, #viewDetail, #viewEdit, #aiBannerWrap, #statsRow, .ai-banner, .toast, .report-actions-bar, .mom-actions-bar { display: none !important; }
+  
+  /* If printing from Report view */
+  body.printing-report #viewReport { display: block !important; }
+  body.printing-report #viewMom { display: none !important; }
+  
+  /* If printing from MOM view */
+  body.printing-mom #viewMom { display: block !important; }
+  body.printing-mom #viewReport { display: none !important; }
+  
   #appMain { padding: 0; max-width: 100%; }
   body { background: #fff; padding-bottom: 0; }
   .report-paper-doc, .mom-card { border: none; box-shadow: none; width: 100%; }
@@ -347,27 +367,45 @@ textarea.finput { resize: vertical; }
 <body>
 
 <div id="appHeader">
-  <div class="logo-badge">
+  <div class="logo-badge" onclick="showProjects()">
     <div class="logo-icon-bg"><span class="ms">engineering</span></div>
-    <div class="logo-text">SITE REPORT <span class="logo-tag">MOM & Reports v3.3</span></div>
+    <div class="logo-text">SITE REPORT <span class="logo-tag">Pro v3.4</span></div>
   </div>
-  <div id="siteTabsWrap"></div>
+  <div id="headerSitePill" onclick="showProjects()">
+    <span class="ms" style="font-size:16px;color:#93C5FD">apartment</span>
+    <span id="headerSiteName">Site A</span>
+    <span class="ms" style="font-size:16px;color:#94A3B8">expand_more</span>
+  </div>
 </div>
 
 <div id="appMain">
 
-  <!-- AI Smart Rough Notes Banner -->
-  <div class="ai-banner">
-    <div class="ai-info">
-      <div class="ai-sparkle"><span class="ms" style="font-size:26px">auto_awesome</span></div>
+  <!-- Projects Dashboard View -->
+  <div id="viewProjects" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
       <div>
-        <div class="ai-title">Rough Points ➔ Professional AI Draft</div>
-        <div class="ai-sub">Type shorthand notes — AI expands them into a clean engineering log</div>
+        <h1 style="font-size:24px;font-weight:800;color:var(--text-main)">Projects Dashboard</h1>
+        <div style="font-size:13px;color:var(--text-muted);margin-top:2px">Manage all construction sites, logs & reports</div>
       </div>
+      <button class="btn-primary" onclick="promptCreateProject()"><span class="ms">add</span> New Project</button>
     </div>
-    <button class="btn-ai" onclick="openAiModal()">
-      <span class="ms">edit_note</span> Draft Log Entry
-    </button>
+    <div class="projects-grid" id="projectsGrid"></div>
+  </div>
+
+  <!-- AI Smart Rough Notes Banner -->
+  <div id="aiBannerWrap">
+    <div class="ai-banner">
+      <div class="ai-info">
+        <div class="ai-sparkle"><span class="ms" style="font-size:26px">auto_awesome</span></div>
+        <div>
+          <div class="ai-title">Rough Points ➔ Professional AI Draft</div>
+          <div class="ai-sub">Type shorthand notes — AI expands them into a clean engineering log</div>
+        </div>
+      </div>
+      <button class="btn-ai" onclick="openAiModal()">
+        <span class="ms">edit_note</span> Draft Log Entry
+      </button>
+    </div>
   </div>
 
   <!-- Dashboard Stats -->
@@ -381,8 +419,9 @@ textarea.finput { resize: vertical; }
           <span class="ms" style="color:var(--text-muted)">search</span>
           <input id="searchInput" placeholder="Search logs, keywords, assignees…" oninput="renderLog()"/>
         </div>
-        <button class="btn-outline" onclick="exportData()"><span class="ms">file_download</span> Backup</button>
-        <button class="btn-outline" onclick="triggerImport()"><span class="ms">file_upload</span> Restore</button>
+        <!-- FIXED BACKUP & RESTORE ICONS -->
+        <button class="btn-outline" onclick="exportData()"><span class="ms">backup</span> Backup</button>
+        <button class="btn-outline" onclick="triggerImport()"><span class="ms">settings_backup_restore</span> Restore</button>
         <button class="btn-outline" onclick="exportCSV()"><span class="ms">table_chart</span> CSV</button>
         <button class="btn-outline" onclick="showReport()"><span class="ms">description</span> Report</button>
         <button class="btn-mom" onclick="showMom()"><span class="ms">assignment</span> 1-Click MOM</button>
@@ -394,40 +433,42 @@ textarea.finput { resize: vertical; }
     <div class="entries-list" id="entriesList"></div>
   </div>
 
-  <!-- Panels -->
+  <!-- Form Panels -->
   <div id="viewAdd" style="display:none"></div>
   <div id="viewEdit" style="display:none"></div>
   <div id="viewDetail" style="display:none"></div>
 
   <!-- Report View -->
-  <div id="viewReport" style="display:none">
-    <div class="report-actions-bar" style="background:#FFF;padding:16px 20px;border-radius:14px;border:1px solid #E2E8F0;margin-bottom:20px">
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
-        <button class="btn-outline" onclick="showLog()"><span class="ms">arrow_back</span> Back to Log</button>
+  <section id="viewReport" style="display:none" class="space-y">
+    <div class="no-print bg-surface-container-lowest p-4 rounded border border-outline-variant space-y-3">
+      <div class="flex flex-wrap justify-between items-center gap-3">
+        <button class="btn-outline" onclick="showLog()">← Back to Log</button>
         <div style="display:flex;gap:8px;align-items:center">
-          <label style="font-size:12px;font-weight:700">From</label><input type="date" class="finput" style="padding:6px 12px;font-size:12px" id="rFrom" onchange="renderReport()"/>
-          <label style="font-size:12px;font-weight:700">To</label><input type="date" class="finput" style="padding:6px 12px;font-size:12px" id="rTo" onchange="renderReport()"/>
+          <label style="font-size:12px;font-weight:700">From</label>
+          <input type="date" id="rFrom" class="finput" style="padding:4px 8px;font-size:12px" onchange="renderReport()"/>
+          <label style="font-size:12px;font-weight:700">To</label>
+          <input type="date" id="rTo" class="finput" style="padding:4px 8px;font-size:12px" onchange="renderReport()"/>
         </div>
-        <button class="btn-primary" style="margin-left:auto" onclick="window.print()"><span class="ms">print</span> Print / Export PDF</button>
+        <div style="display:flex;gap:8px;align-items:center">
+          <label style="font-size:12px;font-weight:700">Layout</label>
+          <select id="rLayoutStyle" class="finput" style="padding:4px 8px;font-size:12px;font-weight:700" onchange="renderReport()">
+            <option value="OPT1">🖼️ Option 1: Visual Photo Cards</option>
+            <option value="OPT2">📑 Option 2: Executive Rows</option>
+          </select>
+        </div>
+        <button class="btn-primary" style="margin-left:auto" onclick="printReport()"><span class="ms">print</span> Print / Export PDF</button>
       </div>
 
-      <!-- Report Attendees Bar with ON/OFF Toggle -->
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:#F8FAFC;padding:10px 14px;border-radius:10px;border:1px solid #E2E8F0">
-        <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:#0F172A;cursor:pointer">
-          <input type="checkbox" id="toggleAttendees" checked onchange="renderReport()"/>
-          <span class="ms" style="color:#2563EB">groups</span> Include Attendees in Report
+      <div style="display:flex;gap:12px;align-items:center" class="bg-surface p-3 rounded border">
+        <label style="font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px">
+          <input type="checkbox" id="toggleAttendees" checked onchange="renderReport()"/> Include Attendees in Report
         </label>
-        <input class="finput" style="flex:1;min-width:220px;padding:6px 12px;font-size:12px;background:#FFF" id="rAttendees" placeholder="e.g. Darshin, Lokendrabhai (PMC)" value="Darshin, Lokendrabhai (PMC)" oninput="renderReport()"/>
-        <div style="display:flex;gap:4px">
-          <button type="button" class="role-chip" onclick="addRptRole('Darshin')">+ Darshin</button>
-          <button type="button" class="role-chip" onclick="addRptRole('Lokendrabhai (PMC)')">+ Lokendrabhai (PMC)</button>
-          <button type="button" class="role-chip" onclick="addRptRole('Architect')">+ Architect</button>
-        </div>
+        <input type="text" id="rAttendees" placeholder="e.g. Client Lead, PMC Lead" class="finput" style="flex:1;padding:6px 12px;font-size:12px" oninput="renderReport()"/>
       </div>
     </div>
 
-    <div id="reportDocument"></div>
-  </div>
+    <div id="reportDocument" style="background:#fff;padding:24px;border:1px solid var(--border);border-radius:12px"></div>
+  </section>
 
   <!-- MOM (Minutes of Meeting) View -->
   <div id="viewMom" style="display:none">
@@ -435,10 +476,14 @@ textarea.finput { resize: vertical; }
       <button class="btn-outline" onclick="showLog()"><span class="ms">arrow_back</span> Back to Log</button>
       <div style="display:flex;gap:8px;align-items:center">
         <label style="font-size:12px;font-weight:700">Visit Date</label>
-        <input type="date" class="finput" style="padding:6px 12px;font-size:12px" id="momDate" value="${today()}" onchange="renderMom()"/>
+        <input type="date" class="finput" style="padding:6px 12px;font-size:12px" id="momDate" value="${today()}" onchange="renderMomList()"/>
+        <select class="finput" style="padding:6px 10px;font-size:12px" id="momFilterMode" onchange="renderMomList()">
+          <option value="DATE">Logs from Visit Date</option>
+          <option value="ALL_SITE">All Logs for Project</option>
+        </select>
       </div>
       <button class="btn-primary" style="background:#2563EB" onclick="copyMomText()"><span class="ms">content_copy</span> Copy MOM for WhatsApp/Email</button>
-      <button class="btn-primary" style="margin-left:auto" onclick="window.print()"><span class="ms">print</span> Print MOM PDF</button>
+      <button class="btn-primary" style="margin-left:auto" onclick="printMom()"><span class="ms">print</span> Print MOM PDF</button>
     </div>
 
     <div class="mom-card">
@@ -446,12 +491,18 @@ textarea.finput { resize: vertical; }
         <h2 style="font-size:20px;font-weight:800;display:flex;align-items:center;gap:8px">
           <span class="ms" style="color:#2563EB">assignment</span> Minutes of Meeting (MOM)
         </h2>
-        <span style="font-size:12px;color:var(--text-muted)">Formats automatically from site logs</span>
+        <span style="font-size:12px;color:var(--text-muted)">Select points to include</span>
       </div>
 
       <div style="margin-bottom:14px;display:flex;gap:10px;align-items:center">
         <label style="font-size:12px;font-weight:700">Attendees:</label>
-        <input class="finput" id="momAttendees" style="flex:1;padding:8px 12px;font-size:13px" value="Darshin, Lokendrabhai (PMC)" oninput="renderMomText()"/>
+        <input class="finput" id="momAttendees" style="flex:1;padding:8px 12px;font-size:13px" placeholder="e.g. Client Lead, PMC Lead" value="" oninput="renderMomText()"/>
+      </div>
+
+      <!-- MOM Checklist Selector -->
+      <div style="background:#F1F5F9;padding:14px;border-radius:10px;margin-bottom:16px">
+        <div style="font-size:11px;font-weight:800;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px">Select Items to Include in MOM:</div>
+        <div id="momChecklist" style="display:flex;flex-direction:column;gap:8px"></div>
       </div>
 
       <textarea class="mom-text-area" id="momOutputText"></textarea>
@@ -464,6 +515,7 @@ textarea.finput { resize: vertical; }
 
 <!-- Mobile Bottom Navigation -->
 <div class="bottom-nav">
+  <button class="nav-item" onclick="showProjects()"><span class="ms">apartment</span><span>Projects</span></button>
   <button class="nav-item active" onclick="showLog()"><span class="ms">dashboard</span><span>Logs</span></button>
   <button class="nav-item" onclick="showAdd()"><span class="ms">add_circle</span><span>+ New</span></button>
   <button class="nav-item" onclick="showReport()"><span class="ms">description</span><span>Report</span></button>
@@ -521,22 +573,24 @@ const PRIS = {
 let sites    = JSON.parse(localStorage.getItem("sr-sites")   || "null") || ["Site A","Site B"];
 let entries  = JSON.parse(localStorage.getItem("sr-entries") || "null") || makeSample();
 let settings = JSON.parse(localStorage.getItem("sr-settings")|| "null") || { firmName:"Your Firm Name" };
-let activeSite = sites[0];
+let activeSite = sites[0] || "Site A";
 let filterCat  = "ALL";
 let filterStat = "ALL";
 let addPhotos  = [];
 let editId     = null;
+let momSelectedIds = [];
 
 function makeSample() {
   return [
     { id:1, site:"Site A", date:today(), category:"SITE", status:"INPROGRESS", priority:"",
-      title:"Dummy Beam Addition & Door Jamb Details",
-      description:"A dummy beam is to be added between the second floor Kiki bedroom passage and the bathroom. Door jamb details for kitchen & living room passages will be provided.",
-      raisedBy:"Site Engineer", assignedTo:"PMC", followUp:"PMC to execute dummy beam & review door jamb elevations.", photos:[] },
-    { id:2, site:"Site A", date:today(), category:"SITE", status:"OPEN", priority:"",
-      title:"Toilet Plumbing Trap Door Specification",
-      description:"An approximate 1' x 1' trap door is to be provided in all toilets to allow access to plumbing valves.",
-      raisedBy:"Site Engineer", assignedTo:"PMC", followUp:"PMC to coordinate trap door openings in toilet ceilings.", photos:[] }
+      title:"Finishes Update: Backpainted Glass Vanity — Parents Room Bathroom",
+      description:"Parents Room Bathroom detail update: Incorporate backpainted glass finish to vanity drawers and shutter panels.",
+      raisedBy:"", assignedTo:"PMC", followUp:"PMC to coordinate backpainted glass installation on vanity drawers and shutters.",
+      photos:[{dataUrl:"https://picsum.photos/id/13/300/200", caption:"Vanity detail"}] },
+    { id:2, site:"Site A", date:daysAgo(1), category:"DRAWING", status:"OPEN", priority:"HIGH",
+      title:"Request: Deck Area Concept Layout",
+      description:"Site team requires architectural layout concepts for the deck area to proceed with planning.",
+      raisedBy:"", assignedTo:"Design Team", followUp:"Design Team to issue deck area concept drawings urgently by Friday.", photos:[] }
   ];
 }
 
@@ -578,18 +632,83 @@ function compressImage(file, callback) {
   reader.readAsDataURL(file);
 }
 
-function renderSiteTabs() {
-  document.getElementById("siteTabsWrap").innerHTML =
-    sites.map(s=>`<button class="site-tab ${s===activeSite?"active":""}" onclick="switchSite('${esc(s)}')">${esc(s)}</button>`).join("") +
-    `<button class="site-tab" id="addSiteBtn" onclick="startAddSite()">+ Site</button>
-     <span id="newSiteForm" style="display:none;gap:4px;align-items:center">
-       <input id="newSiteInput" style="padding:4px 8px;border-radius:4px;border:1px solid #78716C;font-size:12px;color:#000" placeholder="Site name…" onkeydown="if(event.key==='Enter')confirmSite()"/>
-       <button style="padding:4px 8px;border-radius:4px;border:none;background:#fff;color:#000;font-size:12px;cursor:pointer" onclick="confirmSite()">Add</button>
-     </span>`;
+// PROJECTS DASHBOARD ENGINE
+function showProjects() {
+  ["viewLog","viewAdd","viewEdit","viewDetail","viewReport","viewMom"].forEach(id=>document.getElementById(id).style.display="none");
+  document.getElementById("aiBannerWrap").style.display="none";
+  document.getElementById("statsRow").style.display="none";
+  document.getElementById("viewProjects").style.display="block";
+  document.getElementById("headerSiteName").textContent = activeSite;
+  renderProjectsGrid();
 }
-function switchSite(s){ activeSite=s; filterCat="ALL"; filterStat="ALL"; document.getElementById("searchInput").value=""; renderSiteTabs(); showLog(); }
-function startAddSite(){ document.getElementById("addSiteBtn").style.display="none"; const f=document.getElementById("newSiteForm"); f.style.display="flex"; setTimeout(()=>document.getElementById("newSiteInput").focus(),50); }
-function confirmSite(){ const v=document.getElementById("newSiteInput").value.trim(); if(!v)return; if(sites.includes(v)){alert("Site exists!");return;} sites.push(v); save(); activeSite=v; renderSiteTabs(); showLog(); }
+
+function renderProjectsGrid() {
+  const grid = document.getElementById("projectsGrid");
+  grid.innerHTML = sites.map(s => {
+    const siteLogs = entries.filter(e => e.site === s);
+    const openCount = siteLogs.filter(e => e.status === "OPEN").length;
+    const lastLog = siteLogs.sort((a,b)=>b.date.localeCompare(a.date))[0];
+    const isCurrent = s === activeSite;
+
+    return `<div class="project-card ${isCurrent?"active-site":""}" onclick="switchSite('${esc(s)}')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div class="project-title">${esc(s)}</div>
+        ${isCurrent?`<span style="font-size:11px;background:#2563EB;color:#FFF;padding:2px 8px;border-radius:12px;font-weight:700">Active</span>`:""}
+      </div>
+      <div class="project-stats-row">
+        <span>📋 ${siteLogs.length} Logs</span>
+        <span>🔴 ${openCount} Open</span>
+        <span>📅 ${lastLog ? fmt(lastLog.date) : "No visits"}</span>
+      </div>
+      <div class="project-actions" onclick="event.stopPropagation()">
+        <button class="btn-outline" style="padding:4px 10px;font-size:11px" onclick="renameProject('${esc(s)}')">✏️ Rename</button>
+        <button class="btn-outline" style="padding:4px 10px;font-size:11px;color:#DC2626" onclick="deleteProject('${esc(s)}')">🗑️ Delete</button>
+      </div>
+    </div>`;
+  }).join("") + `
+    <div class="project-card" style="border:2px dashed var(--border-color);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:140px" onclick="promptCreateProject()">
+      <span class="ms" style="font-size:32px;color:var(--primary-accent)">add_circle</span>
+      <div style="font-size:14px;font-weight:800;margin-top:6px;color:var(--primary-accent)">+ Create New Project</div>
+    </div>`;
+}
+
+function promptCreateProject() {
+  const name = prompt("Enter New Project / Site Name:");
+  if(!name || !name.trim()) return;
+  const v = name.trim();
+  if(sites.includes(v)) { alert("Project name already exists!"); return; }
+  sites.push(v); save(); switchSite(v);
+}
+
+function renameProject(oldName) {
+  const newName = prompt(`Rename project "${oldName}" to:`, oldName);
+  if(!newName || !newName.trim() || newName.trim() === oldName) return;
+  const v = newName.trim();
+  if(sites.includes(v)) { alert("Project name already exists!"); return; }
+  
+  sites = sites.map(s => s === oldName ? v : s);
+  entries = entries.map(e => e.site === oldName ? {...e, site: v} : e);
+  if(activeSite === oldName) activeSite = v;
+  save(); showProjects(); showToast("Project renamed!");
+}
+
+function deleteProject(siteName) {
+  if(sites.length <= 1) { alert("You must have at least one active project."); return; }
+  const count = entries.filter(e => e.site === siteName).length;
+  if(!confirm(`Delete project "${siteName}" and its ${count} logs?`)) return;
+
+  sites = sites.filter(s => s !== siteName);
+  entries = entries.filter(e => e.site !== siteName);
+  if(activeSite === siteName) activeSite = sites[0];
+  save(); showProjects(); showToast("Project deleted.");
+}
+
+function switchSite(s){
+  activeSite = s; filterCat="ALL"; filterStat="ALL";
+  document.getElementById("searchInput").value="";
+  document.getElementById("headerSiteName").textContent = activeSite;
+  showLog();
+}
 
 function renderStats() {
   const se=entries.filter(e=>e.site===activeSite);
@@ -620,7 +739,7 @@ function renderLog() {
     .sort((a,b)=>b.date.localeCompare(a.date));
 
   if(!list.length){
-    document.getElementById("entriesList").innerHTML=`<div style="text-align:center;padding:60px 20px;color:var(--text-muted)">No logs found. Tap <strong>+ New Log</strong> to start recording.</div>`;
+    document.getElementById("entriesList").innerHTML=`<div style="text-align:center;padding:60px 20px;color:var(--text-muted)">No logs found for ${esc(activeSite)}. Tap <strong>+ New Log</strong> to start recording.</div>`;
     return;
   }
 
@@ -629,7 +748,7 @@ function renderLog() {
     return `<div class="ecard" onclick="showDetail(${e.id})">
       <div class="eicon" style="background:${cat.bg};color:${cat.color}"><span class="ms">${cat.icon}</span></div>
       <div class="ebody">
-        <div class="etop">
+        <div class="top">
           <div class="etitle">${esc(e.title)}</div>
           <div class="badges">
             <span class="badge" style="background:${st.bg};color:${st.color}">${st.label}</span>
@@ -651,15 +770,20 @@ function renderLog() {
 
 function showAdd(prefillData = null) {
   editId=null; addPhotos=[...(prefillData?.photos||[])];
-  ["viewLog","viewDetail","viewEdit","viewReport","viewMom"].forEach(id=>document.getElementById(id).style.display="none");
+  ["viewProjects","viewLog","viewDetail","viewEdit","viewReport","viewMom"].forEach(id=>document.getElementById(id).style.display="none");
+  document.getElementById("aiBannerWrap").style.display="none";
+  document.getElementById("statsRow").style.display="none";
   document.getElementById("viewAdd").style.display="block";
-  document.getElementById("viewAdd").innerHTML=getEntryForm("New Site Log Entry","Save Log Entry","saveNewEntry()", prefillData);
+  document.getElementById("viewAdd").innerHTML=getEntryForm("New Log Entry","Save Log Entry","saveNewEntry()", prefillData);
   setTimeout(()=>renderPhotoGrid(),50);
 }
+
 function showEdit(id) {
   const entry=entries.find(e=>e.id===id); if(!entry)return;
   editId=id; addPhotos=[...(entry.photos||[])];
-  ["viewLog","viewDetail","viewAdd","viewReport","viewMom"].forEach(id=>document.getElementById(id).style.display="none");
+  ["viewProjects","viewLog","viewDetail","viewAdd","viewReport","viewMom"].forEach(id=>document.getElementById(id).style.display="none");
+  document.getElementById("aiBannerWrap").style.display="none";
+  document.getElementById("statsRow").style.display="none";
   document.getElementById("viewEdit").style.display="block";
   document.getElementById("viewEdit").innerHTML=getEntryForm("Edit Log Entry","Update Entry","updateEntry()",entry);
   setTimeout(()=>renderPhotoGrid(),50);
@@ -679,14 +803,14 @@ function getEntryForm(title,btnText,onSubmit,entry=null) {
       </select></div>
       <div class="s2"><label class="flabel">Title / Subject *</label><input class="finput" id="fTitle" placeholder="Brief subject..." value="${v("title")}"/></div>
       <div class="s2"><label class="flabel">Professional Engineering Description</label><textarea class="finput" id="fDesc" rows="4" placeholder="Detailed notes...">${v("description")}</textarea></div>
-      <div><label class="flabel">Raised By</label><input class="finput" id="fBy" placeholder="Client / Engineer" value="${v("raisedBy")||"Site Engineer"}"/></div>
-      <div><label class="flabel">Assigned To</label><input class="finput" id="fTo" placeholder="PMC / Design Team" value="${v("assignedTo")||"PMC"}"/></div>
+      <div><label class="flabel">Raised By (Optional)</label><input class="finput" id="fBy" placeholder="e.g. Client / Engineer" value="${v("raisedBy")}"/></div>
+      <div><label class="flabel">Assigned To (Optional)</label><input class="finput" id="fTo" placeholder="e.g. PMC / Design Team" value="${v("assignedTo")}"/></div>
       <div><label class="flabel">Status</label><select class="finput" id="fStatus">
         <option value="OPEN" ${sel("status","OPEN")}>Open</option>
         <option value="INPROGRESS" ${sel("status","INPROGRESS")}>In Progress</option>
         <option value="RESOLVED" ${sel("status","RESOLVED")}>Resolved</option>
       </select></div>
-      <div><label class="flabel">Priority</label><select class="finput" id="fPri">
+      <div><label class="flabel">Priority (Optional)</label><select class="finput" id="fPri">
         <option value="" ${!entry?.priority?"selected":""}>(None / Optional)</option>
         <option value="HIGH" ${sel("priority","HIGH")}>High</option>
         <option value="MEDIUM" ${sel("priority","MEDIUM")}>Medium</option>
@@ -694,14 +818,20 @@ function getEntryForm(title,btnText,onSubmit,entry=null) {
       </select></div>
       <div class="s2"><label class="flabel">Action Required / Follow-up</label><input class="finput" id="fFollow" placeholder="Next step required..." value="${v("followUp")}"/></div>
       
-      <!-- Photo Upload Section -->
+      <!-- DUAL PHOTO UPLOAD OPTIONS -->
       <div class="s2">
         <label class="flabel">Site Photos</label>
-        <div class="photo-upload-area" onclick="document.getElementById('photoFile').click()">
-          <input type="file" id="photoFile" multiple accept="image/*" capture="environment" style="display:none" onchange="handlePhotos(event)"/>
-          <span class="ms" style="font-size:36px;color:var(--primary-accent)">photo_camera</span>
-          <div style="font-size:13px;font-weight:700;margin-top:4px">Tap to take photo or choose from device</div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">High-res stored locally + Fast web preview</div>
+        <div class="dual-photo-row">
+          <div class="photo-btn-box" onclick="document.getElementById('photoCamera').click()">
+            <input type="file" id="photoCamera" accept="image/*" capture="environment" style="display:none" onchange="handlePhotos(event)"/>
+            <span class="ms" style="font-size:32px;color:var(--primary-accent)">photo_camera</span>
+            <div style="font-size:12px;font-weight:800;margin-top:4px">📸 Take Camera Photo</div>
+          </div>
+          <div class="photo-btn-box" onclick="document.getElementById('photoGallery').click()">
+            <input type="file" id="photoGallery" multiple accept="image/*" style="display:none" onchange="handlePhotos(event)"/>
+            <span class="ms" style="font-size:32px;color:#7C3AED">collections</span>
+            <div style="font-size:12px;font-weight:800;margin-top:4px">🖼️ Pick from Gallery</div>
+          </div>
         </div>
         <div class="photo-preview-grid" id="photoGrid"></div>
       </div>
@@ -721,6 +851,7 @@ function handlePhotos(ev){
     });
   });
 }
+
 function renderPhotoGrid(){
   const g=document.getElementById("photoGrid");if(!g)return;
   g.innerHTML=addPhotos.map((p,i)=>`<div class="photo-thumb-wrap">
@@ -740,7 +871,9 @@ function updateEntry(){ const d=getFormData();if(!d.title){alert("Please enter a
 function showDetail(id) {
   const e=entries.find(x=>x.id===id);if(!e)return;
   const cat=CATS[e.category],st=STATS[e.status],pr=PRIS[e.priority];
-  ["viewLog","viewAdd","viewEdit","viewReport","viewMom"].forEach(id=>document.getElementById(id).style.display="none");
+  ["viewProjects","viewLog","viewAdd","viewEdit","viewReport","viewMom"].forEach(id=>document.getElementById(id).style.display="none");
+  document.getElementById("aiBannerWrap").style.display="none";
+  document.getElementById("statsRow").style.display="none";
   const d=document.getElementById("viewDetail");d.style.display="block";
   d.innerHTML=`<div class="panel">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
@@ -768,6 +901,7 @@ function showDetail(id) {
       ${Object.entries(STATS).map(([k,v])=>`<button class="fbtn" style="${e.status===k?`background:${v.bg};color:${v.color};font-weight:800`:""}" onclick="updateStatus(${e.id},'${k}')">${v.label}</button>`).join("")}
     </div></div>`;
 }
+
 function updateStatus(id,status){ entries=entries.map(e=>e.id===id?{...e,status}:e); save();showDetail(id);showToast("Status updated"); }
 function delEntry(id){ if(!confirm("Delete this log?"))return; entries=entries.filter(e=>e.id!==id); save();showLog();showToast("Deleted"); }
 
@@ -780,7 +914,7 @@ function showPhotoModal(src) {
   m.onclick=()=>m.remove(); document.body.appendChild(m);
 }
 
-// AI Rough Note Generator
+// UPGRADED AI ROUGH NOTE ENGINE
 function openAiModal(){ document.getElementById("aiModal").style.display="flex"; }
 function closeAiModal(){ document.getElementById("aiModal").style.display="none"; }
 
@@ -795,43 +929,60 @@ function processAiDraft() {
   let raw = document.getElementById("aiInputText").value.trim();
   if(!raw) return;
 
+  // 1. Expand Typos & Acronyms
   raw = raw.replace(/\bsutter\b/gi, "shutter")
            .replace(/\bmirrom\b/gi, "mirror")
            .replace(/\bmat\b/gi, "matte")
-           .replace(/\bcabinate\b/gi, "cabinet");
+           .replace(/\bcabinate\b/gi, "cabinet")
+           .replace(/\bgf\b/gi, "Ground Floor")
+           .replace(/\b2nd\b/gi, "Second Floor")
+           .replace(/\bdwg\b/gi, "drawing");
 
+  // 2. Category Detection
   let category = "SITE";
-  if(/drawing|dwg|layout|plan|concept|revision|rev|design/i.test(raw)) category = "DRAWING";
+  if(/drawing|layout|plan|concept|revision|rev|design|elevation/i.test(raw)) category = "DRAWING";
   else if(/issue|defect|crack|missing|wrong|fail|error|problem|discrepancy/i.test(raw)) category = "ISSUE";
 
+  // 3. Priority Detection (Blank unless urgency words exist)
   let priority = "";
   if(/urgent|high|immediately|critical|asap|today|pour/i.test(raw)) priority = "HIGH";
   else if(/medium|normal/i.test(raw)) priority = "MEDIUM";
   else if(/low|minor|whenever/i.test(raw)) priority = "LOW";
 
-  let assignedTo = "PMC";
+  // 4. Assigned To Routing (No forced defaults)
+  let assignedTo = "";
   if(category === "DRAWING" || /architect|design team|drawing/i.test(raw)) {
-    assignedTo = "Design Team / Architect";
+    assignedTo = "Design Team";
+  } else if(/site|execution|defect|finish|pour|slab|pmc/i.test(raw)) {
+    assignedTo = "PMC";
   }
 
+  // 5. Raised By Detection (No forced defaults)
+  let raisedBy = "";
+  if(/client|owner/i.test(raw)) raisedBy = "Client";
+  else if(/site team|engineer/i.test(raw)) raisedBy = "Site Team";
+
+  // 6. Title Extraction
   const lines = raw.split("\n").map(l => l.replace(/^[-*•]\s*/, '').trim()).filter(Boolean);
   const textStr = lines.join(". ");
 
-  let title = "Site Observation Report";
-  if(category === "DRAWING") title = `Request: ${lines[0].charAt(0).toUpperCase() + lines[0].slice(1)}`;
-  else title = `Finishes Update: ${lines[0].substring(0, 45)}`;
-
-  let professionalProse = "";
+  let areaMatch = raw.match(/(parents room bathroom|gf guest bedroom|pooja room|deck area|2nd floor|second floor|living room|kitchen)/i);
+  let areaName = areaMatch ? areaMatch[0] : "";
+  
+  let title = "";
   if(category === "DRAWING") {
-    professionalProse = `Site team requires engineering documentation and concept details. Details: ${textStr.charAt(0).toUpperCase() + textStr.slice(1)}. Assigned to ${assignedTo} to issue details.`;
+    title = `Request: ${lines[0].charAt(0).toUpperCase() + lines[0].slice(1)}`;
+  } else if(areaName) {
+    title = `Finishes Update: ${areaName.charAt(0).toUpperCase() + areaName.slice(1)}`;
   } else {
-    professionalProse = `Site finishes & execution update: ${textStr.charAt(0).toUpperCase() + textStr.slice(1)}. Assigned to ${assignedTo} for site coordination.`;
+    title = `Site Update: ${lines[0].charAt(0).toUpperCase() + lines[0].slice(1)}`;
   }
 
-  let followUp = `${assignedTo} to coordinate and execute: ${lines[0]}`;
+  let professionalProse = textStr.charAt(0).toUpperCase() + textStr.slice(1) + ".";
+  let followUp = assignedTo ? `${assignedTo} to coordinate and execute: ${lines[0]}` : "";
 
   closeAiModal();
-  showAdd({ title, description: professionalProse, category, priority, assignedTo, followUp, date: today() });
+  showAdd({ title, description: professionalProse, category, priority, assignedTo, raisedBy, followUp, date: today() });
   showToast("✨ AI drafted entry!");
 }
 
@@ -840,7 +991,9 @@ function exportData() {
   const a = Object.assign(document.createElement("a"),{href:dataStr,download:`site-report-backup-${today()}.json`});
   a.click(); showToast("Backup downloaded!");
 }
+
 function triggerImport(){ document.getElementById("importFileInput").click(); }
+
 function importData(ev) {
   const file = ev.target.files[0]; if(!file)return;
   const reader = new FileReader();
@@ -848,7 +1001,7 @@ function importData(ev) {
     try {
       const data = JSON.parse(e.target.result);
       if(data.entries && data.sites) {
-        entries = data.entries; sites = data.sites; save(); renderSiteTabs(); showLog(); showToast("Data restored!");
+        entries = data.entries; sites = data.sites; save(); renderProjectsGrid(); showLog(); showToast("Data restored!");
       } else alert("Invalid backup file.");
     } catch(err) { alert("Failed to read file."); }
   };
@@ -863,80 +1016,165 @@ function exportCSV() {
   a.click(); showToast("CSV exported!");
 }
 
-function addRptRole(roleText) {
-  const inp = document.getElementById("rAttendees");
-  if(!inp) return;
-  if(inp.value.trim().length > 0) inp.value += ", " + roleText;
-  else inp.value = roleText;
-  renderReport();
-}
-
 function showReport() {
-  ["viewLog","viewAdd","viewDetail","viewEdit","viewMom"].forEach(id=>document.getElementById(id).style.display="none");
+  ["viewProjects","viewLog","viewAdd","viewEdit","viewMom"].forEach(id=>document.getElementById(id).style.display="none");
+  document.getElementById("aiBannerWrap").style.display="none";
+  document.getElementById("statsRow").style.display="none";
   document.getElementById("viewReport").style.display="block";
   document.getElementById("rFrom").value=daysAgo(30); document.getElementById("rTo").value=today();
   renderReport();
 }
 
-function renderReport() {
-  const from=document.getElementById("rFrom").value, to=document.getElementById("rTo").value;
-  const isAttendeesOn = document.getElementById("toggleAttendees") ? document.getElementById("toggleAttendees").checked : true;
-  const attendeesVal = document.getElementById("rAttendees") ? document.getElementById("rAttendees").value : "Darshin, Lokendrabhai (PMC)";
-  const se=entries.filter(e=>e.site===activeSite&&(!from||e.date>=from)&&(!to||e.date<=to)).sort((a,b)=>b.date.localeCompare(a.date));
-  
-  document.getElementById("reportDocument").innerHTML = `
-    <div class="report-paper-doc">
-      <div class="report-hdr-clean">
-        <div>
-          <div class="rpt-title">SITE VISIT REPORT</div>
-          <div class="rpt-site">${esc(activeSite)}</div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-          <div class="rpt-pill">Visit Date: <strong>${fmt(today())}</strong></div>
-          ${isAttendeesOn && attendeesVal ? `<div class="rpt-pill" style="background:rgba(255,255,255,0.15)">👥 Attendees Present: <strong>${esc(attendeesVal)}</strong></div>` : ''}
-        </div>
-      </div>
-      <div style="padding:24px;display:flex;flex-direction:column;gap:14px">
-        ${se.map(e=>`<div style="padding:16px;border:1px solid #E2E8F0;border-radius:10px">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start">
-            <div>
-              <strong style="font-size:15px">${esc(e.title)}</strong>
-              <div style="font-size:12px;color:#64748B;margin-top:2px">${fmt(e.date)} · Assigned to ${esc(e.assignedTo||"PMC")}</div>
-            </div>
-            <span style="font-size:11px;padding:3px 10px;border-radius:12px;background:#F1F5F9;font-weight:700">${e.status}</span>
-          </div>
-          ${e.description?`<div style="font-size:13px;line-height:1.5;margin-top:8px;color:#334155">${esc(e.description)}</div>`:""}
-          ${e.photos?.length?`<div style="display:flex;gap:6px;margin-top:10px">${e.photos.map(p=>`<img src="${p.dataUrl}" style="width:60px;height:60px;border-radius:6px;object-fit:cover"/>`).join("")}</div>`:""}
-        </div>`).join("")}
-      </div>
-    </div>`;
+function printReport() {
+  document.body.className = "printing-report";
+  window.print();
+  setTimeout(()=>document.body.className="", 500);
 }
 
-// MOM (Minutes of Meeting) Engine
+function renderReport() {
+  const from = document.getElementById("rFrom").value;
+  const to   = document.getElementById("rTo").value;
+  const layout = document.getElementById("rLayoutStyle") ? document.getElementById("rLayoutStyle").value : "OPT1";
+  const isAttendeesOn = document.getElementById("toggleAttendees") ? document.getElementById("toggleAttendees").checked : true;
+  const attendeesVal = document.getElementById("rAttendees") ? document.getElementById("rAttendees").value : "";
+  
+  const se = entries.filter(e => e.site === activeSite && (!from || e.date >= from) && (!to || e.date <= to)).sort((a,b) => b.date.localeCompare(a.date));
+
+  const doc = document.getElementById("reportDocument");
+
+  const headerHtml = `
+    <div style="border-bottom:2px solid var(--primary);padding-bottom:12px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:flex-end">
+      <div>
+        <h1 style="font-size:22px;font-weight:800;color:var(--primary);margin:0;text-transform:uppercase">${layout === 'OPT2' ? 'EXECUTIVE SUMMARY REPORT' : 'VISUAL FIELD REPORT'}</h1>
+        <div style="font-size:18px;font-weight:700;color:#0F172A;margin-top:2px">${esc(activeSite)}</div>
+      </div>
+      <div style="text-align:right;font-size:12px;color:#475569">
+        <div>Visit Date: <strong>${fmt(today())}</strong></div>
+        ${isAttendeesOn && attendeesVal ? `<div>👥 Attendees: <strong>${esc(attendeesVal)}</strong></div>` : ''}
+      </div>
+    </div>`;
+
+  if(se.length === 0) {
+    doc.innerHTML = headerHtml + `<div style="text-align:center;padding:40px 0;color:var(--text-muted);font-size:14px">No log entries found for this date range.</div>`;
+    return;
+  }
+
+  if(layout === "OPT2") {
+    // OPTION 2: COMPACT EXECUTIVE ROWS
+    const rowsHtml = se.map(e => {
+      const st = STATS[e.status] || { label: e.status, bg: '#F1F5F9', color: '#475569' };
+      const photosHtml = e.photos?.length ? `<div style="display:flex;gap:6px;margin-left:auto">${e.photos.slice(0,2).map(p=>`<img src="${p.dataUrl}" style="width:56px;height:56px;object-fit:cover;border-radius:6px;border:1px solid #CBD5E1"/>`).join('')}</div>` : '';
+      
+      return `
+        <div style="padding:12px 0;border-bottom:1px solid #E2E8F0;display:flex;gap:16px;align-items:flex-start">
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <span style="background:${st.bg};color:${st.color};font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px">${st.label}</span>
+              <h3 style="font-size:14px;font-weight:700;color:#0F172A;margin:0">${esc(e.title)}</h3>
+            </div>
+            ${e.description ? `<p style="font-size:12px;color:#475569;margin:4px 0 0 0;line-height:1.5">${esc(e.description)}</p>` : ''}
+            <div style="font-size:11px;color:#94A3B8;margin-top:4px">📅 ${fmt(e.date)}</div>
+          </div>
+          ${photosHtml}
+        </div>`;
+    }).join("");
+    doc.innerHTML = headerHtml + `<div style="display:flex;flex-direction:column">${rowsHtml}</div>`;
+  } else {
+    // OPTION 1: VISUAL PHOTO CARDS
+    const cardsHtml = se.map(e => {
+      const cat = CATS[e.category] || { label: e.category, color: '#964900' };
+      const st = STATS[e.status] || { label: e.status, bg: '#F1F5F9', color: '#475569' };
+      const photosHtml = e.photos?.length ? `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px">${e.photos.slice(0,2).map(p=>`<img src="${p.dataUrl}" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;border:1px solid #CBD5E1"/>`).join('')}</div>` : '';
+
+      return `
+        <div style="border:1px solid #E2E8F0;border-left:6px solid ${cat.color};padding:16px;border-radius:10px;background:#FFF;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,0.05)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+            <div>
+              <span style="font-size:10px;font-weight:800;color:${cat.color};text-transform:uppercase">${cat.label}</span>
+              <h3 style="font-size:15px;font-weight:700;color:#0F172A;margin:2px 0 0 0">${esc(e.title)}</h3>
+            </div>
+            <span style="background:${st.bg};color:${st.color};font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;margin-left:auto">${st.label}</span>
+          </div>
+          ${photosHtml}
+          ${e.description ? `<p style="font-size:12px;color:#334155;margin:8px 0 0 0;line-height:1.6;border-left:3px solid #CBD5E1;padding-left:10px">${esc(e.description)}</p>` : ''}
+          <div style="font-size:11px;color:#94A3B8;margin-top:8px;padding-top:8px;border-top:1px solid #F1F5F9">📅 ${fmt(e.date)}</div>
+        </div>`;
+    }).join("");
+    doc.innerHTML = headerHtml + `<div>${cardsHtml}</div>`;
+  }
+}
+
+// MOM ENGINE WITH CHECKLIST SELECTOR
 function showMom() {
-  ["viewLog","viewAdd","viewDetail","viewEdit","viewReport"].forEach(id=>document.getElementById(id).style.display="none");
+  ["viewProjects","viewLog","viewAdd","viewEdit","viewReport"].forEach(id=>document.getElementById(id).style.display="none");
+  document.getElementById("aiBannerWrap").style.display="none";
+  document.getElementById("statsRow").style.display="none";
   document.getElementById("viewMom").style.display="block";
   document.getElementById("momDate").value = today();
+  renderMomList();
+}
+
+function printMom() {
+  document.body.className = "printing-mom";
+  window.print();
+  setTimeout(()=>document.body.className="", 500);
+}
+
+function renderMomList() {
+  const targetDate = document.getElementById("momDate").value || today();
+  const filterMode = document.getElementById("momFilterMode") ? document.getElementById("momFilterMode").value : "DATE";
+  
+  let dayLogs = [];
+  if(filterMode === "ALL_SITE") {
+    dayLogs = entries.filter(e => e.site === activeSite);
+  } else {
+    dayLogs = entries.filter(e => e.site === activeSite && e.date === targetDate);
+  }
+  
+  momSelectedIds = dayLogs.map(e => e.id);
+
+  const checklistEl = document.getElementById("momChecklist");
+  if(dayLogs.length === 0) {
+    checklistEl.innerHTML = `<div style="font-size:12px;color:var(--text-muted);padding:8px 0">No log entries found for <strong>${esc(activeSite)}</strong> on ${fmt(targetDate)}. <button class="btn-outline" style="padding:2px 8px;font-size:11px" onclick="document.getElementById('momFilterMode').value='ALL_SITE';renderMomList();">Show All Logs for this Site</button></div>`;
+  } else {
+    checklistEl.innerHTML = dayLogs.map(e => `
+      <label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:#0F172A;cursor:pointer;padding:4px 0">
+        <input type="checkbox" value="${e.id}" checked onchange="toggleMomItem(${e.id})"/>
+        <div>
+          <div>${esc(e.description || e.title)}</div>
+          <div style="font-size:11px;color:var(--text-muted)">📅 ${fmt(e.date)} ${e.assignedTo?`· Assigned to ${esc(e.assignedTo)}`:''}</div>
+        </div>
+      </label>
+    `).join("");
+  }
+  renderMomText();
+}
+
+function toggleMomItem(id) {
+  if(momSelectedIds.includes(id)) {
+    momSelectedIds = momSelectedIds.filter(x => x !== id);
+  } else {
+    momSelectedIds.push(id);
+  }
   renderMomText();
 }
 
 function renderMomText() {
   const targetDate = document.getElementById("momDate").value || today();
-  const attendeesStr = document.getElementById("momAttendees").value || "Darshin, Lokendrabhai (PMC)";
-  const dayLogs = entries.filter(e=>e.site===activeSite && e.date===targetDate);
+  const attendeesStr = document.getElementById("momAttendees").value || "";
+  const selectedLogs = entries.filter(e => momSelectedIds.includes(e.id));
 
   let bulletsStr = "";
-  if(dayLogs.length > 0) {
-    bulletsStr = dayLogs.map(e => `* ${e.description || e.title}`).join("\n");
+  if(selectedLogs.length > 0) {
+    bulletsStr = selectedLogs.map(e => `* ${e.description || e.title}`).join("\n");
   } else {
-    bulletsStr = "* A dummy beam is to be added between the second floor Kiki bedroom passage and the bathroom.\n* Door jamb details for the passage to the kitchen and the passage to the living room will be provided along with the elevation detail of each respective room.\n* An approximate 1' x 1' trap door is to be provided in all toilets to allow access to plumbing valves.";
+    bulletsStr = "(No log items selected)";
   }
 
   const fullMom = `Good Evening,
 Please find attached minutes from yesterday's site visit.
 
-Attendees : ${attendeesStr}
-Date : ${fmt(targetDate)}
+${attendeesStr ? `Attendees : ${attendeesStr}\n` : ''}Date : ${fmt(targetDate)}
 
 Minutes:
 ${bulletsStr}
@@ -952,7 +1190,6 @@ function copyMomText() {
   navigator.clipboard.writeText(text).then(() => {
     showToast("📋 MOM text copied to clipboard!");
   }).catch(() => {
-    // Fallback for browsers that block async clipboard API
     const el = document.getElementById("momOutputText");
     el.select(); document.execCommand("copy");
     showToast("📋 MOM text copied!");
@@ -960,12 +1197,15 @@ function copyMomText() {
 }
 
 function showLog() {
-  ["viewAdd","viewDetail","viewEdit","viewReport","viewMom"].forEach(id=>document.getElementById(id).style.display="none");
+  ["viewProjects","viewAdd","viewDetail","viewEdit","viewReport","viewMom"].forEach(id=>document.getElementById(id).style.display="none");
+  document.getElementById("aiBannerWrap").style.display="block";
+  document.getElementById("statsRow").style.display="grid";
   document.getElementById("viewLog").style.display="block";
-  renderSiteTabs(); renderStats(); renderFilters(); renderLog();
+  document.getElementById("headerSiteName").textContent = activeSite;
+  renderStats(); renderFilters(); renderLog();
 }
 
-renderSiteTabs(); showLog();
+showLog();
 </script>
 </body>
 </html>
