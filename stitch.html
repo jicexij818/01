@@ -477,6 +477,9 @@ function compressImage(file, callback) {
     img.onload = () => {
       const canvas = document.createElement("canvas");
       let w = img.width, h = img.height;
+      
+      const detectedAspect = h > w ? "9:16" : "16:9";
+
       const maxDim = 1920; // High-Res 1080p 1920px
       if (w > maxDim || h > maxDim) {
         if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
@@ -485,7 +488,7 @@ function compressImage(file, callback) {
       canvas.width = w; canvas.height = h;
       const ctx = canvas.getContext("2d");
       ctx.drawImage(img, 0, 0, w, h);
-      callback(canvas.toDataURL("image/jpeg", 0.88));
+      callback(canvas.toDataURL("image/jpeg", 0.88), detectedAspect);
     };
     img.src = e.target.result;
   };
@@ -494,6 +497,7 @@ function compressImage(file, callback) {
 
 // VIEW SWITCHING ENGINE
 function hideAllViews() {
+  document.querySelectorAll(".photo-modal").forEach(m => m.remove());
   ["viewProjects","viewLog","viewAi","viewAdd","viewDetail","viewReport","viewMom"].forEach(id => {
     document.getElementById(id).style.display = "none";
   });
@@ -734,7 +738,7 @@ function renderLog() {
       
       ${e.description ? `<p class="text-on-surface-variant text-[13px] leading-relaxed line-clamp-2">${esc(e.description)}</p>` : ''}
 
-      ${e.photos?.length ? `<div class="flex gap-2 mt-1">${e.photos.slice(0,3).map(p=>`<img src="${p.dataUrl}" class="w-14 h-14 object-cover rounded-lg border border-outline-variant"/>`).join('')}</div>` : ''}
+      ${e.photos?.length ? `<div class="flex gap-2 mt-2 items-start">${e.photos.slice(0,3).map(p=>`<img src="${p.dataUrl}" style="width: 60px; height: auto;" class="rounded-lg border border-outline-variant shadow-sm"/>`).join('')}</div>` : ''}
 
       <div class="flex items-center gap-3 pt-3 border-t border-surface-container text-xs text-on-surface-variant">
         <div class="flex items-center gap-1">
@@ -756,8 +760,8 @@ function renderLog() {
 
 function handlePhotos(ev, isCamera = false) {
   Array.from(ev.target.files).forEach(f => {
-    compressImage(f, (compressedDataUrl) => {
-      addPhotos.push({ dataUrl: compressedDataUrl, caption: "" });
+    compressImage(f, (compressedDataUrl, detectedAspect) => {
+      addPhotos.push({ dataUrl: compressedDataUrl, caption: "", aspect: detectedAspect });
       renderPhotoGrid();
 
       // Auto-save high-res camera photo to phone gallery
@@ -804,7 +808,7 @@ function showDetail(id) {
     <hr class="border-outline-variant"/>
     ${e.description ? `<div class="space-y-1"><div class="text-xs font-bold uppercase text-on-surface-variant">Description</div><div class="text-sm leading-relaxed whitespace-pre-wrap">${esc(e.description)}</div></div>` : ''}
     ${e.followUp ? `<div class="bg-amber-50 border-l-4 border-amber-600 p-3 rounded text-xs"><div class="font-bold text-amber-800">ACTION REQUIRED</div><div class="text-amber-900 mt-0.5">${esc(e.followUp)}</div></div>` : ''}
-    ${e.photos?.length ? `<div><div class="text-xs font-bold uppercase text-on-surface-variant mb-2">Photos</div><div class="grid grid-cols-3 sm:grid-cols-4 gap-2">${e.photos.map(p=>`<img src="${p.dataUrl}" class="w-full h-24 object-cover rounded border border-outline-variant cursor-pointer" onclick="showPhotoModal('${p.dataUrl}')"/>`).join('')}</div></div>` : ''}
+    ${e.photos?.length ? `<div><div class="text-xs font-bold uppercase text-on-surface-variant mb-2">Photos</div><div class="grid grid-cols-2 gap-3 items-start">${e.photos.map(p=>`<img src="${p.dataUrl}" style="width: 100%; height: auto;" class="rounded-lg border border-outline-variant cursor-pointer shadow-sm" onclick="showPhotoModal('${p.dataUrl}')"/>`).join('')}</div></div>` : ''}
   </div>`;
 }
 
@@ -915,7 +919,7 @@ function renderReport() {
   const headerHtml = `
     <div class="border-b-2 border-primary pb-4 mb-4 flex justify-between items-end">
       <div>
-        <h1 class="text-2xl font-extrabold text-primary uppercase">${layout === 'OPT2' ? 'EXECUTIVE SUMMARY REPORT' : 'VISUAL FIELD REPORT'}</h1>
+        <h1 class="text-2xl font-extrabold text-primary uppercase">SITE VISIT REPORT</h1>
         <div class="text-lg font-bold text-on-surface">${esc(activeSite)}</div>
       </div>
       <div class="text-right text-xs space-y-1">
@@ -933,7 +937,7 @@ function renderReport() {
     // OPTION 2: COMPACT EXECUTIVE ROWS
     const rowsHtml = se.map(e => {
       const st = STATS[e.status] || { label: e.status, bg: '#F1F5F9', color: '#475569' };
-      const photosHtml = e.photos?.length ? `<div class="flex gap-1.5 ml-auto">${e.photos.slice(0,2).map(p=>`<img src="${p.dataUrl}" class="w-14 h-14 object-cover rounded border border-outline-variant"/>`).join('')}</div>` : '';
+      const photosHtml = e.photos?.length ? `<div class="flex gap-2 ml-auto items-start">${e.photos.slice(0,2).map(p=>`<img src="${p.dataUrl}" style="width: 60px; height: auto;" class="rounded border border-outline-variant shadow-sm"/>`).join('')}</div>` : '';
       
       return `
         <div class="py-3 border-b border-surface-variant flex gap-4 items-start">
@@ -954,7 +958,7 @@ function renderReport() {
     const cardsHtml = se.map(e => {
       const cat = CATS[e.category] || { label: e.category, color: '#964900' };
       const st = STATS[e.status] || { label: e.status, bg: '#F1F5F9', color: '#475569' };
-      const photosHtml = e.photos?.length ? `<div class="grid grid-cols-2 gap-2 mt-2">${e.photos.slice(0,2).map(p=>`<img src="${p.dataUrl}" class="w-full aspect-video object-cover rounded-lg border border-outline-variant"/>`).join('')}</div>` : '';
+      const photosHtml = e.photos?.length ? `<div class="grid grid-cols-2 gap-3 mt-3 items-start">${e.photos.slice(0,2).map(p=>`<img src="${p.dataUrl}" style="width: 100%; height: auto;" class="rounded-lg border border-outline-variant shadow-sm"/>`).join('')}</div>` : '';
 
       return `
         <div class="border border-outline-variant p-4 rounded-lg bg-surface-container-lowest mb-3.5 shadow-sm" style="border-left: 6px solid ${cat.color}">
