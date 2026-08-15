@@ -10,6 +10,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
 
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(regs => { for(let r of regs) r.unregister(); });
+}
+if ('caches' in window) {
+  caches.keys().then(names => { for(let n of names) caches.delete(n); });
+}
+</script>
 <script id="tailwind-config">
 tailwind.config = {
   darkMode: "class",
