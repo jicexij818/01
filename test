@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>SITE REPORT — Projects Dashboard, AI Field Ledger & MOM</title>
+<meta name="theme-color" content="#0F172A"/>
+
+<!-- PWA Manifest & Icons -->
+<link rel="manifest" href="manifest.json"/>
+<link rel="icon" href="icon-192.png"/>
+<link rel="apple-touch-icon" href="icon-192.png"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Site Report"/>
+
+<!-- Google Fonts & Material Symbols -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+<style>
+:root {
+  --bg-main: #F8FAFC;
+  --surface-card: #FFFFFF;
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --border-color: #E2E8F0;
+  
+  --primary-accent: #2563EB;
+  --primary-gradient: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #334155 100%);
+  --ai-gradient: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #EC4899 100%);
+  
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 14px rgba(0,0,0,0.07);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  min-height: 100vh;
+  padding-bottom: 24px;
+}
+
+.ms {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Top Header */
+#appHeader {
+  background: var(--primary-gradient);
+  color: #FFFFFF;
+  padding: 0 24px;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.logo-badge { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.logo-icon-bg {
+  background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+  color: #FFF; width: 38px; height: 38px;
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 10px rgba(59,130,246,0.4);
+}
+.logo-text { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
+.logo-tag { background: rgba(255,255,255,0.15); color: #93C5FD; font-size: 11px; padding: 2px 8px; border-radius: var(--radius-full); margin-left: 6px; font-weight: 700; }
+
+#headerSitePill {
+  background: rgba(255,255,255,0.12); color: #E2E8F0; border: 1px solid rgba(255,255,255,0.2);
+  padding: 6px 14px; border-radius: var(--radius-full); font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; gap: 6px; cursor: pointer; transition: background 0.15s ease;
+}
+#headerSitePill:hover { background: rgba(255,255,255,0.22); }
+
+/* Main Container */
+#appMain { max-width: 1060px; margin: 0 auto; padding: 24px 16px; }
+
+/* AI Assistant Banner */
+.ai-banner {
+  background: var(--ai-gradient);
+  color: #FFFFFF;
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  box-shadow: 0 8px 25px rgba(124,58,237,0.25);
+}
+.ai-info { display: flex; align-items: center; gap: 14px; }
+.ai-sparkle {
+  background: rgba(255,255,255,0.2); width: 46px; height: 46px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+}
+.ai-title { font-size: 16px; font-weight: 800; }
+.ai-sub { font-size: 12px; color: #F3E8FF; margin-top: 2px; }
+.btn-ai {
+  background: #FFFFFF; color: #6D28D9; border: none;
+  padding: 10px 20px; border-radius: var(--radius-full);
+  font-size: 13px; font-weight: 800; cursor: pointer;
+  display: flex; align-items: center; gap: 6px; white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform 0.15s ease;
+}
+.btn-ai:active { transform: scale(0.96); }
+
+/* Projects Dashboard Grid */
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; margin-top: 16px; }
+.project-card {
+  background: var(--surface-card); border-radius: var(--radius-lg); padding: 22px;
+  border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease; position: relative;
+}
+.project-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.project-card.active-site { border: 2px solid var(--primary-accent); background: #F8FAFC; }
+.project-title { font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 6px; }
+.project-stats-row { display: flex; gap: 14px; margin-top: 14px; font-size: 12px; color: var(--text-muted); }
+.project-actions { display: flex; gap: 8px; margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 12px; }
+
+/* Stats Grid */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+.stat-card {
+  background: var(--surface-card);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.stat-num { font-size: 32px; font-weight: 800; font-family: monospace; margin-top: 4px; }
+.stat-lbl { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* Toolbar & Filters */
+.toolbar { margin-bottom: 24px; }
+.trow { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+.search-box {
+  flex: 1; min-width: 220px; display: flex; align-items: center; gap: 8px;
+  background: var(--surface-card); border: 1px solid var(--border-color);
+  border-radius: var(--radius-full); padding: 0 16px; box-shadow: var(--shadow-sm);
+}
+.search-box input {
+  width: 100%; padding: 11px 0; border: none; background: transparent;
+  font-size: 13px; font-family: inherit; outline: none; color: var(--text-main);
+}
+.filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.fbtn {
+  padding: 7px 15px; border-radius: var(--radius-full);
+  border: 1px solid var(--border-color); background: var(--surface-card);
+  color: var(--text-muted); font-size: 12px; cursor: pointer; font-family: inherit; font-weight: 700;
+  display: inline-flex; align-items: center; gap: 5px; transition: all 0.15s ease;
+}
+.fbtn.active { background: #0F172A; color: #FFFFFF; border-color: #0F172A; }
+
+.btn-primary {
+  padding: 10px 20px; border-radius: var(--radius-full); border: none;
+  background: #0F172A; color: #FFFFFF; font-size: 13px; cursor: pointer;
+  font-family: inherit; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;
+  box-shadow: var(--shadow-sm); transition: opacity 0.15s ease;
+}
+.btn-primary:hover { opacity: 0.9; }
+.btn-outline {
+  padding: 9px 16px; border-radius: var(--radius-full);
+  border: 1px solid var(--border-color); background: var(--surface-card);
+  color: var(--text-main); font-size: 12px; cursor: pointer; font-family: inherit; font-weight: 700;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.btn-mom {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  color: #FFFFFF; border: none; padding: 9px 18px; border-radius: var(--radius-full);
+  font-size: 13px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+}
+
+/* Entry Cards */
+.entries-list { display: flex; flex-direction: column; gap: 14px; }
+.ecard {
+  background: var(--surface-card);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  cursor: pointer; display: flex; gap: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.ecard:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.eicon {
+  width: 48px; height: 48px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.ebody { flex: 1; min-width: 0; }
+.etop { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.etitle { font-size: 16px; font-weight: 800; color: var(--text-main); line-height: 1.3; }
+.badges { display: flex; gap: 6px; flex-shrink: 0; align-items: center; }
+.badge { font-size: 11px; padding: 4px 10px; border-radius: var(--radius-full); font-weight: 800; }
+.edesc { font-size: 13px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.emeta { display: flex; gap: 16px; margin-top: 12px; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; align-items: center; }
+
+/* Form Panels */
+.panel {
+  background: var(--surface-card);
+  border-radius: var(--radius-lg);
+  padding: 28px; border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+}
+.panel-title { font-size: 20px; font-weight: 800; margin-bottom: 20px; color: var(--text-main); }
+.fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.s2 { grid-column: span 2; }
+.flabel { display: block; font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+.finput {
+  width: 100%; padding: 12px 16px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color); background: var(--bg-main);
+  font-size: 14px; font-family: inherit; outline: none; color: var(--text-main);
+}
+.finput:focus { border-color: var(--primary-accent); background: var(--surface-card); }
+textarea.finput { resize: vertical; }
+
+/* Dual Photo Buttons */
+.dual-photo-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+.photo-btn-box {
+  flex: 1; min-width: 140px; padding: 18px 12px; border-radius: var(--radius-md);
+  border: 2px dashed var(--border-color); background: var(--bg-main); text-align: center;
+  cursor: pointer; transition: all 0.15s ease;
+}
+.photo-btn-box:hover { border-color: var(--primary-accent); background: #EFF6FF; }
+.photo-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px,1fr)); gap: 10px; margin-top: 14px; }
+.photo-thumb-wrap { position: relative; border-radius: var(--radius-sm); overflow: hidden; background: #E2E8F0; border: 1px solid var(--border-color); }
+.photo-thumb-wrap img { width: 100%; height: 95px; object-fit: cover; display: block; cursor: pointer; }
+.photo-caption-input { width: 100%; padding: 5px 6px; font-size: 11px; border: none; border-top: 1px solid var(--border-color); font-family: inherit; background: #fff; outline: none; }
+.photo-remove { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,.65); color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+/* Lightbox */
+.photo-modal {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center;
+  z-index: 1000; cursor: pointer; padding: 20px;
+}
+.photo-modal img { max-width: 92%; max-height: 80%; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); }
+
+/* Navigation Rules (Desktop vs Mobile) */
+.bottom-nav { display: none; }
+.fab { display: flex; }
+
+@media (max-width: 600px) {
+  body { padding-bottom: 84px; }
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+  .fgrid { grid-template-columns: 1fr; }
+  .s2 { grid-column: span 1; }
+
+  .bottom-nav {
+    display: flex !important;
+    position: fixed; bottom: 0; left: 0; right: 0; height: 64px;
+    background: #FFFFFF; border-top: 1px solid var(--border-color);
+    justify-content: space-around; align-items: center; z-index: 99;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+  }
+  .nav-item {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    padding: 6px 12px; border-radius: 12px; color: var(--text-muted);
+    font-size: 11px; font-weight: 700; border: none; background: transparent; cursor: pointer;
+  }
+  .nav-item.active { color: var(--primary-accent); background: #EFF6FF; }
+
+  .fab {
+    position: fixed; bottom: 80px; right: 20px;
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+    color: #FFFFFF; width: 56px; height: 56px;
+    border-radius: 16px; align-items: center; justify-content: center;
+    box-shadow: 0 8px 25px rgba(37,99,235,0.4);
+    cursor: pointer; z-index: 90;
+  }
+}
+
+@media (min-width: 601px) {
+  .fab {
+    position: fixed; bottom: 32px; right: 32px;
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+    color: #FFFFFF; width: 60px; height: 60px;
+    border-radius: 18px; align-items: center; justify-content: center;
+    box-shadow: 0 8px 25px rgba(37,99,235,0.4);
+    cursor: pointer; z-index: 90;
+  }
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15,23,42,0.7); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center; z-index: 200; padding: 16px;
+}
+.modal-card {
+  background: var(--surface-card); border-radius: var(--radius-lg);
+  width: 100%; max-width: 580px; padding: 26px; box-shadow: var(--shadow-lg);
+}
+
+.chip-btn {
+  padding: 4px 10px; border-radius: var(--radius-full); border: 1px solid #C084FC;
+  background: #F3E8FF; color: #6D28D9; font-size: 11px; font-weight: 700; cursor: pointer;
+}
+.role-chip {
+  padding: 4px 9px; border-radius: 14px; border: 1px solid #CBD5E1;
+  background: #F1F5F9; color: #334155; font-size: 11px; font-weight: 700; cursor: pointer;
+}
+
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: #0F172A; color: #FFFFFF; padding: 11px 22px;
+  border-radius: var(--radius-full); font-size: 13px; font-weight: 700;
+  z-index: 1001; animation: slideUp 0.25s ease;
+}
+@keyframes slideUp { from { transform: translate(-50%, 20px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header id="appHeader">
+  <div class="logo-badge" onclick="switchView('projects')">
+    <div class="logo-icon-bg"><span class="ms">engineering</span></div>
+    <div class="logo-text">SITE REPORT <span class="logo-tag">PRO</span></div>
+  </div>
+  <div id="headerSitePill" onclick="switchView('projects')">
+    <span class="ms" style="font-size:16px;">domain</span>
+    <span id="currentProjectLabel">Select Project</span>
+    <span class="ms" style="font-size:16px;">expand_more</span>
+  </div>
+</header>
+
+<!-- Main Container -->
+<main id="appMain">
+  
+  <!-- AI Assistant Banner -->
+  <div id="aiBannerWrap">
+    <div class="ai-banner">
+      <div class="ai-info">
+        <div class="ai-sparkle"><span class="ms">auto_awesome</span></div>
+        <div>
+          <div class="ai-title">AI Field Ledger & Minutes of Meeting (MOM)</div>
+          <div class="ai-sub">Dictate site voice notes or paste quick observations to generate professional logs & MOM reports.</div>
+        </div>
+      </div>
+      <button class="btn-ai" onclick="openAiModal()"><span class="ms">psychology</span> Try AI Assistant</button>
+    </div>
+  </div>
+
+  <!-- Projects View -->
+  <div id="viewProjects" style="display:none;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <h2 style="font-weight:800;">Projects Dashboard</h2>
+      <button class="btn-primary" onclick="openNewProjectModal()"><span class="ms">add</span> New Project</button>
+    </div>
+    <div class="projects-grid" id="projectsGrid"></div>
+  </div>
+
+  <!-- Log View -->
+  <div id="viewLog">
+    <div class="stats-grid" id="statsRow"></div>
+    
+    <div class="toolbar">
+      <div class="trow">
+        <div class="search-box">
+          <span class="ms" style="color:var(--text-muted);">search</span>
+          <input type="text" id="searchInput" placeholder="Search by title, location, description, or engineer..." oninput="renderLog()"/>
+        </div>
+        <button class="btn-mom" onclick="openMomBuilder()"><span class="ms">description</span> Generate MOM</button>
+        <button class="btn-primary" onclick="openAddView()"><span class="ms">add</span> New Entry</button>
+      </div>
+      <div class="trow">
+        <div class="filter-pills" id="categoryFilters"></div>
+      </div>
+      <div class="trow">
+        <div class="filter-pills" id="statusFilters"></div>
+        <div style="margin-left:auto; display:flex; gap:8px;">
+          <button class="btn-outline" onclick="exportCSV()"><span class="ms">csv</span> Export CSV</button>
+          <button class="btn-outline" onclick="exportJSON()"><span class="ms">download</span> Backup</button>
+          <button class="btn-outline" onclick="document.getElementById('importFile').click()"><span class="ms">upload</span> Restore</button>
+          <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importJSON(event)"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="entries-list" id="entriesList"></div>
+  </div>
+
+  <!-- Add Form Panel -->
+  <div id="viewAdd" style="display:none;">
+    <div class="panel">
+      <div class="panel-title">New Site Entry</div>
+      <form onsubmit="saveEntry(event)">
+        <div class="fgrid">
+          <div class="s2">
+            <label class="flabel">Entry Title *</label>
+            <input type="text" class="finput" id="addTitle" placeholder="e.g. Rebar inspection at Column B4" required/>
+          </div>
+          <div>
+            <label class="flabel">Category *</label>
+            <select class="finput" id="addCategory">
+              <option value="Site Visit">🏗️ Site Visit</option>
+              <option value="Issue">🔴 Issue / Non-Conformity</option>
+              <option value="Drawing">📐 Drawing / Approval</option>
+            </select>
+          </div>
+          <div>
+            <label class="flabel">Priority *</label>
+            <select class="finput" id="addPriority">
+              <option value="High">🔴 High</option>
+              <option value="Medium" selected>🟡 Medium</option>
+              <option value="Low">🟢 Low</option>
+            </select>
+          </div>
+          <div>
+            <label class="flabel">Status *</label>
+            <select class="finput" id="addStatus">
+              <option value="Open">Open</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Resolved">Resolved</option>
+            </select>
+          </div>
+          <div>
+            <label class="flabel">Location / Zone</label>
+            <input type="text" class="finput" id="addLocation" placeholder="e.g. Block A - 2nd Floor Slab"/>
+          </div>
+          <div>
+            <label class="flabel">Raised / Inspected By</label>
+            <input type="text" class="finput" id="addRaisedBy" placeholder="e.g. Eng. Rajesh Kumar"/>
+          </div>
+          <div>
+            <label class="flabel">Assigned To / Contractor</label>
+            <input type="text" class="finput" id="addAssignedTo" placeholder="e.g. Steel Subcontractor"/>
+          </div>
+          <div class="s2">
+            <label class="flabel">Technical Description</label>
+            <textarea class="finput" id="addDescription" rows="4" placeholder="Detailed observations, dimensions, codes, or site remarks..."></textarea>
+          </div>
+
+          <!-- Dual Camera Photo Upload -->
+          <div class="s2">
+            <label class="flabel">Site Photos (Camera / Gallery)</label>
+            <div class="dual-photo-row">
+              <div class="photo-btn-box" onclick="triggerCameraInput('add')">
+                <span class="ms" style="font-size:28px; color:var(--primary-accent);">photo_camera</span>
+                <div style="font-size:12px; font-weight:700; margin-top:4px;">Take Photo (Camera)</div>
+              </div>
+              <div class="photo-btn-box" onclick="triggerGalleryInput('add')">
+                <span class="ms" style="font-size:28px; color:var(--text-muted);">collections</span>
+                <div style="font-size:12px; font-weight:700; margin-top:4px;">Upload Files</div>
+              </div>
+            </div>
+            <input type="file" id="addCameraFile" accept="image/*" capture="environment" style="display:none;" onchange="handlePhotoUpload(event, 'add')"/>
+            <input type="file" id="addGalleryFile" accept="image/*" multiple style="display:none;" onchange="handlePhotoUpload(event, 'add')"/>
+            <div class="photo-preview-grid" id="addPhotoPreviews"></div>
+          </div>
+        </div>
+        <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:24px;">
+          <button type="button" class="btn-outline" onclick="switchView('log')">Cancel</button>
+          <button type="submit" class="btn-primary">Save Site Entry</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Detail View -->
+  <div id="viewDetail" style="display:none;"></div>
+
+  <!-- Edit View -->
+  <div id="viewEdit" style="display:none;"></div>
+
+  <!-- Report View -->
+  <div id="viewReport" style="display:none;"></div>
+
+  <!-- MOM Builder View -->
+  <div id="viewMom" style="display:none;"></div>
+
+</main>
+
+<!-- Floating Action Button -->
+<div class="fab" onclick="openAddView()" title="Add New Entry">
+  <span class="ms" style="font-size:28px;">add</span>
+</div>
+
+<!-- Mobile Bottom Navigation -->
+<nav class="bottom-nav">
+  <button class="nav-item" onclick="switchView('projects')"><span class="ms">domain</span>Projects</button>
+  <button class="nav-item active" onclick="switchView('log')"><span class="ms">list_alt</span>Log</button>
+  <button class="nav-item" onclick="openAddView()"><span class="ms">add_circle</span>New Entry</button>
+  <button class="nav-item" onclick="openMomBuilder()"><span class="ms">description</span>MOM</button>
+</nav>
+
+<!-- Modals -->
+<div id="modalContainer"></div>
+
+<!-- Photo Lightbox -->
+<div id="photoLightbox" class="photo-modal" style="display:none;" onclick="closeLightbox()">
+  <img id="lightboxImg" src="" alt="Site Photo"/>
+  <div id="lightboxCaption" style="color:#FFF; margin-top:12px; font-weight:700; font-size:14px;"></div>
+</div>
+
+<script>
+/* Core Storage & State Engine */
+let projects = JSON.parse(localStorage.getItem('sr_projects')) || ['Main Site Project'];
+let activeProject = localStorage.getItem('sr_active_project') || projects[0];
+let entries = JSON.parse(localStorage.getItem('sr_entries_' + activeProject)) || [];
+let activeCategory = 'ALL';
+let activeStatus = 'ALL';
+let addPhotos = [];
+let editPhotos = [];
+
+/* IndexedDB Setup */
+let db;
+const dbReq = indexedDB.open('SiteReportDB', 1);
+dbReq.onupgradeneeded = (e) => {
+  db = e.target.result;
+  if (!db.objectStoreNames.contains('photos')) {
+    db.createObjectStore('photos', { keyPath: 'id' });
+  }
+};
+dbReq.onsuccess = (e) => { db = e.target.result; };
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast'; t.innerText = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2800);
+}
+
+function saveProjects() { localStorage.setItem('sr_projects', JSON.stringify(projects)); }
+function saveEntries() { localStorage.setItem('sr_entries_' + activeProject, JSON.stringify(entries)); }
+
+function switchView(view) {
+  ['viewProjects','viewLog','viewAdd','viewDetail','viewEdit','viewReport','viewMom'].forEach(v => {
+    document.getElementById(v).style.display = (v === 'view' + capitalize(view)) ? 'block' : 'none';
+  });
+  if (view === 'projects') renderProjectsGrid();
+  if (view === 'log') renderLog();
+}
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+function openAddView() {
+  addPhotos = [];
+  document.getElementById('addPhotoPreviews').innerHTML = '';
+  document.getElementById('addTitle').value = '';
+  document.getElementById('addDescription').value = '';
+  switchView('add');
+}
+
+/* Image Compression Engine */
+function compressImage(file, maxWidth = 1200, quality = 0.75) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target.result;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width; let height = img.height;
+        if (width > maxWidth) { height = Math.round((height * maxWidth) / width); width = maxWidth; }
+        canvas.width = width; canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+    };
+  });
+}
+
+function triggerCameraInput(mode) { document.getElementById(mode + 'CameraFile').click(); }
+function triggerGalleryInput(mode) { document.getElementById(mode + 'GalleryFile').click(); }
+
+async function handlePhotoUpload(e, mode) {
+  const files = Array.from(e.target.files);
+  for (let f of files) {
+    const compressed = await compressImage(f);
+    const photoObj = { id: 'p_' + Date.now() + '_' + Math.random().toString(36).substr(2,4), dataUrl: compressed, caption: '' };
+    if (mode === 'add') { addPhotos.push(photoObj); renderPhotoPreviews('add'); }
+    else { editPhotos.push(photoObj); renderPhotoPreviews('edit'); }
+  }
+}
+
+function renderPhotoPreviews(mode) {
+  const container = document.getElementById(mode + 'PhotoPreviews');
+  const arr = (mode === 'add') ? addPhotos : editPhotos;
+  container.innerHTML = arr.map((p, idx) => `
+    <div class="photo-thumb-wrap">
+      <img src="${p.dataUrl}" onclick="openLightbox('${p.dataUrl}','${p.caption}')"/>
+      <input type="text" class="photo-caption-input" placeholder="Caption..." value="${p.caption}" oninput="${mode}Photos[${idx}].caption=this.value"/>
+      <button class="photo-remove" onclick="${mode}Photos.splice(${idx},1); renderPhotoPreviews('${mode}')">×</button>
+    </div>
+  `).join('');
+}
+
+function openLightbox(url, cap) {
+  document.getElementById('lightboxImg').src = url;
+  document.getElementById('lightboxCaption').innerText = cap || '';
+  document.getElementById('photoLightbox').style.display = 'flex';
+}
+function closeLightbox() { document.getElementById('photoLightbox').style.display = 'none'; }
+
+/* Save Entry */
+function saveEntry(e) {
+  e.preventDefault();
+  const newEntry = {
+    id: 'e_' + Date.now(),
+    date: new Date().toISOString(),
+    title: document.getElementById('addTitle').value,
+    category: document.getElementById('addCategory').value,
+    priority: document.getElementById('addPriority').value,
+    status: document.getElementById('addStatus').value,
+    location: document.getElementById('addLocation').value,
+    raisedBy: document.getElementById('addRaisedBy').value,
+    assignedTo: document.getElementById('addAssignedTo').value,
+    description: document.getElementById('addDescription').value,
+    photos: [...addPhotos]
+  };
+  entries.unshift(newEntry);
+  saveEntries();
+  showToast('Site entry saved successfully!');
+  switchView('log');
+}
+
+/* Render Dashboard & Logs */
+function renderLog() {
+  document.getElementById('currentProjectLabel').innerText = activeProject;
+  const list = document.getElementById('entriesList');
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  
+  let filtered = entries.filter(e => {
+    const matchCat = activeCategory === 'ALL' || e.category === activeCategory;
+    const matchStat = activeStatus === 'ALL' || e.status === activeStatus;
+    const matchSearch = e.title.toLowerCase().includes(query) || (e.description && e.description.toLowerCase().includes(query));
+    return matchCat && matchStat && matchSearch;
+  });
+
+  renderStats();
+  renderFilters();
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<div style="text-align:center; padding:48px; color:var(--text-muted);">No observations found for current filters.</div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(e => `
+    <div class="ecard" onclick="viewDetail('${e.id}')">
+      <div class="eicon" style="background:#F1F5F9; color:#334155;"><span class="ms">${getCatIcon(e.category)}</span></div>
+      <div class="ebody">
+        <div class="etop">
+          <div class="etitle">${esc(e.title)}</div>
+          <div class="badges">
+            <span class="badge" style="background:${getStatBg(e.status)}; color:${getStatColor(e.status)};">${e.status}</span>
+          </div>
+        </div>
+        <div class="edesc">${esc(e.description || 'No detailed description provided.')}</div>
+        <div class="emeta">
+          <span><span class="ms" style="font-size:14px;">calendar_today</span> ${new Date(e.date).toLocaleDateString()}</span>
+          <span><span class="ms" style="font-size:14px;">location_on</span> ${esc(e.location || 'Site General')}</span>
+          ${e.photos && e.photos.length ? `<span><span class="ms" style="font-size:14px;">photo_camera</span> ${e.photos.length} photos</span>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function getCatIcon(c) { return c === 'Issue' ? 'warning' : (c === 'Drawing' ? 'architecture' : 'construction'); }
+function getStatBg(s) { return s === 'Open' ? '#FEF3D6' : (s === 'In Progress' ? '#E8F0FE' : '#E6F4EA'); }
+function getStatColor(s) { return s === 'Open' ? '#B06000' : (s === 'In Progress' ? '#1A73E8' : '#137333'); }
+function esc(str) { return str ? str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : ''; }
+
+function renderStats() {
+  const total = entries.length;
+  const openCount = entries.filter(e => e.status === 'Open').length;
+  const progCount = entries.filter(e => e.status === 'In Progress').length;
+  const resCount = entries.filter(e => e.status === 'Resolved').length;
+
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-card" onclick="activeStatus='ALL'; renderLog();"><div class="stat-lbl">Total Logs</div><div class="stat-num">${total}</div></div>
+    <div class="stat-card" onclick="activeStatus='Open'; renderLog();"><div class="stat-lbl" style="color:#B06000;">Open</div><div class="stat-num" style="color:#B06000;">${openCount}</div></div>
+    <div class="stat-card" onclick="activeStatus='In Progress'; renderLog();"><div class="stat-lbl" style="color:#1A73E8;">In Progress</div><div class="stat-num" style="color:#1A73E8;">${progCount}</div></div>
+    <div class="stat-card" onclick="activeStatus='Resolved'; renderLog();"><div class="stat-lbl" style="color:#137333;">Resolved</div><div class="stat-num" style="color:#137333;">${resCount}</div></div>
+  `;
+}
+
+function renderFilters() {
+  const cats = ['ALL', 'Site Visit', 'Issue', 'Drawing'];
+  const stats = ['ALL', 'Open', 'In Progress', 'Resolved'];
+
+  document.getElementById('categoryFilters').innerHTML = cats.map(c => `
+    <button class="fbtn ${activeCategory===c?'active':''}" onclick="activeCategory='${c}'; renderLog();">${c}</button>
+  `).join('');
+
+  document.getElementById('statusFilters').innerHTML = stats.map(s => `
+    <button class="fbtn ${activeStatus===s?'active':''}" onclick="activeStatus='${s}'; renderLog();">${s}</button>
+  `).join('');
+}
+
+/* CSV Export */
+function exportCSV() {
+  let csv = 'ID,Date,Title,Category,Priority,Status,Location,RaisedBy,AssignedTo,Description\n';
+  entries.forEach(e => {
+    csv += `"${e.id}","${e.date}","${(e.title||'').replace(/"/g,'""')}","${e.category}","${e.priority}","${e.status}","${(e.location||'').replace(/"/g,'""')}","${(e.raisedBy||'').replace(/"/g,'""')}","${(e.assignedTo||'').replace(/"/g,'""')}","${(e.description||'').replace(/"/g,'""')}"\n`;
+  });
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `SiteReport_${activeProject}_${Date.now()}.csv`;
+  a.click();
+}
+
+/* Backup & Restore */
+function exportJSON() {
+  const data = JSON.stringify({ project: activeProject, entries: entries }, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `Backup_${activeProject}_${Date.now()}.json`;
+  a.click();
+}
+
+function importJSON(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    try {
+      const parsed = JSON.parse(event.target.result);
+      if (parsed.entries && Array.isArray(parsed.entries)) {
+        entries = parsed.entries;
+        saveEntries();
+        renderLog();
+        showToast('Data restored successfully!');
+      }
+    } catch(err) { showToast('Invalid JSON file!'); }
+  };
+  reader.readAsText(file);
+}
+
+/* Init App */
+switchView('log');
+
+/* Service Worker Registration for PWA Offline Functionality */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(reg => console.log('PWA Service Worker registered successfully', reg))
+      .catch(err => console.log('Service Worker registration failed', err));
+  });
+}
+</script>
+</body>
+</html>
