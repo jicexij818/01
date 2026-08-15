@@ -1,23 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SITE REPORT — Projects Dashboard, AI Field Ledger & MOM</title>
+<title>SITE REPORT — Google Stitch Edition</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet"/>
 
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then(regs => { for(let r of regs) r.unregister(); });
-}
-if ('caches' in window) {
-  caches.keys().then(names => { for(let n of names) caches.delete(n); });
-}
-</script>
 <script id="tailwind-config">
 tailwind.config = {
   darkMode: "class",
@@ -46,9 +38,11 @@ tailwind.config = {
         "error": "#ba1a1a"
       },
       fontFamily: {
-        "body-md": ["Inter", "sans-serif"],
-        "headline-md": ["Inter", "sans-serif"],
-        "data-mono": ["JetBrains Mono", "monospace"]
+        "body-md": ["Inter"],
+        "headline-md": ["Inter"],
+        "data-mono": ["JetBrains Mono"],
+        "headline-lg": ["Inter"],
+        "label-caps": ["JetBrains Mono"]
       }
     }
   }
@@ -56,266 +50,378 @@ tailwind.config = {
 </script>
 
 <style>
-.ms {
-  font-family: 'Material Symbols Outlined';
-  font-weight: normal; font-style: normal; font-size: 20px; line-height: 1; display: inline-block; vertical-align: middle;
-}
-.photo-thumb-wrap { position: relative; border-radius: 8px; overflow: hidden; background: #E2E8F0; border: 1px solid #CBD5E1; }
-.photo-thumb-wrap img { width: 100%; object-fit: cover; display: block; cursor: pointer; }
-.photo-thumb-wrap.ar-16-9 img, img.ar-16-9 { aspect-ratio: 16 / 9; height: auto; }
-.photo-thumb-wrap.ar-9-16 img, img.ar-9-16 { aspect-ratio: 9 / 16; height: auto; max-height: 220px; }
-.photo-caption-input { width: 100%; padding: 4px 6px; font-size: 11px; border: none; border-top: 1px solid #CBD5E1; outline: none; }
-.photo-remove { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,.65); color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2; }
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.icon-fill { font-variation-settings: 'FILL' 1; }
 
 .toast-box {
-  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  position: fixed; bottom: 84px; left: 50%; transform: translateX(-50%);
   background: #1A1C1C; color: #FFFFFF; padding: 10px 22px;
   border-radius: 9999px; font-size: 13px; font-weight: 700; z-index: 1000;
   box-shadow: 0 4px 14px rgba(0,0,0,0.25); animation: toastUp 0.2s ease;
 }
 @keyframes toastUp { from { transform: translate(-50%, 15px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
 
-/* PRINT STYLES */
+/* ISOLATED PRINTING STYLES */
 @media print {
-  header, nav, #navDesktop, .fab-btn, #toastContainer, .no-print, #aiBannerWrap, #statsRow, .toolbar-row { display: none !important; }
+  header, nav, #navDesktop, .fab-btn, #toastContainer, .no-print { display: none !important; }
+  
   body.printing-report #viewReport { display: block !important; }
-  body.printing-report #viewMom, body.printing-report #viewProjects, body.printing-report #viewLog, body.printing-report #viewAdd, body.printing-report #viewDetail { display: none !important; }
+  body.printing-report #viewMom, body.printing-report #viewProjects, body.printing-report #viewLog, body.printing-report #viewAi, body.printing-report #viewAdd { display: none !important; }
+  
   body.printing-mom #viewMom { display: block !important; }
-  body.printing-mom #viewReport, body.printing-mom #viewProjects, body.printing-mom #viewLog, body.printing-mom #viewAdd, body.printing-mom #viewDetail { display: none !important; }
+  body.printing-mom #viewReport, body.printing-mom #viewProjects, body.printing-mom #viewLog, body.printing-mom #viewAi, body.printing-mom #viewAdd { display: none !important; }
+  
   main { padding: 0 !important; max-width: 100% !important; }
   body { background: #fff !important; }
 }
 </style>
 </head>
-<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pb-12">
 
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pt-14 pb-20 md:pb-0">
 
-<!-- Top Navigation Header (Single Unified Header Bar) -->
-<header class="w-full h-16 bg-surface border-b-2 border-secondary px-4 md:px-6 flex justify-between items-center shadow-sm z-30">
-  <div class="flex items-center gap-4 cursor-pointer" onclick="showProjects()">
-    <div class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-sm shadow-sm">
-      <span class="ms">engineering</span>
+<!-- Top Header Navigation -->
+<header class="fixed top-0 left-0 w-full h-14 z-50 bg-surface border-b-2 border-secondary px-4 flex justify-between items-center shadow-sm">
+  <div class="flex items-center gap-3 cursor-pointer" onclick="showProjects()">
+    <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-sm">
+      <span class="material-symbols-outlined text-lg">engineering</span>
     </div>
-    <div class="flex items-center gap-2">
-      <span class="font-headline-md font-extrabold tracking-tight text-primary text-lg">SITE REPORT</span>
-      <span class="bg-primary-container text-on-primary-container text-[10px] font-bold px-2 py-0.5 rounded-full">v3.5 Stitch</span>
-    </div>
+    <h1 class="font-headline-md text-headline-md font-bold tracking-tight text-primary uppercase">SITE REPORT</h1>
   </div>
 
-  <!-- Active Project Switcher Pill -->
-  <div id="headerProjectPill" class="flex items-center gap-2 bg-surface-container hover:bg-surface-container-high px-3.5 py-1.5 rounded-full border border-outline-variant cursor-pointer transition-colors" onclick="showProjects()">
-    <span class="ms text-secondary text-sm">apartment</span>
-    <span id="activeProjectNameText" class="font-bold text-xs text-on-surface">Site A</span>
-    <span class="ms text-secondary text-sm">expand_more</span>
+  <div id="headerProjectPill" class="hidden md:flex items-center gap-2 bg-surface-container hover:bg-surface-container-high px-3 py-1.5 rounded-full border border-outline-variant cursor-pointer" onclick="showProjects()">
+    <span class="material-symbols-outlined text-secondary text-sm">apartment</span>
+    <span id="activeProjectNameText" class="font-label-caps text-label-caps text-on-surface font-semibold">Site A</span>
+    <span class="material-symbols-outlined text-secondary text-sm">expand_more</span>
   </div>
 
-  <!-- Desktop Quick Nav Actions -->
-  <nav class="hidden md:flex items-center gap-3">
-    <button class="px-3.5 py-1.5 rounded-full text-xs font-bold text-on-surface-variant hover:bg-surface-container transition-colors flex items-center gap-1" onclick="showProjects()">
-      <span class="ms text-sm">apartment</span> Projects
+  <div class="flex items-center gap-2">
+    <button class="p-2 text-primary hover:bg-surface-container rounded-full transition-colors" onclick="showProjects()" title="Projects Dashboard">
+      <span class="material-symbols-outlined">apartment</span>
     </button>
-    <button class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-primary text-on-primary flex items-center gap-1 shadow-sm" onclick="showLog()">
-      <span class="ms text-sm">dashboard</span> Logs
+    <button class="p-2 text-primary hover:bg-surface-container rounded-full transition-colors" onclick="exportData()" title="Backup Data">
+      <span class="material-symbols-outlined">backup</span>
     </button>
-    <button class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-secondary-container text-on-secondary-container hover:bg-surface-container-high transition-colors flex items-center gap-1" onclick="showMom()">
-      <span class="ms text-sm">assignment</span> MOM
+    <button class="p-2 text-primary hover:bg-surface-container rounded-full transition-colors" onclick="triggerImport()" title="Restore Data">
+      <span class="material-symbols-outlined">settings_backup_restore</span>
     </button>
-    <button class="px-3.5 py-1.5 rounded-full text-xs font-bold border border-outline-variant hover:bg-surface-container transition-colors flex items-center gap-1" onclick="showReport()">
-      <span class="ms text-sm">description</span> Report
-    </button>
-    <button class="px-4 py-1.5 rounded-full text-xs font-bold bg-primary text-on-primary flex items-center gap-1 shadow-sm hover:opacity-90 transition-all" onclick="showAdd()">
-      <span class="ms text-sm">add</span> + New Log
-    </button>
-  </nav>
+    <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importData(event)"/>
+  </div>
 </header>
 
+<!-- Desktop Navigation Bar -->
+<nav id="navDesktop" class="hidden md:flex justify-between items-center w-full px-8 h-14 bg-surface border-b border-surface-container-highest sticky top-14 z-40">
+  <div class="flex items-center gap-6">
+    <button class="nav-desk-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary px-3 py-2 rounded-lg flex items-center gap-2" onclick="showProjects()">
+      <span class="material-symbols-outlined">construction</span> Projects
+    </button>
+    <button class="nav-desk-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary px-3 py-2 rounded-lg flex items-center gap-2" onclick="showLog()">
+      <span class="material-symbols-outlined">assignment</span> Logs
+    </button>
+    <button class="nav-desk-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary px-3 py-2 rounded-lg flex items-center gap-2" onclick="showAi()">
+      <span class="material-symbols-outlined">auto_awesome</span> AI Drafter
+    </button>
+    <button class="nav-desk-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary px-3 py-2 rounded-lg flex items-center gap-2" onclick="showReport()">
+      <span class="material-symbols-outlined">description</span> Reports
+    </button>
+    <button class="nav-desk-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary px-3 py-2 rounded-lg flex items-center gap-2" onclick="showMom()">
+      <span class="material-symbols-outlined">assignment_turned_in</span> MOM
+    </button>
+  </div>
+  <button class="bg-primary text-on-primary font-label-caps text-label-caps px-4 py-2 rounded-md flex items-center gap-2 hover:bg-primary-container" onclick="showAdd()">
+    <span class="material-symbols-outlined text-sm">add</span> New Log Entry
+  </button>
+</nav>
+
 <!-- Main Container -->
-<main class="w-full max-w-[1440px] mx-auto px-4 md:px-6 pt-6 flex-1 flex flex-col gap-6">
+<main class="flex-1 w-full max-w-[1440px] mx-auto px-4 md:px-8 py-6">
 
-  <!-- Projects Dashboard View -->
-  <div id="viewProjects" style="display:none">
-    <div class="flex justify-between items-center mb-5">
+  <!-- PROJECTS DASHBOARD VIEW -->
+  <section id="viewProjects" class="space-y-6" style="display:none">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-outline pb-4">
       <div>
-        <h1 class="text-2xl font-extrabold text-on-surface">Projects Dashboard</h1>
-        <p class="text-xs text-on-surface-variant mt-0.5">Manage all construction sites, field logs & MOM reports</p>
+        <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold">Projects Dashboard</h2>
+        <p class="font-body-md text-on-surface-variant">Select, rename, or manage construction site projects</p>
       </div>
-      <button class="px-4 py-2 bg-primary text-on-primary rounded-full text-xs font-bold flex items-center gap-1 shadow-sm" onclick="promptCreateProject()">
-        <span class="ms text-sm">add</span> New Project
+      <button class="bg-primary text-on-primary h-12 px-6 flex items-center justify-center gap-2 font-label-caps text-label-caps rounded hover:bg-primary-container shadow-sm" onclick="promptCreateProject()">
+        <span class="material-symbols-outlined">add</span> Create New Project
       </button>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="projectsGrid"></div>
-  </div>
+    <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </section>
 
-  <!-- AI Smart Rough Notes Banner -->
-  <div id="aiBannerWrap">
-    <div class="bg-gradient-to-r from-purple-700 via-indigo-600 to-pink-600 text-white rounded-2xl p-5 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-      <div class="flex items-center gap-3.5">
-        <div class="w-11 h-11 rounded-full bg-white/20 flex items-center justify-center">
-          <span class="ms text-2xl">auto_awesome</span>
-        </div>
-        <div>
-          <div class="font-extrabold text-base">Rough Field Notes ➔ Professional AI Log</div>
-          <div class="text-xs text-purple-100 mt-0.5">Type shorthand notes — AI expands into clean engineering prose</div>
-        </div>
-      </div>
-      <button class="px-5 py-2.5 bg-white text-purple-900 rounded-full text-xs font-extrabold shadow hover:bg-purple-50 transition-all flex items-center gap-1.5 whitespace-nowrap" onclick="openAiModal()">
-        <span class="ms text-sm">edit_note</span> Draft Log Entry
-      </button>
-    </div>
-  </div>
-
-  <!-- Dashboard KPI Stats Grid -->
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="statsRow"></div>
-
-  <!-- Main Log Feed View -->
-  <div id="viewLog" class="space-y-6">
-    <!-- Active Project Banner & Toolbar -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 toolbar-row">
-      <div class="flex flex-col">
-        <span class="text-[11px] font-bold text-primary uppercase tracking-wider">Active Project</span>
-        <h1 class="text-2xl font-bold text-on-surface tracking-tight" id="activeProjectBannerTitle">Site A</h1>
-      </div>
-      <div class="flex flex-wrap items-center gap-2">
-        <button class="px-3.5 py-1.5 rounded-full border border-outline-variant text-xs font-bold hover:bg-surface-container flex items-center gap-1" onclick="exportData()"><span class="ms text-sm">backup</span> Backup</button>
-        <button class="px-3.5 py-1.5 rounded-full border border-outline-variant text-xs font-bold hover:bg-surface-container flex items-center gap-1" onclick="triggerImport()"><span class="ms text-sm">settings_backup_restore</span> Restore</button>
-        <button class="px-3.5 py-1.5 rounded-full border border-outline-variant text-xs font-bold hover:bg-surface-container flex items-center gap-1" onclick="exportCSV()"><span class="ms text-sm">table_chart</span> CSV</button>
-        <button class="px-3.5 py-1.5 rounded-full border border-outline-variant text-xs font-bold hover:bg-surface-container flex items-center gap-1" onclick="showReport()"><span class="ms text-sm">description</span> Report</button>
-        <button class="px-3.5 py-1.5 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold hover:bg-surface-container-high flex items-center gap-1" onclick="showMom()"><span class="ms text-sm">assignment</span> 1-Click MOM</button>
-        <button class="px-4 py-1.5 rounded-full bg-primary text-on-primary text-xs font-bold shadow-sm hover:opacity-90 flex items-center gap-1" onclick="showAdd()"><span class="ms text-sm">add</span> + New Log</button>
-        <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importData(event)"/>
-      </div>
+  <!-- LOG FEED VIEW -->
+  <section id="viewLog" class="space-y-6">
+    <!-- Active Project Header -->
+    <div class="flex flex-col gap-1 cursor-pointer" onclick="showProjects()">
+      <span class="text-label-caps text-primary uppercase tracking-wider font-semibold">Active Project</span>
+      <h1 id="activeProjectTitle" class="text-[24px] font-bold text-on-surface tracking-tight flex items-center gap-2">
+        <span>Site A</span>
+        <span class="material-symbols-outlined text-secondary text-base">expand_more</span>
+      </h1>
     </div>
 
-    <!-- Search & Filter Controls -->
-    <div class="space-y-4">
+    <!-- Search Bar & Filters -->
+    <div class="flex flex-col gap-4">
       <div class="relative w-full">
-        <span class="ms absolute left-3 top.1/2 -translate-y-1/2 text-on-surface-variant" style="top:50%">search</span>
-        <input id="searchInput" class="w-full h-12 pl-10 pr-4 bg-surface-container-lowest border border-[#B0BEC5] focus:border-primary focus:border-2 rounded-xl text-xs font-body-md text-on-surface placeholder:text-on-surface-variant outline-none transition-all" placeholder="Search logs, keywords, assignees…" oninput="renderLog()"/>
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+        <input type="text" id="searchInput" placeholder="Search logs…" class="w-full h-[48px] pl-10 pr-4 bg-surface-container-lowest border border-[#B0BEC5] focus:border-primary focus:border-2 font-body-md text-on-surface placeholder:text-on-surface-variant outline-none transition-all rounded-xl" oninput="renderLog()"/>
       </div>
-      <div class="flex gap-2 overflow-x-auto pb-1" id="filterBtns"></div>
+      
+      <!-- Circular Filter Chips -->
+      <div id="filterPillsRow" class="flex gap-4 overflow-x-auto no-scrollbar pb-2"></div>
     </div>
 
-    <!-- Log Entries List Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="entriesList"></div>
-  </div>
+    <!-- Stats Summary Cards -->
+    <div id="statsRow" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
 
-  <!-- Dynamic Form Panels -->
-  <div id="viewAdd" style="display:none"></div>
-  <div id="viewEdit" style="display:none"></div>
-  <div id="viewDetail" style="display:none"></div>
+    <!-- Entry Cards List -->
+    <div id="entriesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </section>
 
-  <!-- Executive Report View -->
-  <section id="viewReport" style="display:none" class="space-y-4">
-    <div class="no-print bg-surface-container-lowest p-4 rounded-xl border border-outline-variant space-y-3">
+  <!-- AI DRAFTER VIEW -->
+  <section id="viewAi" class="space-y-6" style="display:none">
+    <div>
+      <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold">AI Rough Notes Drafter</h2>
+      <p class="font-body-lg text-on-surface-variant">Type shorthand notes — AI auto-corrects typos and generates clean engineering logs.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-surface-container-lowest border border-surface-container-highest p-4 rounded flex flex-col gap-3">
+        <div class="flex justify-between items-center">
+          <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Rough Notes Input</label>
+          <div class="flex gap-1">
+            <button class="text-xs bg-surface-container px-2 py-1 rounded font-bold" onclick="fillAiSample(1)">Sample 1</button>
+            <button class="text-xs bg-surface-container px-2 py-1 rounded font-bold" onclick="fillAiSample(2)">Sample 2</button>
+          </div>
+        </div>
+        <textarea id="aiInputText" class="w-full min-h-[220px] resize-none border border-outline-variant p-3 font-body-lg text-on-surface bg-surface rounded outline-none" placeholder="e.g. add backpainted glass in vanity drawers and sutter in parents room bathroom"></textarea>
+        <button class="w-full h-12 bg-primary hover:bg-primary-container text-on-primary font-headline-md font-semibold flex items-center justify-center gap-2 rounded transition-colors" onclick="processAiDraft()">
+          <span class="material-symbols-outlined icon-fill">auto_awesome</span> Draft Now
+        </button>
+      </div>
+
+      <div class="bg-surface-container-lowest border border-surface-container-highest p-4 rounded flex flex-col gap-3">
+        <div class="border-b border-surface-variant pb-2 flex justify-between items-center">
+          <h3 class="font-headline-md text-on-surface">Live Draft Preview</h3>
+          <span id="aiPreviewStatus" class="font-label-caps text-label-caps text-secondary uppercase bg-surface-container px-2 py-1 rounded">Waiting for Input</span>
+        </div>
+        <div id="aiPreviewBox" class="space-y-3 min-h-[220px]">
+          <div class="text-on-surface-variant text-sm italic">Type rough notes on the left and tap "Draft Now" to generate structured entry.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOG FORM VIEW (ADD / EDIT) -->
+  <section id="viewAdd" class="max-w-2xl mx-auto space-y-6" style="display:none">
+    <div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-md shadow-sm">
+      <h2 id="formHeaderTitle" class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold mb-4">New Log Entry</h2>
+      
+      <form onsubmit="event.preventDefault();" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Date</label>
+            <input type="date" id="fDate" class="w-full bg-surface-container-lowest border border-outline-variant rounded h-12 px-4 font-body-md"/>
+          </div>
+          <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Category</label>
+            <select id="fCat" class="w-full bg-surface-container-lowest border border-outline-variant rounded h-12 px-4 font-body-md">
+              <option value="SITE">🏗️ Site Visit</option>
+              <option value="ISSUE">⚠️ Technical Issue</option>
+              <option value="DRAWING">📐 Drawing Request</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Title *</label>
+          <input type="text" id="fTitle" placeholder="Brief subject..." class="w-full bg-surface-container-lowest border border-outline-variant rounded h-12 px-4 font-body-md"/>
+        </div>
+
+        <div>
+          <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Professional Engineering Description</label>
+          <textarea id="fDesc" rows="4" placeholder="Detailed notes..." class="w-full bg-surface-container-lowest border border-outline-variant rounded p-3 font-body-md"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Raised By (Optional)</label>
+            <input type="text" id="fBy" placeholder="e.g. Client / Engineer" class="w-full bg-surface-container-lowest border border-outline-variant rounded h-12 px-4 font-body-md"/>
+          </div>
+          <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Assigned To (Optional)</label>
+            <input type="text" id="fTo" placeholder="e.g. PMC / Design Team" class="w-full bg-surface-container-lowest border border-outline-variant rounded h-12 px-4 font-body-md"/>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Status</label>
+            <select id="fStatus" class="w-full bg-surface-container-lowest border border-outline-variant rounded h-12 px-4 font-body-md">
+              <option value="OPEN">Open</option>
+              <option value="INPROGRESS">In Progress</option>
+              <option value="RESOLVED">Resolved</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Priority (Optional)</label>
+            <select id="fPri" class="w-full bg-surface-container-lowest border border-outline-variant rounded h-12 px-4 font-body-md">
+              <option value="">(None / Optional)</option>
+              <option value="HIGH">High</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="LOW">Low</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Action Required / Follow-up</label>
+          <input type="text" id="fFollow" placeholder="Next step required..." class="w-full bg-surface-container-lowest border border-outline-variant rounded h-12 px-4 font-body-md"/>
+        </div>
+
+        <!-- DUAL PHOTO UPLOAD OPTIONS -->
+        <div class="border-t border-outline-variant pt-4">
+          <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase">Attachments</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button type="button" class="flex flex-col items-center justify-center gap-1 h-28 border-2 border-dashed border-outline-variant bg-surface-container hover:bg-surface-container-high rounded" onclick="document.getElementById('photoCamera').click()">
+              <input type="file" id="photoCamera" accept="image/*" capture="environment" class="hidden" onchange="handlePhotos(event)"/>
+              <span class="material-symbols-outlined text-3xl text-on-surface-variant">photo_camera</span>
+              <span class="font-body-md font-semibold text-on-surface-variant">Take Camera Photo</span>
+            </button>
+            <button type="button" class="flex flex-col items-center justify-center gap-1 h-28 border-2 border-dashed border-outline-variant bg-surface-container hover:bg-surface-container-high rounded" onclick="document.getElementById('photoGallery').click()">
+              <input type="file" id="photoGallery" multiple accept="image/*" class="hidden" onchange="handlePhotos(event)"/>
+              <span class="material-symbols-outlined text-3xl text-on-surface-variant">collections</span>
+              <span class="font-body-md font-semibold text-on-surface-variant">Pick from Gallery</span>
+            </button>
+          </div>
+          <div id="photoGrid" class="grid grid-cols-3 sm:grid-cols-4 gap-2 mt-3"></div>
+        </div>
+
+        <div class="flex gap-3 pt-4">
+          <button type="button" id="btnSubmitForm" class="flex-1 bg-primary text-on-primary font-headline-md h-12 rounded flex items-center justify-center hover:bg-primary-container font-bold" onclick="saveFormEntry()">Save Log Entry</button>
+          <button type="button" class="px-6 border border-outline-variant text-on-surface font-headline-md h-12 rounded" onclick="showLog()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- DETAIL VIEW -->
+  <section id="viewDetail" class="max-w-2xl mx-auto space-y-6" style="display:none"></section>
+
+  <!-- SITE VISIT REPORT VIEW -->
+  <section id="viewReport" class="space-y-6" style="display:none">
+    <div class="no-print bg-surface-container-lowest p-4 rounded border border-outline-variant space-y-3">
       <div class="flex flex-wrap justify-between items-center gap-3">
-        <button class="px-3 py-1.5 border border-outline-variant rounded-full text-xs font-bold" onclick="showLog()">← Back to Log</button>
+        <button class="bg-surface-container px-4 py-2 rounded font-bold text-sm" onclick="showLog()">← Back to Log</button>
         <div class="flex items-center gap-2">
-          <label class="text-xs font-bold">From</label>
-          <input type="date" id="rFrom" class="p-1.5 border rounded-lg text-xs" onchange="renderReport()"/>
-          <label class="text-xs font-bold">To</label>
-          <input type="date" id="rTo" class="p-1.5 border rounded-lg text-xs" onchange="renderReport()"/>
+          <label class="text-xs font-bold">From</label> <input type="date" id="rFrom" class="p-1 border rounded text-xs" onchange="renderReport()"/>
+          <label class="text-xs font-bold">To</label> <input type="date" id="rTo" class="p-1 border rounded text-xs" onchange="renderReport()"/>
         </div>
         <div class="flex items-center gap-2">
           <label class="text-xs font-bold">Layout</label>
-          <select id="rLayoutStyle" class="p-1.5 border rounded-lg text-xs font-bold" onchange="renderReport()">
-            <option value="OPT1">🖼️ Visual Photo Cards</option>
-            <option value="OPT2">📑 Executive Rows</option>
+          <select id="rLayoutStyle" class="p-1.5 border rounded text-xs font-bold" onchange="renderReport()">
+            <option value="OPT1">🖼️ Option 1: Visual Photo Cards</option>
+            <option value="OPT2">📑 Option 2: Executive Rows</option>
           </select>
         </div>
-        <button class="px-4 py-1.5 bg-primary text-on-primary rounded-full text-xs font-bold ml-auto flex items-center gap-1" onclick="printReport()"><span class="ms text-sm">print</span> Print / Export PDF</button>
+        <button class="bg-primary text-on-primary px-4 py-2 rounded font-bold text-sm flex items-center gap-1" onclick="printReport()">
+          <span class="material-symbols-outlined text-sm">print</span> Print / Export PDF
+        </button>
       </div>
 
-      <div class="flex items-center gap-3 bg-surface p-3 rounded-lg border border-outline-variant">
-        <label class="text-xs font-bold cursor-pointer flex items-center gap-2">
-          <input type="checkbox" id="toggleAttendees" checked onchange="renderReport()"/> Include Attendees
+      <div class="flex flex-wrap items-center gap-3 bg-surface p-3 rounded border border-outline-variant">
+        <label class="flex items-center gap-2 text-xs font-bold cursor-pointer">
+          <input type="checkbox" id="toggleAttendees" checked onchange="renderReport()"/> Include Attendees in Report
         </label>
-        <input type="text" id="rAttendees" placeholder="e.g. Client Lead, PMC Lead" class="flex-1 p-1.5 border rounded-lg text-xs" oninput="renderReport()"/>
+        <input type="text" id="rAttendees" placeholder="e.g. Client Lead, PMC Lead" class="flex-1 text-xs p-1.5 border rounded bg-white" oninput="renderReport()"/>
       </div>
     </div>
 
-    <div id="reportDocument" class="bg-white p-6 border border-outline-variant rounded-xl shadow-sm"></div>
+    <div id="reportDocument" class="bg-white border border-outline p-6 rounded-md space-y-4"></div>
   </section>
 
-  <!-- Minutes of Meeting (MOM) View -->
-  <div id="viewMom" style="display:none" class="space-y-4">
-    <div class="flex flex-wrap items-center gap-3 mb-4">
-      <button class="px-3.5 py-1.5 border border-outline-variant rounded-full text-xs font-bold flex items-center gap-1" onclick="showLog()"><span class="ms text-sm">arrow_back</span> Back to Log</button>
+  <!-- 1-CLICK MOM VIEW -->
+  <section id="viewMom" class="space-y-6" style="display:none">
+    <div class="no-print flex flex-wrap justify-between items-center gap-3 bg-surface-container-lowest p-4 rounded border border-outline-variant">
+      <button class="bg-surface-container px-4 py-2 rounded font-bold text-sm" onclick="showLog()">← Back to Log</button>
       <div class="flex items-center gap-2">
         <label class="text-xs font-bold">Visit Date</label>
-        <input type="date" class="p-1.5 border rounded-lg text-xs" id="momDate" value="" onchange="renderMomList()"/>
-        <select class="p-1.5 border rounded-lg text-xs font-bold" id="momFilterMode" onchange="renderMomList()">
+        <input type="date" id="momDate" class="p-1.5 border rounded text-xs" onchange="renderMomList()"/>
+        <select id="momFilterMode" class="p-1.5 border rounded text-xs font-bold" onchange="renderMomList()">
           <option value="DATE">Logs from Visit Date</option>
           <option value="ALL_SITE">All Logs for Project</option>
         </select>
       </div>
-      <button class="px-4 py-1.5 bg-primary text-on-primary rounded-full text-xs font-bold flex items-center gap-1 shadow-sm" onclick="copyMomText()"><span class="ms text-sm">content_copy</span> Copy MOM for WhatsApp/Email</button>
-      <button class="px-4 py-1.5 border border-outline-variant rounded-full text-xs font-bold ml-auto flex items-center gap-1" onclick="printMom()"><span class="ms text-sm">print</span> Print MOM PDF</button>
+      <button class="bg-primary text-on-primary px-4 py-2 rounded font-bold text-sm flex items-center gap-1" onclick="copyMomText()">
+        <span class="material-symbols-outlined text-sm">content_copy</span> Copy for WhatsApp/Email
+      </button>
+      <button class="bg-secondary text-on-secondary px-4 py-2 rounded font-bold text-sm flex items-center gap-1" onclick="printMom()">
+        <span class="material-symbols-outlined text-sm">print</span> Print MOM PDF
+      </button>
     </div>
 
-    <div class="bg-white rounded-xl border border-outline-variant p-6 shadow-sm space-y-4 max-w-4xl mx-auto">
-      <div class="flex justify-between items-center">
-        <h2 class="text-lg font-extrabold flex items-center gap-2 text-on-surface">
-          <span class="ms text-primary">assignment</span> Minutes of Meeting (MOM)
-        </h2>
-        <span class="text-xs text-on-surface-variant">Select points to include</span>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-surface-container-lowest border-2 border-outline-variant p-4 rounded space-y-3">
+        <h3 class="font-headline-md text-on-surface font-bold">Select Daily Logs</h3>
+        <div id="momChecklist" class="space-y-2"></div>
       </div>
 
-      <div class="flex items-center gap-2">
-        <label class="text-xs font-bold">Attendees:</label>
-        <input class="flex-1 p-2 border rounded-lg text-xs" id="momAttendees" placeholder="e.g. Client Lead, PMC Lead" oninput="renderMomText()"/>
+      <div class="bg-surface-container-lowest border-2 border-outline-variant p-4 rounded space-y-3">
+        <div class="flex justify-between items-center border-b pb-2">
+          <h3 class="font-headline-md text-on-surface font-bold">Live MOM Text</h3>
+        </div>
+        <div class="space-y-2">
+          <label class="text-xs font-bold text-on-surface-variant block">Attendees:</label>
+          <input type="text" id="momAttendees" class="w-full p-2 border rounded text-xs" placeholder="e.g. Darshin, Lokendrabhai (PMC)" oninput="renderMomText()"/>
+        </div>
+        <textarea id="momOutputText" class="w-full min-h-[260px] p-3 font-data-mono text-xs bg-surface-container-low border rounded leading-relaxed outline-none"></textarea>
       </div>
-
-      <div class="bg-surface-container p-4 rounded-xl">
-        <div class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Select Items to Include in MOM:</div>
-        <div id="momChecklist" class="flex flex-col gap-2"></div>
-      </div>
-
-      <textarea class="w-full min-h-[260px] p-4 rounded-xl border border-outline-variant bg-surface font-data-mono text-xs text-on-surface outline-none" id="momOutputText"></textarea>
     </div>
-  </div>
+  </section>
 
 </main>
 
-<!-- AI Rough Notes Drafter Modal -->
-<div class="fixed inset-0 bg-on-surface/60 backdrop-blur-sm flex items-center justify-center z-50 p-4" id="aiModal" style="display:none">
-  <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-xl space-y-4">
-    <div class="flex justify-between items-center">
-      <div class="font-extrabold text-base flex items-center gap-2 text-purple-900">
-        <span class="ms text-purple-600">auto_awesome</span> Free AI Rough Points Drafter
-      </div>
-      <button class="text-on-surface-variant hover:text-on-surface" onclick="closeAiModal()"><span class="ms">close</span></button>
-    </div>
-    
-    <p class="text-xs text-on-surface-variant">Type shorthand notes. AI auto-corrects typos (*sutter* ➔ *shutter*) and builds a clean engineering log entry.</p>
+<!-- Floating Action Button (Mobile) -->
+<button class="fab-btn fixed bottom-20 right-4 w-14 h-14 bg-primary text-on-primary rounded-full flex items-center justify-center shadow-lg md:hidden z-40" onclick="showAdd()">
+  <span class="material-symbols-outlined text-2xl">add</span>
+</button>
 
-    <div class="flex items-center gap-2 flex-wrap">
-      <span class="text-[11px] font-bold text-on-surface-variant">Try Sample:</span>
-      <button class="px-2.5 py-1 rounded-full bg-purple-100 text-purple-900 text-[11px] font-bold hover:bg-purple-200" onclick="fillSample(1)">🏗️ Vanity Shutter</button>
-      <button class="px-2.5 py-1 rounded-full bg-purple-100 text-purple-900 text-[11px] font-bold hover:bg-purple-200" onclick="fillSample(2)">📐 Deck Concept</button>
-      <button class="px-2.5 py-1 rounded-full bg-purple-100 text-purple-900 text-[11px] font-bold hover:bg-purple-200" onclick="fillSample(3)">📷 Pooja Room Cabinet</button>
-    </div>
+<!-- Mobile Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-2 bg-surface border-t-2 border-secondary md:hidden">
+  <button class="nav-mob-item flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 rounded-xl" onclick="showProjects()">
+    <span class="material-symbols-outlined mb-1">construction</span>
+    <span class="font-label-caps text-label-caps text-[10px]">Projects</span>
+  </button>
+  <button class="nav-mob-item flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 rounded-xl" onclick="showLog()">
+    <span class="material-symbols-outlined mb-1">assignment</span>
+    <span class="font-label-caps text-label-caps text-[10px]">Logs</span>
+  </button>
+  <button class="nav-mob-item flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 rounded-xl" onclick="showAi()">
+    <span class="material-symbols-outlined mb-1">auto_awesome</span>
+    <span class="font-label-caps text-label-caps text-[10px]">AI Drafter</span>
+  </button>
+  <button class="nav-mob-item flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 rounded-xl" onclick="showReport()">
+    <span class="material-symbols-outlined mb-1">description</span>
+    <span class="font-label-caps text-label-caps text-[10px]">Reports</span>
+  </button>
+  <button class="nav-mob-item flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 rounded-xl" onclick="showMom()">
+    <span class="material-symbols-outlined mb-1">assignment_turned_in</span>
+    <span class="font-label-caps text-label-caps text-[10px]">MOM</span>
+  </button>
+</nav>
 
-    <textarea class="w-full p-3.5 rounded-xl border border-outline-variant bg-surface text-xs font-body-md text-on-surface outline-none focus:border-primary" id="aiInputText" rows="5" placeholder="- add backpainted glass in vanity drawers and sutter in parents room bathroom"></textarea>
-
-    <div class="flex gap-3">
-      <button class="flex-1 py-2.5 bg-gradient-to-r from-purple-700 to-indigo-600 text-white rounded-full font-bold text-xs shadow hover:opacity-90 flex items-center justify-center gap-1.5" onclick="processAiDraft()">
-        <span class="ms text-sm">auto_fix_high</span> Generate & Preview Draft
-      </button>
-      <button class="px-5 py-2.5 border border-outline-variant rounded-full text-xs font-bold" onclick="closeAiModal()">Cancel</button>
-    </div>
-  </div>
-</div>
+<div id="toastContainer"></div>
 
 <script>
 const CATS = {
-  DRAWING:{ label:"Drawing Request", color:"#964900", bg:"#FFEADB", icon:"architecture" },
-  ISSUE:  { label:"Technical Issue",  color:"#BA1A1A", bg:"#FFDAD6", icon:"warning" },
-  SITE:   { label:"Site Visit",       color:"#15803D", bg:"#DCFCE7", icon:"construction" },
+  DRAWING:{ label:"Drawing Request", color:"#1D4ED8", bg:"#EFF6FF", icon:"architecture" },
+  ISSUE:  { label:"Technical Issue",  color:"#DC2626", bg:"#FEF2F2", icon:"warning" },
+  SITE:   { label:"Site Visit",       color:"#15803D", bg:"#F0FDF4", icon:"construction" },
 };
 const STATS = {
   OPEN:      { label:"Open",        color:"#B45309", bg:"#FEF3C7" },
   INPROGRESS:{ label:"In Progress", color:"#1D4ED8", bg:"#EFF6FF" },
-  RESOLVED:  { label:"Resolved",    color:"#15803D", bg:"#DCFCE7" },
+  RESOLVED:  { label:"Resolved",    color:"#15803D", bg:"#F0FDF4" },
 };
 const PRIS = {
   HIGH:  { label:"High",   color:"#DC2626" },
@@ -323,6 +429,7 @@ const PRIS = {
   LOW:   { label:"Low",    color:"#64748B" },
 };
 
+// Shared LocalStorage Database Keys
 let sites    = JSON.parse(localStorage.getItem("sr-sites")   || "null") || ["Site A","Site B"];
 let entries  = JSON.parse(localStorage.getItem("sr-entries") || "null") || makeSample();
 let settings = JSON.parse(localStorage.getItem("sr-settings")|| "null") || { firmName:"Your Firm Name" };
@@ -338,8 +445,7 @@ function makeSample() {
     { id:1, site:"Site A", date:today(), category:"SITE", status:"INPROGRESS", priority:"",
       title:"Finishes Update: Backpainted Glass Vanity — Parents Room Bathroom",
       description:"Parents Room Bathroom detail update: Incorporate backpainted glass finish to vanity drawers and shutter panels.",
-      raisedBy:"", assignedTo:"PMC", followUp:"PMC to coordinate backpainted glass installation on vanity drawers and shutters.",
-      photos:[{dataUrl:"https://picsum.photos/id/13/400/300", caption:"Vanity detail", aspect:"16:9"}] },
+      raisedBy:"", assignedTo:"PMC", followUp:"PMC to coordinate backpainted glass installation on vanity drawers and shutters.", photos:[] },
     { id:2, site:"Site A", date:daysAgo(1), category:"DRAWING", status:"OPEN", priority:"HIGH",
       title:"Request: Deck Area Concept Layout",
       description:"Site team requires architectural layout concepts for the deck area to proceed with planning.",
@@ -359,8 +465,9 @@ function fmt(d) { if(!d)return""; return new Date(d+"T00:00:00").toLocaleDateStr
 function esc(s) { return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 
 function showToast(msg) {
+  const container = document.getElementById("toastContainer");
   const t = Object.assign(document.createElement("div"),{className:"toast-box",textContent:msg});
-  document.body.appendChild(t); setTimeout(()=>t.remove(),2600);
+  container.appendChild(t); setTimeout(()=>t.remove(),2600);
 }
 
 function compressImage(file, callback) {
@@ -370,10 +477,7 @@ function compressImage(file, callback) {
     img.onload = () => {
       const canvas = document.createElement("canvas");
       let w = img.width, h = img.height;
-      // Auto detect 9:16 portrait (h > w) vs 16:9 landscape (w >= h)
-      const detectedAspect = (h > w) ? "9:16" : "16:9";
-
-      const maxDim = 1920;
+      const maxDim = 1920; // High-Res 1080p 1920px
       if (w > maxDim || h > maxDim) {
         if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
         else { w = Math.round((w * maxDim) / h); h = maxDim; }
@@ -381,22 +485,99 @@ function compressImage(file, callback) {
       canvas.width = w; canvas.height = h;
       const ctx = canvas.getContext("2d");
       ctx.drawImage(img, 0, 0, w, h);
-      callback(canvas.toDataURL("image/jpeg", 0.88), detectedAspect);
+      callback(canvas.toDataURL("image/jpeg", 0.88));
     };
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
 
+// VIEW SWITCHING ENGINE
+function hideAllViews() {
+  ["viewProjects","viewLog","viewAi","viewAdd","viewDetail","viewReport","viewMom"].forEach(id => {
+    document.getElementById(id).style.display = "none";
+  });
+}
+
 function showProjects() {
   hideAllViews();
-  document.getElementById("aiBannerWrap").style.display="none";
-  document.getElementById("statsRow").style.display="none";
-  document.getElementById("viewProjects").style.display="block";
-  document.getElementById("activeProjectNameText").textContent = activeSite;
+  document.getElementById("viewProjects").style.display = "block";
   renderProjectsGrid();
 }
 
+function showLog() {
+  hideAllViews();
+  document.getElementById("viewLog").style.display = "block";
+  document.getElementById("activeProjectNameText").textContent = activeSite;
+  renderStats(); renderFilters(); renderLog();
+}
+
+function showAi() {
+  hideAllViews();
+  document.getElementById("viewAi").style.display = "block";
+}
+
+function showAdd(prefillData = null) {
+  editId = null; addPhotos = [...(prefillData?.photos||[])];
+  hideAllViews();
+  document.getElementById("viewAdd").style.display = "block";
+  document.getElementById("formHeaderTitle").textContent = "New Log Entry — " + activeSite;
+  document.getElementById("btnSubmitForm").textContent = "Save Log Entry";
+  fillFormData(prefillData);
+  renderPhotoGrid();
+}
+
+function showEdit(id) {
+  const entry = entries.find(e => e.id === id); if(!entry) return;
+  editId = id; addPhotos = [...(entry.photos||[])];
+  hideAllViews();
+  document.getElementById("viewAdd").style.display = "block";
+  document.getElementById("formHeaderTitle").textContent = "Edit Log Entry — " + activeSite;
+  document.getElementById("btnSubmitForm").textContent = "Update Entry";
+  fillFormData(entry);
+  renderPhotoGrid();
+}
+
+function fillFormData(e) {
+  document.getElementById("fDate").value = e ? e.date : today();
+  document.getElementById("fCat").value = e ? e.category : "SITE";
+  document.getElementById("fTitle").value = e ? (e.title||"") : "";
+  document.getElementById("fDesc").value = e ? (e.description||"") : "";
+  document.getElementById("fBy").value = e ? (e.raisedBy||"") : "";
+  document.getElementById("fTo").value = e ? (e.assignedTo||"") : "";
+  document.getElementById("fStatus").value = e ? e.status : "OPEN";
+  document.getElementById("fPri").value = e ? (e.priority||"") : "";
+  document.getElementById("fFollow").value = e ? (e.followUp||"") : "";
+}
+
+function saveFormEntry() {
+  const title = document.getElementById("fTitle").value.trim();
+  if(!title) { alert("Please enter a title."); return; }
+
+  const entryData = {
+    date: document.getElementById("fDate").value,
+    category: document.getElementById("fCat").value,
+    title: title,
+    description: document.getElementById("fDesc").value,
+    raisedBy: document.getElementById("fBy").value,
+    assignedTo: document.getElementById("fTo").value,
+    status: document.getElementById("fStatus").value,
+    priority: document.getElementById("fPri").value,
+    followUp: document.getElementById("fFollow").value,
+    photos: [...addPhotos]
+  };
+
+  if(editId) {
+    entries = entries.map(e => e.id === editId ? {...e, ...entryData} : e);
+    showToast("Log updated!");
+  } else {
+    entries.unshift({ id: Date.now(), site: activeSite, ...entryData });
+    showToast("Log saved!");
+  }
+  save(); showLog();
+}
+
+// PROJECTS DASHBOARD ENGINE
 function renderProjectsGrid() {
   const grid = document.getElementById("projectsGrid");
   grid.innerHTML = sites.map(s => {
@@ -405,25 +586,25 @@ function renderProjectsGrid() {
     const lastLog = siteLogs.sort((a,b)=>b.date.localeCompare(a.date))[0];
     const isCurrent = s === activeSite;
 
-    return `<div class="bg-surface-container-lowest rounded-xl p-5 border ${isCurrent?"border-primary border-2":"border-outline-variant"} shadow-sm cursor-pointer hover:shadow-md transition-all" onclick="switchSite('${esc(s)}')">
+    return `<div class="bg-surface-container-lowest border ${isCurrent?'border-primary border-2':'border-outline-variant'} p-5 rounded-lg space-y-3 cursor-pointer hover:shadow-md transition-all" onclick="switchSite('${esc(s)}')">
       <div class="flex justify-between items-start">
-        <div class="font-extrabold text-base text-on-surface">${esc(s)}</div>
-        ${isCurrent?`<span class="text-[10px] bg-primary text-on-primary px-2.5 py-0.5 rounded-full font-bold">Active</span>`:""}
+        <div class="font-headline-md font-bold text-on-surface text-lg">${esc(s)}</div>
+        ${isCurrent ? `<span class="bg-primary text-on-primary text-xs px-2 py-0.5 rounded font-bold">Active</span>` : ''}
       </div>
-      <div class="flex gap-3 mt-3 text-xs text-on-surface-variant">
+      <div class="flex gap-4 text-xs text-on-surface-variant">
         <span>📋 ${siteLogs.length} Logs</span>
         <span>🔴 ${openCount} Open</span>
         <span>📅 ${lastLog ? fmt(lastLog.date) : "No visits"}</span>
       </div>
-      <div class="flex gap-2 mt-4 pt-3 border-t border-outline-variant" onclick="event.stopPropagation()">
-        <button class="px-3 py-1 border border-outline-variant rounded-full text-xs font-bold" onclick="renameProject('${esc(s)}')">✏️ Rename</button>
-        <button class="px-3 py-1 border border-outline-variant rounded-full text-xs font-bold text-red-600" onclick="deleteProject('${esc(s)}')">🗑️ Delete</button>
+      <div class="flex gap-2 pt-2 border-t border-surface-variant" onclick="event.stopPropagation()">
+        <button class="px-3 py-1 border border-outline-variant rounded text-xs font-bold" onclick="renameProject('${esc(s)}')">✏️ Rename</button>
+        <button class="px-3 py-1 border border-outline-variant text-error rounded text-xs font-bold" onclick="deleteProject('${esc(s)}')">🗑️ Delete</button>
       </div>
     </div>`;
   }).join("") + `
-    <div class="border-2 border-dashed border-outline-variant rounded-xl p-5 flex flex-col items-center justify-center text-center cursor-pointer hover:border-primary transition-all min-h-[140px]" onclick="promptCreateProject()">
-      <span class="ms text-primary text-3xl">add_circle</span>
-      <div class="text-xs font-bold text-primary mt-1">+ Create New Project</div>
+    <div class="border-2 border-dashed border-outline-variant p-6 rounded-lg flex flex-col items-center justify-center text-center cursor-pointer hover:bg-surface-container transition-colors" onclick="promptCreateProject()">
+      <span class="material-symbols-outlined text-3xl text-primary mb-1">add_circle</span>
+      <div class="font-bold text-sm text-primary">+ Create New Project</div>
     </div>`;
 }
 
@@ -440,6 +621,7 @@ function renameProject(oldName) {
   if(!newName || !newName.trim() || newName.trim() === oldName) return;
   const v = newName.trim();
   if(sites.includes(v)) { alert("Project name already exists!"); return; }
+  
   sites = sites.map(s => s === oldName ? v : s);
   entries = entries.map(e => e.site === oldName ? {...e, site: v} : e);
   if(activeSite === oldName) activeSite = v;
@@ -450,173 +632,135 @@ function deleteProject(siteName) {
   if(sites.length <= 1) { alert("You must have at least one active project."); return; }
   const count = entries.filter(e => e.site === siteName).length;
   if(!confirm(`Delete project "${siteName}" and its ${count} logs?`)) return;
+
   sites = sites.filter(s => s !== siteName);
   entries = entries.filter(e => e.site !== siteName);
   if(activeSite === siteName) activeSite = sites[0];
   save(); showProjects(); showToast("Project deleted.");
 }
 
-function switchSite(s){
+function switchSite(s) {
   activeSite = s; filterCat="ALL"; filterStat="ALL";
-  document.getElementById("searchInput").value="";
+  document.getElementById("searchInput").value = "";
   document.getElementById("activeProjectNameText").textContent = activeSite;
-  document.getElementById("activeProjectBannerTitle").textContent = activeSite;
+  showLog();
+}
+
+function switchSite(s) {
+  activeSite = s; filterCat="ALL"; filterStat="ALL";
+  if(document.getElementById("searchInput")) document.getElementById("searchInput").value = "";
+  if(document.getElementById("activeProjectNameText")) document.getElementById("activeProjectNameText").textContent = activeSite;
+  if(document.getElementById("activeProjectTitle")) document.getElementById("activeProjectTitle").innerHTML = `<span>${esc(activeSite)}</span> <span class="material-symbols-outlined text-secondary text-base">expand_more</span>`;
   showLog();
 }
 
 function renderStats() {
-  const se=entries.filter(e=>e.site===activeSite);
-  document.getElementById("statsRow").innerHTML=[
-    ["Total Logs",se.length,"bg-surface-container-lowest","text-on-surface",()=>{filterCat="ALL";filterStat="ALL";renderFilters();renderLog();}],
-    ["Open Items",se.filter(e=>e.status==="OPEN").length,"bg-amber-100","text-amber-900",()=>{filterCat="ALL";filterStat="OPEN";renderFilters();renderLog();}],
-    ["In Progress",se.filter(e=>e.status==="INPROGRESS").length,"bg-blue-100","text-blue-900",()=>{filterCat="ALL";filterStat="INPROGRESS";renderFilters();renderLog();}],
-    ["Resolved",se.filter(e=>e.status==="RESOLVED").length,"bg-emerald-100","text-emerald-900",()=>{filterCat="ALL";filterStat="RESOLVED";renderFilters();renderLog();}],
-  ].map(([l,v,bg,c,click])=>`<div class="${bg} rounded-xl p-4 border border-outline-variant shadow-sm cursor-pointer" onclick="(${click.toString()})()">
-    <div class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">${l}</div><div class="text-3xl font-extrabold font-data-mono ${c} mt-1">${v}</div></div>`).join("");
+  const se = entries.filter(e => e.site === activeSite);
+  document.getElementById("statsRow").innerHTML = [
+    ["Total Logs", se.length, "bg-surface-container-lowest border border-outline-variant", "text-on-surface", () => {filterCat="ALL";filterStat="ALL";renderFilters();renderLog();}],
+    ["Open Items", se.filter(e=>e.status==="OPEN").length, "bg-primary-fixed border border-primary-fixed-dim", "text-primary", () => {filterCat="ALL";filterStat="OPEN";renderFilters();renderLog();}],
+    ["In Progress", se.filter(e=>e.status==="INPROGRESS").length, "bg-secondary-container border border-outline-variant", "text-primary", () => {filterCat="ALL";filterStat="INPROGRESS";renderFilters();renderLog();}],
+    ["Resolved", se.filter(e=>e.status==="RESOLVED").length, "bg-[#E8F5E9] border border-[#C8E6C9]", "text-[#2E7D32]", () => {filterCat="ALL";filterStat="RESOLVED";renderFilters();renderLog();}],
+  ].map(([l,v,bg,c,click]) => `<div class="${bg} rounded-xl p-4 flex flex-col gap-1 cursor-pointer hover:shadow-sm transition-all" onclick="(${click.toString()})()">
+    <span class="text-label-caps uppercase text-on-surface-variant font-bold text-[10px]">${l}</span>
+    <span class="text-[32px] font-bold ${c}">${v}</span>
+  </div>`).join("");
 }
 
 function renderFilters() {
-  document.getElementById("filterBtns").innerHTML=
-    [["ALL","All Types"],["SITE","🏗️ Site Visit"],["ISSUE","⚠️ Technical Issue"],["DRAWING","📐 Drawing Request"]]
-      .map(([k,l])=>`<button class="px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all ${filterCat===k?"bg-on-surface text-white border-on-surface":"bg-surface-container-lowest text-on-surface border-outline-variant"}" onclick="setF('cat','${k}')">${l}</button>`).join("")+
-    [["ALL","All Status"],["OPEN","Open"],["INPROGRESS","In Progress"],["RESOLVED","Resolved"]]
-      .map(([k,l])=>`<button class="px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all ${filterStat===k?"bg-on-surface text-white border-on-surface":"bg-surface-container-lowest text-on-surface border-outline-variant"}" onclick="setF('stat','${k}')">${l}</button>`).join("");
+  const catItems = [
+    ["ALL", "All<br>Types", "text-sm", ""],
+    ["SITE", "Site Visit", "construction", "text-primary"],
+    ["ISSUE", "Issue", "warning", "text-error"],
+    ["DRAWING", "Drawing", "architecture", "text-secondary"]
+  ];
+
+  const statItems = [
+    ["ALL", "All<br>Status"],
+    ["OPEN", "Open"],
+    ["INPROGRESS", "In Progress"],
+    ["RESOLVED", "Resolved"]
+  ];
+
+  let html = catItems.map(([k, label, icon, iconCol]) => {
+    const active = filterCat === k;
+    return `<div class="flex flex-col items-center gap-1.5 min-w-[68px] cursor-pointer" onclick="setF('cat','${k}')">
+      <button class="w-14 h-14 rounded-full ${active ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-container-lowest border border-outline-variant text-on-surface'} flex items-center justify-center transition-all">
+        ${icon ? `<span class="material-symbols-outlined ${active ? 'text-on-primary' : iconCol}">${icon}</span>` : `<span class="font-bold text-center leading-tight text-[11px]">${label}</span>`}
+      </button>
+      ${icon ? `<span class="text-[10px] font-bold uppercase text-center ${active ? 'text-primary' : 'text-on-surface-variant'}">${label}</span>` : ''}
+    </div>`;
+  }).join("");
+
+  html += `<div class="w-[1px] h-10 bg-outline-variant mx-1 self-center"></div>`;
+
+  html += statItems.map(([k, label]) => {
+    const active = filterStat === k;
+    return `<div class="flex flex-col items-center gap-1.5 min-w-[68px] cursor-pointer" onclick="setF('stat','${k}')">
+      <button class="w-14 h-14 rounded-full ${active ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-container-lowest border border-outline-variant text-on-surface'} flex items-center justify-center transition-all">
+        <span class="font-bold text-center leading-tight text-[11px]">${label}</span>
+      </button>
+    </div>`;
+  }).join("");
+
+  document.getElementById("filterPillsRow").innerHTML = html;
 }
-function setF(t,v){ if(t==="cat")filterCat=v; else filterStat=v; renderFilters(); renderLog(); }
+
+function setF(t,v) { if(t==="cat") filterCat=v; else filterStat=v; renderFilters(); renderLog(); }
 
 function renderLog() {
-  const q=(document.getElementById("searchInput")?.value||"").toLowerCase();
-  const list=entries.filter(e=>e.site===activeSite)
-    .filter(e=>filterCat==="ALL"||e.category===filterCat)
-    .filter(e=>filterStat==="ALL"||e.status===filterStat)
-    .filter(e=>!q||[e.title,e.description,e.raisedBy,e.assignedTo].some(f=>(f||"").toLowerCase().includes(q)))
-    .sort((a,b)=>b.date.localeCompare(a.date));
+  const q = (document.getElementById("searchInput")?.value||"").toLowerCase();
+  const list = entries.filter(e => e.site === activeSite)
+    .filter(e => filterCat === "ALL" || e.category === filterCat)
+    .filter(e => filterStat === "ALL" || e.status === filterStat)
+    .filter(e => !q || [e.title,e.description,e.raisedBy,e.assignedTo].some(f=>(f||"").toLowerCase().includes(q)))
+    .sort((a,b) => b.date.localeCompare(a.date));
 
-  if(!list.length){
-    document.getElementById("entriesList").innerHTML=`<div class="col-span-full text-center py-16 text-on-surface-variant text-sm">No logs found for <strong>${esc(activeSite)}</strong>. Click <strong>+ New Log</strong> to start.</div>`;
+  if(!list.length) {
+    document.getElementById("entriesList").innerHTML = `<div class="col-span-full text-center py-12 text-on-surface-variant">No logs found for <strong>${esc(activeSite)}</strong>. Tap <strong>+</strong> to record an observation.</div>`;
     return;
   }
 
-  document.getElementById("entriesList").innerHTML=list.map(e=>{
-    const cat=CATS[e.category],st=STATS[e.status],pr=PRIS[e.priority];
-    const photosHtml = e.photos?.length ? `<div class="grid grid-cols-2 gap-2 mt-3">${e.photos.slice(0,2).map(p=>`<img src="${p.dataUrl}" class="${p.aspect==='9:16'?'ar-9-16':'ar-16-9'} rounded-lg border border-outline-variant object-cover w-full" onclick="event.stopPropagation();showPhotoModal('${p.dataUrl}')"/>`).join('')}</div>` : '';
-
-    return `<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm hover:shadow-md cursor-pointer transition-all flex flex-col justify-between" onclick="showDetail(${e.id})">
-      <div class="space-y-2">
-        <div class="flex justify-between items-start gap-2">
+  document.getElementById("entriesList").innerHTML = list.map(e => {
+    const cat = CATS[e.category], st = STATS[e.status], pr = PRIS[e.priority];
+    return `<article class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 flex flex-col gap-3 shadow-sm cursor-pointer hover:shadow-md transition-all" onclick="showDetail(${e.id})">
+      <div class="flex justify-between items-start gap-2">
+        <div class="flex flex-col gap-0.5">
           <span class="text-[11px] font-bold uppercase tracking-wider" style="color:${cat.color}">${cat.label}</span>
-          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold" style="background:${st.bg};color:${st.color}">${st.label}</span>
+          <h3 class="text-[17px] font-bold text-on-surface leading-snug">${esc(e.title)}</h3>
         </div>
-        <h3 class="text-base font-extrabold text-on-surface leading-tight">${esc(e.title)}</h3>
-        ${e.description?`<p class="text-xs text-on-surface-variant leading-relaxed line-clamp-2">${esc(e.description)}</p>`:""}
-        ${photosHtml}
+        <span class="px-2.5 py-1 rounded-full text-[11px] font-bold shrink-0" style="background:${st.bg};color:${st.color}">${st.label}</span>
       </div>
-      <div class="flex items-center gap-3 pt-3 mt-4 border-t border-outline-variant text-xs text-on-surface-variant flex-wrap">
-        <span>📅 ${fmt(e.date)}</span>
-        ${e.assignedTo?`<span>➔ ${esc(e.assignedTo)}</span>`:""}
-        ${pr?`<span style="color:${pr.color};font-weight:800" class="ml-auto">● ${pr.label}</span>`:""}
-      </div>
-    </div>`;
-  }).join("");
-}
-
-function hideAllViews() {
-  ["viewProjects","viewLog","viewAdd","viewEdit","viewDetail","viewReport","viewMom"].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) el.style.display="none";
-  });
-}
-
-function showLog() {
-  hideAllViews();
-  document.getElementById("aiBannerWrap").style.display="block";
-  document.getElementById("statsRow").style.display="grid";
-  document.getElementById("viewLog").style.display="block";
-  document.getElementById("activeProjectNameText").textContent = activeSite;
-  document.getElementById("activeProjectBannerTitle").textContent = activeSite;
-  renderStats(); renderFilters(); renderLog();
-}
-
-function showAdd(prefillData = null) {
-  editId=null; addPhotos=[...(prefillData?.photos||[])];
-  hideAllViews();
-  document.getElementById("aiBannerWrap").style.display="none";
-  document.getElementById("statsRow").style.display="none";
-  document.getElementById("viewAdd").style.display="block";
-  document.getElementById("viewAdd").innerHTML=getEntryForm("New Log Entry","Save Log Entry","saveNewEntry()", prefillData);
-  setTimeout(()=>renderPhotoGrid(),50);
-}
-
-function showEdit(id) {
-  const entry=entries.find(e=>e.id===id); if(!entry)return;
-  editId=id; addPhotos=[...(entry.photos||[])];
-  hideAllViews();
-  document.getElementById("aiBannerWrap").style.display="none";
-  document.getElementById("statsRow").style.display="none";
-  document.getElementById("viewEdit").style.display="block";
-  document.getElementById("viewEdit").innerHTML=getEntryForm("Edit Log Entry","Update Entry","updateEntry()",entry);
-  setTimeout(()=>renderPhotoGrid(),50);
-}
-
-function getEntryForm(title,btnText,onSubmit,entry=null) {
-  const v=(f)=>entry?esc(entry[f]||""):"";
-  const sel=(f,k)=>entry?.[f]===k?"selected":"";
-  return `<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 shadow-sm space-y-4 max-w-3xl mx-auto">
-    <div class="text-lg font-extrabold text-on-surface">${title} — ${esc(activeSite)}</div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div><label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Date</label><input class="w-full p-2.5 border border-outline-variant rounded-lg text-xs" type="date" id="fDate" value="${entry?entry.date:today()}"/></div>
-      <div><label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Category</label><select class="w-full p-2.5 border border-outline-variant rounded-lg text-xs font-bold" id="fCat">
-        <option value="SITE" ${sel("category","SITE")}>🏗️ Site Visit</option>
-        <option value="ISSUE" ${sel("category","ISSUE")}>⚠️ Technical Issue</option>
-        <option value="DRAWING" ${sel("category","DRAWING")}>📐 Drawing Request</option>
-      </select></div>
-      <div class="md:col-span-2"><label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Title / Subject *</label><input class="w-full p-2.5 border border-outline-variant rounded-lg text-xs" id="fTitle" placeholder="Brief subject..." value="${v("title")}"/></div>
-      <div class="md:col-span-2"><label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Engineering Description</label><textarea class="w-full p-2.5 border border-outline-variant rounded-lg text-xs" id="fDesc" rows="4" placeholder="Detailed notes...">${v("description")}</textarea></div>
-      <div><label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Raised By</label><input class="w-full p-2.5 border border-outline-variant rounded-lg text-xs" id="fBy" placeholder="e.g. Client / Engineer" value="${v("raisedBy")}"/></div>
-      <div><label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Assigned To</label><input class="w-full p-2.5 border border-outline-variant rounded-lg text-xs" id="fTo" placeholder="e.g. PMC / Design Team" value="${v("assignedTo")}"/></div>
-      <div><label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Status</label><select class="w-full p-2.5 border border-outline-variant rounded-lg text-xs font-bold" id="fStatus">
-        <option value="OPEN" ${sel("status","OPEN")}>Open</option>
-        <option value="INPROGRESS" ${sel("status","INPROGRESS")}>In Progress</option>
-        <option value="RESOLVED" ${sel("status","RESOLVED")}>Resolved</option>
-      </select></div>
-      <div><label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Priority</label><select class="w-full p-2.5 border border-outline-variant rounded-lg text-xs font-bold" id="fPri">
-        <option value="" ${!entry?.priority?"selected":""}>(Optional)</option>
-        <option value="HIGH" ${sel("priority","HIGH")}>High</option>
-        <option value="MEDIUM" ${sel("priority","MEDIUM")}>Medium</option>
-        <option value="LOW" ${sel("priority","LOW")}>Low</option>
-      </select></div>
-      <div class="md:col-span-2"><label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Action Required</label><input class="w-full p-2.5 border border-outline-variant rounded-lg text-xs" id="fFollow" placeholder="Next step required..." value="${v("followUp")}"/></div>
       
-      <!-- PHOTO ATTACHMENTS WITH AUTO ASPECT DETECT (9:16 PORTRAIT / 16:9 LANDSCAPE) -->
-      <div class="md:col-span-2 space-y-2">
-        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Site Photos (Auto Aspect: 9:16 Portrait / 16:9 Landscape)</label>
-        <div class="flex gap-3">
-          <div class="flex-1 p-4 rounded-xl border-2 border-dashed border-outline-variant bg-surface text-center cursor-pointer hover:border-primary transition-colors" onclick="document.getElementById('photoCamera').click()">
-            <input type="file" id="photoCamera" accept="image/*" capture="environment" class="hidden" onchange="handlePhotos(event)"/>
-            <span class="ms text-primary text-2xl">photo_camera</span>
-            <div class="text-xs font-bold mt-1">📸 Take Camera Photo</div>
-          </div>
-          <div class="flex-1 p-4 rounded-xl border-2 border-dashed border-outline-variant bg-surface text-center cursor-pointer hover:border-primary transition-colors" onclick="document.getElementById('photoGallery').click()">
-            <input type="file" id="photoGallery" multiple accept="image/*" class="hidden" onchange="handlePhotos(event)"/>
-            <span class="ms text-purple-700 text-2xl">collections</span>
-            <div class="text-xs font-bold mt-1">🖼️ Pick from Gallery</div>
-          </div>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3" id="photoGrid"></div>
-      </div>
-    </div>
+      ${e.description ? `<p class="text-on-surface-variant text-[13px] leading-relaxed line-clamp-2">${esc(e.description)}</p>` : ''}
 
-    <div class="flex gap-3 pt-4 border-t border-outline-variant">
-      <button class="flex-1 py-2.5 bg-primary text-on-primary rounded-full text-xs font-bold shadow-sm" onclick="${onSubmit}">${btnText}</button>
-      <button class="px-5 py-2.5 border border-outline-variant rounded-full text-xs font-bold" onclick="showLog()">Cancel</button>
-    </div></div>`;
+      ${e.photos?.length ? `<div class="flex gap-2 mt-1">${e.photos.slice(0,3).map(p=>`<img src="${p.dataUrl}" class="w-14 h-14 object-cover rounded-lg border border-outline-variant"/>`).join('')}</div>` : ''}
+
+      <div class="flex items-center gap-3 pt-3 border-t border-surface-container text-xs text-on-surface-variant">
+        <div class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+          <span>${fmt(e.date)}</span>
+        </div>
+        ${e.assignedTo ? `<div class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+          <span>${esc(e.assignedTo)}</span>
+        </div>` : ''}
+        ${pr ? `<div class="flex items-center gap-1 ml-auto text-error font-bold">
+          <span class="w-2 h-2 rounded-full bg-error"></span>
+          <span>${pr.label}</span>
+        </div>` : ''}
+      </div>
+    </article>`;
+  }).join("");
 }
 
 function handlePhotos(ev, isCamera = false) {
   Array.from(ev.target.files).forEach(f => {
-    compressImage(f, (compressedDataUrl, detectedAspect) => {
-      addPhotos.push({ dataUrl: compressedDataUrl, caption: "", aspect: detectedAspect });
+    compressImage(f, (compressedDataUrl) => {
+      addPhotos.push({ dataUrl: compressedDataUrl, caption: "" });
       renderPhotoGrid();
+
+      // Auto-save high-res camera photo to phone gallery
       if (isCamera || ev.target.id === "photoCamera") {
         const a = document.createElement("a");
         a.href = compressedDataUrl;
@@ -624,93 +768,103 @@ function handlePhotos(ev, isCamera = false) {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        showToast("📸 Photo saved to Gallery!");
+        showToast("📸 High-Res Photo saved to Phone Gallery!");
       }
     });
   });
 }
 
-function renderPhotoGrid(){
-  const g=document.getElementById("photoGrid");if(!g)return;
-  g.innerHTML=addPhotos.map((p,i)=>{
-    const cls = p.aspect === "9:16" ? "ar-9-16" : "ar-16-9";
-    return `<div class="photo-thumb-wrap ${cls}">
-      <img src="${p.dataUrl}" onclick="showPhotoModal('${p.dataUrl}')"/>
-      <button class="photo-remove" onclick="removePhoto(${i})">×</button>
-      <input class="photo-caption-input" placeholder="Caption…" value="${esc(p.caption)}" oninput="addPhotos[${i}].caption=this.value"/>
-    </div>`;
-  }).join("");
+function renderPhotoGrid() {
+  const g = document.getElementById("photoGrid"); if(!g) return;
+  g.innerHTML = addPhotos.map((p,i) => `<div class="relative rounded overflow-hidden border border-outline-variant bg-surface">
+    <img src="${p.dataUrl}" class="w-full h-20 object-cover cursor-pointer" onclick="showPhotoModal('${p.dataUrl}')"/>
+    <button type="button" class="absolute top-1 right-1 bg-black/70 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs" onclick="removePhoto(${i})">×</button>
+  </div>`).join("");
 }
-function removePhoto(i){ addPhotos.splice(i,1); renderPhotoGrid(); }
-
-function getFormData(){
-  return { date:document.getElementById("fDate").value, category:document.getElementById("fCat").value, title:document.getElementById("fTitle").value.trim(), description:document.getElementById("fDesc").value, raisedBy:document.getElementById("fBy").value, assignedTo:document.getElementById("fTo").value, status:document.getElementById("fStatus").value, priority:document.getElementById("fPri").value, followUp:document.getElementById("fFollow").value, photos:[...addPhotos] };
-}
-function saveNewEntry(){ const d=getFormData();if(!d.title){alert("Please enter a title.");return;} entries.unshift({id:Date.now(),site:activeSite,...d}); save();showToast("Log saved.");showLog(); }
-function updateEntry(){ const d=getFormData();if(!d.title){alert("Please enter a title.");return;} entries=entries.map(e=>e.id===editId?{...e,...d}:e); save();showToast("Log updated.");showLog(); }
+function removePhoto(i) { addPhotos.splice(i,1); renderPhotoGrid(); }
 
 function showDetail(id) {
-  const e=entries.find(x=>x.id===id);if(!e)return;
-  const cat=CATS[e.category],st=STATS[e.status],pr=PRIS[e.priority];
+  const e = entries.find(x => x.id === id); if(!e) return;
+  const cat = CATS[e.category], st = STATS[e.status], pr = PRIS[e.priority];
   hideAllViews();
-  document.getElementById("aiBannerWrap").style.display="none";
-  document.getElementById("statsRow").style.display="none";
-  const d=document.getElementById("viewDetail");d.style.display="block";
-  d.innerHTML=`<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 shadow-sm space-y-4 max-w-3xl mx-auto">
+  const d = document.getElementById("viewDetail"); d.style.display = "block";
+  d.innerHTML = `<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-md space-y-4">
     <div class="flex justify-between items-center">
-      <button class="px-3 py-1.5 border border-outline-variant rounded-full text-xs font-bold flex items-center gap-1" onclick="showLog()"><span class="ms text-sm">arrow_back</span> Back</button>
-      <div class="flex gap-2"><button class="px-3 py-1.5 border border-outline-variant rounded-full text-xs font-bold" onclick="showEdit(${e.id})">✏️ Edit</button> <button class="px-3 py-1.5 border border-outline-variant rounded-full text-xs font-bold text-red-600" onclick="delEntry(${e.id})">Delete</button></div>
+      <button class="bg-surface-container px-3 py-1.5 rounded text-xs font-bold" onclick="showLog()">← Back to Log</button>
+      <div class="space-x-2">
+        <button class="px-3 py-1.5 border border-outline-variant rounded text-xs font-bold" onclick="showEdit(${e.id})">✏️ Edit</button>
+        <button class="px-3 py-1.5 border border-outline-variant text-error rounded text-xs font-bold" onclick="delEntry(${e.id})">Delete</button>
+      </div>
     </div>
-    <div class="flex justify-between items-start gap-4">
-      <div>
-        <div class="font-extrabold text-lg text-on-surface">${esc(e.title)}</div>
-        <div class="text-xs text-on-surface-variant mt-1">${fmt(e.date)} · ${esc(e.site)}</div>
-      </div>
-      <div class="flex gap-2">
-        <span class="px-3 py-1 rounded-full text-xs font-bold" style="background:${st.bg};color:${st.color}">${st.label}</span>
-        <span class="px-3 py-1 rounded-full text-xs font-bold" style="background:${cat.bg};color:${cat.color}">${cat.label}</span>
-      </div>
+    <div class="space-y-1">
+      <span class="text-xs font-bold uppercase" style="color:${cat.color}">${cat.label}</span>
+      <h2 class="text-xl font-bold text-on-surface">${esc(e.title)}</h2>
+      <div class="text-xs text-on-surface-variant">${fmt(e.date)} · ${esc(e.site)} ${e.assignedTo?`· Assigned to ${esc(e.assignedTo)}`:''}</div>
     </div>
     <hr class="border-outline-variant"/>
-    ${e.description?`<div><div class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Details</div><div class="text-xs text-on-surface leading-relaxed whitespace-pre-wrap">${esc(e.description)}</div></div>`:""}
-    ${e.followUp?`<div class="bg-amber-100 border-l-4 border-amber-700 p-3.5 rounded-r-lg"><div class="text-[10px] font-bold text-amber-900 uppercase">ACTION REQUIRED</div><div class="text-xs text-amber-950 mt-0.5">${esc(e.followUp)}</div></div>`:""}
-    ${e.photos?.length?`<div><div class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Attached Photos</div><div class="grid grid-cols-2 md:grid-cols-4 gap-3">${e.photos.map(p=>`<div class="photo-thumb-wrap ${p.aspect==='9:16'?'ar-9-16':'ar-16-9'}"><img src="${p.dataUrl}" onclick="showPhotoModal('${p.dataUrl}')"/></div>`).join("")}</div></div>`:""}
+    ${e.description ? `<div class="space-y-1"><div class="text-xs font-bold uppercase text-on-surface-variant">Description</div><div class="text-sm leading-relaxed whitespace-pre-wrap">${esc(e.description)}</div></div>` : ''}
+    ${e.followUp ? `<div class="bg-amber-50 border-l-4 border-amber-600 p-3 rounded text-xs"><div class="font-bold text-amber-800">ACTION REQUIRED</div><div class="text-amber-900 mt-0.5">${esc(e.followUp)}</div></div>` : ''}
+    ${e.photos?.length ? `<div><div class="text-xs font-bold uppercase text-on-surface-variant mb-2">Photos</div><div class="grid grid-cols-3 sm:grid-cols-4 gap-2">${e.photos.map(p=>`<img src="${p.dataUrl}" class="w-full h-24 object-cover rounded border border-outline-variant cursor-pointer" onclick="showPhotoModal('${p.dataUrl}')"/>`).join('')}</div></div>` : ''}
   </div>`;
 }
 
-function delEntry(id){ if(!confirm("Delete this log?"))return; entries=entries.filter(e=>e.id!==id); save();showLog();showToast("Deleted"); }
+function delEntry(id) {
+  if(!confirm("Delete this log entry?")) return;
+  entries = entries.filter(e => e.id !== id); save(); showLog(); showToast("Deleted");
+}
 
 function showPhotoModal(src) {
-  const m=document.createElement("div");m.className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-50 p-4 cursor-pointer";
-  m.innerHTML=`<img src="${src}" class="max-w-[92%] max-h-[82%] rounded-xl shadow-2xl"><a href="${src}" download="site-photo-${today()}.jpg" class="mt-4 px-4 py-2 bg-white text-on-surface rounded-full text-xs font-bold flex items-center gap-1" onclick="event.stopPropagation()"><span class="ms text-sm">download</span> Download Photo</a>`;
-  m.onclick=()=>m.remove(); document.body.appendChild(m);
+  const m = document.createElement("div"); m.className = "photo-modal";
+  m.innerHTML = `<img src="${src}"><a href="${src}" download="site-photo-${today()}.jpg" class="mt-3 bg-primary text-on-primary px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-sm">download</span> Download Original High-Res Photo</a>`;
+  m.onclick = () => m.remove(); document.body.appendChild(m);
 }
 
-// AI DRAFTER ENGINE
-function openAiModal(){ document.getElementById("aiModal").style.display="flex"; }
-function closeAiModal(){ document.getElementById("aiModal").style.display="none"; }
-function fillSample(num) {
+// AI ROUGH NOTES ENGINE
+function fillAiSample(num) {
   const t = document.getElementById("aiInputText");
-  if(num===1) t.value = "add backpainted glass in vanity drawers and sutter in parents room bathroom";
-  else if(num===2) t.value = "deck area concept required";
-  else if(num===3) t.value = "for pooja room send photo from site after cabinate install at location to check if required any changes";
+  if(num === 1) t.value = "add backpainted glass in vanity drawers and sutter in parents room bathroom";
+  else if(num === 2) t.value = "deck area concept required";
 }
+
 function processAiDraft() {
   let raw = document.getElementById("aiInputText").value.trim();
   if(!raw) return;
-  raw = raw.replace(/\bsutter\b/gi, "shutter").replace(/\bmirrom\b/gi, "mirror").replace(/\bmat\b/gi, "matte").replace(/\bcabinate\b/gi, "cabinet");
+
+  raw = raw.replace(/\bsutter\b/gi, "shutter")
+           .replace(/\bmirrom\b/gi, "mirror")
+           .replace(/\bmat\b/gi, "matte")
+           .replace(/\bcabinate\b/gi, "cabinet")
+           .replace(/\bgf\b/gi, "Ground Floor")
+           .replace(/\b2nd\b/gi, "Second Floor")
+           .replace(/\bdwg\b/gi, "drawing");
+
   let category = "SITE";
-  if(/drawing|layout|plan|concept|revision|design/i.test(raw)) category = "DRAWING";
-  else if(/issue|defect|crack|missing|wrong|fail/i.test(raw)) category = "ISSUE";
+  if(/drawing|layout|plan|concept|revision|rev|design|elevation/i.test(raw)) category = "DRAWING";
+  else if(/issue|defect|crack|missing|wrong|fail|error|problem|discrepancy/i.test(raw)) category = "ISSUE";
+
   let priority = "";
-  if(/urgent|high|immediately|critical|asap/i.test(raw)) priority = "HIGH";
-  let assignedTo = category === "DRAWING" ? "Design Team" : "PMC";
+  if(/urgent|high|immediately|critical|asap|today|pour/i.test(raw)) priority = "HIGH";
+  else if(/medium|normal/i.test(raw)) priority = "MEDIUM";
+  else if(/low|minor|whenever/i.test(raw)) priority = "LOW";
+
+  let assignedTo = "";
+  if(category === "DRAWING" || /architect|design team|drawing/i.test(raw)) assignedTo = "Design Team";
+  else if(/site|execution|defect|finish|pour|slab|pmc/i.test(raw)) assignedTo = "PMC";
+
+  let raisedBy = "";
+  if(/client|owner/i.test(raw)) raisedBy = "Client";
+  else if(/site team|engineer/i.test(raw)) raisedBy = "Site Team";
+
   const lines = raw.split("\n").map(l => l.replace(/^[-*•]\s*/, '').trim()).filter(Boolean);
-  const title = `Site Update: ${lines[0].charAt(0).toUpperCase() + lines[0].slice(1)}`;
-  const description = lines.join(". ") + ".";
-  const followUp = `${assignedTo} to coordinate and execute: ${lines[0]}`;
-  closeAiModal();
-  showAdd({ title, description, category, priority, assignedTo, followUp, date: today() });
+  const textStr = lines.join(". ");
+
+  let areaMatch = raw.match(/(parents room bathroom|gf guest bedroom|pooja room|deck area|2nd floor|second floor|living room|kitchen)/i);
+  let areaName = areaMatch ? areaMatch[0] : "";
+  
+  let title = category === "DRAWING" ? `Request: ${lines[0].charAt(0).toUpperCase() + lines[0].slice(1)}` : (areaName ? `Finishes Update: ${areaName.charAt(0).toUpperCase() + areaName.slice(1)}` : `Site Update: ${lines[0].charAt(0).toUpperCase() + lines[0].slice(1)}`);
+  let professionalProse = textStr.charAt(0).toUpperCase() + textStr.slice(1) + ".";
+
+  showAdd({ title, description: professionalProse, category, priority, assignedTo, raisedBy, date: today() });
   showToast("✨ AI drafted entry!");
 }
 
@@ -721,23 +875,17 @@ function exportData() {
 }
 function triggerImport(){ document.getElementById("importFileInput").click(); }
 function importData(ev) {
-  const file = ev.target.files[0]; if(!file)return;
+  const file = ev.target.files[0]; if(!file) return;
   const reader = new FileReader();
   reader.onload = (e) => {
     try {
       const data = JSON.parse(e.target.result);
-      if(data.entries && data.sites) { entries = data.entries; sites = data.sites; save(); renderProjectsGrid(); showLog(); showToast("Data restored!"); }
-      else alert("Invalid backup file.");
+      if(data.entries && data.sites) {
+        entries = data.entries; sites = data.sites; save(); renderProjectsGrid(); showLog(); showToast("Data restored!");
+      } else alert("Invalid backup file.");
     } catch(err) { alert("Failed to read file."); }
   };
   reader.readAsText(file);
-}
-function exportCSV() {
-  const headers = ["ID","Site","Date","Category","Status","Priority","Title","Description","RaisedBy","AssignedTo","ActionItem"];
-  const rows = entries.map(e=>[e.id,e.site,e.date,e.category,e.status,e.priority,`"${(e.title||"").replace(/"/g,'""')}"`,`"${(e.description||"").replace(/"/g,'""')}"`,`"${e.raisedBy||""}"`,`"${e.assignedTo||""}"`,`"${e.followUp||""}"`]);
-  const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","),...rows.map(r=>r.join(","))].join("\n");
-  const a = Object.assign(document.createElement("a"),{href:encodeURI(csvContent),download:`site-report-${activeSite}-${today()}.csv`});
-  a.click(); showToast("CSV exported!");
 }
 
 function showReport() {
@@ -746,47 +894,1225 @@ function showReport() {
   document.getElementById("rFrom").value = daysAgo(30); document.getElementById("rTo").value = today();
   renderReport();
 }
-function printReport() { document.body.className = "printing-report"; window.print(); setTimeout(()=>document.body.className="", 500); }
-function renderReport() {
-  const from = document.getElementById("rFrom").value, to = document.getElementById("rTo").value;
-  const layout = document.getElementById("rLayoutStyle") ? document.getElementById("rLayoutStyle").value : "OPT1";
-  const se = entries.filter(e => e.site === activeSite && (!from || e.date >= from) && (!to || e.date <= to)).sort((a,b) => b.date.localeCompare(a.date));
-  const doc = document.getElementById("reportDocument");
-  const headerHtml = `<div class="border-b-2 border-primary pb-4 mb-4 flex justify-between items-end"><div><h1 class="text-xl font-bold text-primary uppercase">${layout === 'OPT2' ? 'EXECUTIVE SUMMARY REPORT' : 'VISUAL FIELD REPORT'}</h1><div class="text-base font-bold text-on-surface">${esc(activeSite)}</div></div><div class="text-right text-xs">Visit Date: <strong>${fmt(today())}</strong></div></div>`;
-  if(!se.length) { doc.innerHTML = headerHtml + `<div class="text-center py-8 text-xs text-on-surface-variant">No logs found.</div>`; return; }
-  const cardsHtml = se.map(e => {
-    const cat = CATS[e.category] || { label: e.category, color: '#964900' };
-    const st = STATS[e.status] || { label: e.status, bg: '#F1F5F9', color: '#475569' };
-    const photosHtml = e.photos?.length ? `<div class="grid grid-cols-2 gap-2 mt-2">${e.photos.slice(0,2).map(p=>`<img src="${p.dataUrl}" style="width:100%;aspect-ratio:${p.aspect==='9:16'?'9/16':'16/9'};max-height:${p.aspect==='9:16'?'240px':'160px'};object-fit:cover;border-radius:8px;border:1px solid #CBD5E1"/>`).join('')}</div>` : '';
-    return `<div class="border p-4 rounded-xl bg-white mb-3 shadow-sm" style="border-left: 6px solid ${cat.color}"><div class="flex justify-between items-start"><div><span class="text-[10px] font-bold uppercase" style="color:${cat.color}">${cat.label}</span><h3 class="text-sm font-bold">${esc(e.title)}</h3></div><span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="background:${st.bg};color:${st.color}">${st.label}</span></div>${photosHtml}${e.description ? `<p class="text-xs text-on-surface-variant mt-2 border-l-2 pl-2">${esc(e.description)}</p>` : ''}<div class="text-[11px] text-secondary mt-2 pt-2 border-t">📅 ${fmt(e.date)}</div></div>`;
-  }).join("");
-  doc.innerHTML = headerHtml + `<div>${cardsHtml}</div>`;
+
+function printReport() {
+  document.body.className = "printing-report";
+  window.print();
+  setTimeout(()=>document.body.className="", 500);
 }
 
-function showMom() { hideAllViews(); document.getElementById("viewMom").style.display = "block"; document.getElementById("momDate").value = today(); renderMomList(); }
-function printMom() { document.body.className = "printing-mom"; window.print(); setTimeout(()=>document.body.className="", 500); }
+function renderReport() {
+  const from = document.getElementById("rFrom").value;
+  const to   = document.getElementById("rTo").value;
+  const layout = document.getElementById("rLayoutStyle") ? document.getElementById("rLayoutStyle").value : "OPT1";
+  const isAttendeesOn = document.getElementById("toggleAttendees") ? document.getElementById("toggleAttendees").checked : true;
+  const attendeesVal = document.getElementById("rAttendees") ? document.getElementById("rAttendees").value : "";
+  
+  const se = entries.filter(e => e.site === activeSite && (!from || e.date >= from) && (!to || e.date <= to)).sort((a,b) => b.date.localeCompare(a.date));
+
+  const doc = document.getElementById("reportDocument");
+
+  const headerHtml = `
+    <div class="border-b-2 border-primary pb-4 mb-4 flex justify-between items-end">
+      <div>
+        <h1 class="text-2xl font-extrabold text-primary uppercase">${layout === 'OPT2' ? 'EXECUTIVE SUMMARY REPORT' : 'VISUAL FIELD REPORT'}</h1>
+        <div class="text-lg font-bold text-on-surface">${esc(activeSite)}</div>
+      </div>
+      <div class="text-right text-xs space-y-1">
+        <div>Visit Date: <strong>${fmt(today())}</strong></div>
+        ${isAttendeesOn && attendeesVal ? `<div>👥 Attendees: <strong>${esc(attendeesVal)}</strong></div>` : ''}
+      </div>
+    </div>`;
+
+  if(se.length === 0) {
+    doc.innerHTML = headerHtml + `<div class="text-center py-10 text-on-surface-variant text-sm">No log entries found for this date range.</div>`;
+    return;
+  }
+
+  if(layout === "OPT2") {
+    // OPTION 2: COMPACT EXECUTIVE ROWS
+    const rowsHtml = se.map(e => {
+      const st = STATS[e.status] || { label: e.status, bg: '#F1F5F9', color: '#475569' };
+      const photosHtml = e.photos?.length ? `<div class="flex gap-1.5 ml-auto">${e.photos.slice(0,2).map(p=>`<img src="${p.dataUrl}" class="w-14 h-14 object-cover rounded border border-outline-variant"/>`).join('')}</div>` : '';
+      
+      return `
+        <div class="py-3 border-b border-surface-variant flex gap-4 items-start">
+          <div class="flex-1 space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="background:${st.bg};color:${st.color}">${st.label}</span>
+              <h3 class="text-sm font-bold text-on-surface">${esc(e.title)}</h3>
+            </div>
+            ${e.description ? `<p class="text-xs text-on-surface-variant leading-relaxed">${esc(e.description)}</p>` : ''}
+            <div class="text-[11px] text-secondary font-data-mono">📅 ${fmt(e.date)}</div>
+          </div>
+          ${photosHtml}
+        </div>`;
+    }).join("");
+    doc.innerHTML = headerHtml + `<div class="flex flex-col">${rowsHtml}</div>`;
+  } else {
+    // OPTION 1: VISUAL PHOTO CARDS
+    const cardsHtml = se.map(e => {
+      const cat = CATS[e.category] || { label: e.category, color: '#964900' };
+      const st = STATS[e.status] || { label: e.status, bg: '#F1F5F9', color: '#475569' };
+      const photosHtml = e.photos?.length ? `<div class="grid grid-cols-2 gap-2 mt-2">${e.photos.slice(0,2).map(p=>`<img src="${p.dataUrl}" class="w-full aspect-video object-cover rounded-lg border border-outline-variant"/>`).join('')}</div>` : '';
+
+      return `
+        <div class="border border-outline-variant p-4 rounded-lg bg-surface-container-lowest mb-3.5 shadow-sm" style="border-left: 6px solid ${cat.color}">
+          <div class="flex justify-between items-start mb-1.5">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider" style="color:${cat.color}">${cat.label}</span>
+              <h3 class="text-base font-bold text-on-surface">${esc(e.title)}</h3>
+            </div>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ml-auto" style="background:${st.bg};color:${st.color}">${st.label}</span>
+          </div>
+          ${photosHtml}
+          ${e.description ? `<p class="text-xs text-on-surface-variant leading-relaxed mt-2 border-l-2 border-outline-variant pl-2.5">${esc(e.description)}</p>` : ''}
+          <div class="text-[11px] text-secondary mt-2 pt-2 border-t border-surface-variant">📅 ${fmt(e.date)}</div>
+        </div>`;
+    }).join("");
+    doc.innerHTML = headerHtml + `<div>${cardsHtml}</div>`;
+  }
+}
+
+// MOM ENGINE
+function showMom() {
+  hideAllViews();
+  document.getElementById("viewMom").style.display = "block";
+  document.getElementById("momDate").value = today();
+  renderMomList();
+}
+
+function printMom() {
+  document.body.className = "printing-mom";
+  window.print();
+  setTimeout(()=>document.body.className="", 500);
+}
+
 function renderMomList() {
   const targetDate = document.getElementById("momDate").value || today();
   const filterMode = document.getElementById("momFilterMode") ? document.getElementById("momFilterMode").value : "DATE";
-  let dayLogs = filterMode === "ALL_SITE" ? entries.filter(e => e.site === activeSite) : entries.filter(e => e.site === activeSite && e.date === targetDate);
+
+  let dayLogs = [];
+  if(filterMode === "ALL_SITE") {
+    dayLogs = entries.filter(e => e.site === activeSite);
+  } else {
+    dayLogs = entries.filter(e => e.site === activeSite && e.date === targetDate);
+  }
+
   momSelectedIds = dayLogs.map(e => e.id);
+
   const checklistEl = document.getElementById("momChecklist");
-  if(!dayLogs.length) { checklistEl.innerHTML = `<div class="text-xs text-on-surface-variant py-2">No log entries found for <strong>${esc(activeSite)}</strong>.</div>`; }
-  else { checklistEl.innerHTML = dayLogs.map(e => `<label class="flex items-start gap-2 text-xs cursor-pointer"><input type="checkbox" value="${e.id}" checked onchange="toggleMomItem(${e.id})"/><div><div>${esc(e.description || e.title)}</div><div class="text-[10px] text-on-surface-variant">📅 ${fmt(e.date)} ${e.assignedTo?`· Assigned to ${esc(e.assignedTo)}`:''}</div></div></label>`).join(""); }
+  if(dayLogs.length === 0) {
+    checklistEl.innerHTML = `<div class="text-xs text-on-surface-variant py-2">No log entries found for <strong>${esc(activeSite)}</strong> on ${fmt(targetDate)}. <button class="px-2 py-1 bg-surface-container rounded text-xs font-bold" onclick="document.getElementById('momFilterMode').value='ALL_SITE';renderMomList();">Show All Logs for this Site</button></div>`;
+  } else {
+    checklistEl.innerHTML = dayLogs.map(e => `
+      <label class="flex items-start gap-2 text-xs text-on-surface cursor-pointer py-1">
+        <input type="checkbox" value="${e.id}" checked onchange="toggleMomItem(${e.id})"/>
+        <div>
+          <div>${esc(e.description || e.title)}</div>
+          <div class="text-[10px] text-on-surface-variant">📅 ${fmt(e.date)} ${e.assignedTo?`· Assigned to ${esc(e.assignedTo)}`:''}</div>
+        </div>
+      </label>
+    `).join("");
+  }
   renderMomText();
 }
-function toggleMomItem(id) { if(momSelectedIds.includes(id)) momSelectedIds = momSelectedIds.filter(x => x !== id); else momSelectedIds.push(id); renderMomText(); }
+
+function toggleMomItem(id) {
+  if(momSelectedIds.includes(id)) momSelectedIds = momSelectedIds.filter(x => x !== id);
+  else momSelectedIds.push(id);
+  renderMomText();
+}
+
 function renderMomText() {
   const targetDate = document.getElementById("momDate").value || today();
   const attendeesStr = document.getElementById("momAttendees").value || "";
   const selectedLogs = entries.filter(e => momSelectedIds.includes(e.id));
-  let bulletsStr = selectedLogs.length ? selectedLogs.map(e => `* ${e.description || e.title}`).join("\n") : "(No log items selected)";
-  document.getElementById("momOutputText").value = `Good Evening,\nPlease find attached minutes from yesterday's site visit.\n\n${attendeesStr ? `Attendees : ${attendeesStr}\n` : ''}Date : ${fmt(targetDate)}\n\nMinutes:\n${bulletsStr}\n\nPlease let us know if you have any additions/revisions in the same.\nThank you.`;
+
+  let bulletsStr = "";
+  if(selectedLogs.length > 0) {
+    bulletsStr = selectedLogs.map(e => `* ${e.description || e.title}`).join("\n");
+  } else {
+    bulletsStr = "(No log items selected)";
+  }
+
+  const fullMom = `Good Evening,
+Please find attached minutes from yesterday's site visit.
+
+${attendeesStr ? `Attendees : ${attendeesStr}\n` : ''}Date : ${fmt(targetDate)}
+
+Minutes:
+${bulletsStr}
+
+Please let us know if you have any additions/revisions in the same.
+Thank you.`;
+
+  document.getElementById("momOutputText").value = fullMom;
 }
+
 function copyMomText() {
-  navigator.clipboard.writeText(document.getElementById("momOutputText").value)
-    .then(() => showToast("📋 MOM copied!"))
-    .catch(() => { document.getElementById("momOutputText").select(); document.execCommand("copy"); showToast("📋 MOM text copied!"); });
+  const text = document.getElementById("momOutputText").value;
+  navigator.clipboard.writeText(text).then(() => showToast("📋 MOM copied to clipboard!"))
+    .catch(() => {
+      const el = document.getElementById("momOutputText");
+      el.select(); document.execCommand("copy");
+      showToast("📋 MOM text copied!");
+    });
+}
+
+showLog();
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SITE REPORT — Google Stitch Edition</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet"/>
+
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#964900",
+        "primary-container": "#f57c00",
+        "on-primary": "#ffffff",
+        "on-primary-container": "#572800",
+        "secondary": "#546067",
+        "secondary-container": "#d7e4ec",
+        "on-secondary-container": "#5a666d",
+        "tertiary": "#705d00",
+        "surface": "#f9f9f9",
+        "surface-container": "#eeeeee",
+        "surface-container-high": "#e8e8e8",
+        "surface-container-highest": "#e2e2e2",
+        "surface-container-lowest": "#ffffff",
+        "on-surface": "#1a1c1c",
+        "on-surface-variant": "#574235",
+        "background": "#f9f9f9",
+        "on-background": "#1a1c1c",
+        "outline": "#8b7263",
+        "outline-variant": "#dec1af",
+        "error": "#ba1a1a"
+      },
+      fontFamily: {
+        "body-md": ["Inter"],
+        "headline-md": ["Inter"],
+        "data-mono": ["JetBrains Mono"],
+        "headline-lg": ["Inter"],
+        "label-caps": ["JetBrains Mono"]
+      }
+    }
+  }
+}
+</script>
+
+<style>
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.icon-fill { font-variation-settings: 'FILL' 1; }
+
+.toast-box {
+  position: fixed; bottom: 84px; left: 50%; transform: translateX(-50%);
+  background: #1A1C1C; color: #FFFFFF; padding: 10px 22px;
+  border-radius: 9999px; font-size: 13px; font-weight: 700; z-index: 1000;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25); animation: toastUp 0.2s ease;
+}
+@keyframes toastUp { from { transform: translate(-50%, 15px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+
+/* ISOLATED PRINTING STYLES */
+@media print {
+  header, nav, #navDesktop, .fab-btn, #toastContainer, .no-print { display: none !important; }
+  
+  body.printing-report #viewReport { display: block !important; }
+  body.printing-report #viewMom, body.printing-report #viewProjects, body.printing-report #viewLog, body.printing-report #viewAi, body.printing-report #viewAdd { display: none !important; }
+  
+  body.printing-mom #viewMom { display: block !important; }
+  body.printing-mom #viewReport, body.printing-mom #viewProjects, body.printing-mom #viewLog, body.printing-mom #viewAi, body.printing-mom #viewAdd { display: none !important; }
+  
+  main { padding: 0 !important; max-width: 100% !important; }
+  body { background: #fff !important; }
+}
+</style>
+</head>
+
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pt-14 pb-20 md:pb-0">
+
+<!-- Top Header Navigation -->
+<header class="fixed top-0 left-0 w-full h-14 z-50 bg-surface border-b-2 border-secondary px-4 flex justify-between items-center shadow-sm">
+  <div class="flex items-center gap-3 cursor-pointer" onclick="showProjects()">
+    <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-sm">
+      <span class="material-symbols-outlined text-lg">engineering</span>
+    </div>
+    <h1 class="font-headline-md text-headline-md font-bold tracking-tight text-primary uppercase">SITE REPORT</h1>
+  </div>
+
+  <div id="headerProjectPill" class="hidden md:flex items-center gap-2 bg-surface-container hover:bg-surface-container-high px-3 py-1.5 rounded-full border border-outline-variant cursor-pointer" onclick="showProjects()">
+    <span class="material-symbols-outlined text-secondary text-sm">apartment</span>
+    <span id="activeProjectNameText" class="font-label-caps text-label-caps text-on-surface font-semibold">Site A</span>
+    <span class="material-symbols-outlined text-secondary text-sm">expand_more</span>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <button class="p-2 text-primary hover:bg-surface-container rounded-full transition-colors" onclick="showProjects()" title="Projects Dashboard">
+      <span class="material-symbols-outlined">apartment</span>
+    </button>
+    <button class="p-2 text-primary hover:bg-surface-container rounded-full transition-colors" onclick="exportData()" title="Backup Data">
+      <span class="material-symbols-outlined">backup</span>
+    </button>
+    <button class="p-2 text-primary hover:bg-surface-container rounded-full transition-colors" onclick="triggerImport()" title="Restore Data">
+      <span class="material-symbols-outlined">settings_backup_restore</span>
+    </button>
+    <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importData(event)"/>
+  </div>
+</header>
+
+<!-- Desktop Navigation Bar -->
+<nav id="navDesktop" class="hidden md:flex justify-between items-center w-full px-8 h-14 bg-surface border-b border-surface-container-highest sticky top-14 z-40">
+  <div class="flex items-center gap-6">
+    <button class="nav-desk-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary px-3 py-2 rounded-lg flex items-center gap-2" onclick="showProjects()">
+      <span class="material-symbols-outlined">construction</span> Projects
+    </button>
+    <button class="nav-desk-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary px-3 py-2 rounded-lg flex items-center gap-2" onclick="showLog()">
+      <span class="material-symbols-outlined">assignment</span> Logs
+    </button>
+    <button class="nav-desk-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary px-3 py-2 rounded-lg flex items-center gap-2" onclick="showAi()">
+      <span class="material-symbols-outlined">auto_awesome</span> AI Drafter
+    </button>
+    <button class="nav-desk-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary px-3 py-2 rounded-lg flex items-center gap-2" onclick="showReport()">
+      <span class="material-symbols-outlined">description</span> Reports
+    </button>
+    <button class="nav-desk-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary px-3 py-2 rounded-lg flex items-center gap-2" onclick="showMom()">
+      <span class="material-symbols-outlined">assignment_turned_in</span> MOM
+    </button>
+  </div>
+  <button class="bg-primary text-on-primary font-label-caps text-label-caps px-4 py-2 rounded-md flex items-center gap-2 hover:bg-primary-container" onclick="showAdd()">
+    <span class="material-symbols-outlined text-sm">add</span> New Log Entry
+  </button>
+</nav>
+
+<!-- Main Container -->
+<main class="flex-1 w-full max-w-[1440px] mx-auto px-4 md:px-8 py-6">
+
+  <!-- PROJECTS DASHBOARD VIEW -->
+  <section id="viewProjects" class="space-y-6" style="display:none">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-outline pb-4">
+      <div>
+        <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold">Projects Dashboard</h2>
+        <p class="font-body-md text-on-surface-variant">Select, rename, or manage construction site projects</p>
+      </div>
+      <button class="bg-primary text-on-primary h-12 px-6 flex items-center justify-center gap-2 font-label-caps text-label-caps rounded hover:bg-primary-container shadow-sm" onclick="promptCreateProject()">
+        <span class="material-symbols-outlined">add</span> Create New Project
+      </button>
+    </div>
+    <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </section>
+
+  <!-- LOG FEED VIEW -->
+  <section id="viewLog" class="space-y-6">
+    <!-- Active Project Header -->
+    <div class="flex flex-col gap-1 cursor-pointer" onclick="showProjects()">
+      <span class="text-label-caps text-primary uppercase tracking-wider font-semibold">Active Project</span>
+      <h1 id="activeProjectTitle" class="text-[24px] font-bold text-on-surface tracking-tight flex items-center gap-2">
+        <span>Site A</span>
+        <span class="material-symbols-outlined text-secondary text-base">expand_more</span>
+      </h1>
+    </div>
+
+    <!-- Search Bar & Filters -->
+    <div class="flex flex-col gap-4">
+      <div class="relative w-full">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+        <input type="text" id="searchInput" placeholder="Search logs…" class="w-full h-[48px] pl-10 pr-4 bg-surface-container-lowest border border-[#B0BEC5] focus:border-primary focus:border-2 font-body-md text-on-surface placeholder:text-on-surface-variant outline-none transition-all rounded-xl" oninput="renderLog()"/>
+      </div>
+      
+      <!-- Circular Filter Chips -->
+      <div id="filterPillsRow" class="flex gap-4 overflow-x-auto no-scrollbar pb-2"></div>
+    </div>
+
+    <!-- Stats Summary Cards -->
+    <div id="statsRow" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+
+    <!-- Entry Cards List -->
+    <div id="entriesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </section>
+
+  <!-- AI DRAFTER VIEW -->
+  <section id="viewAi" class="space-y-6" style="display:none">
+    <div>
+      <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold">AI Rough Notes Drafter</h2>
+      <p class="font-body-lg text-on-surface-variant">Type shorthand notes — AI auto-corrects typos and generates clean engineering logs.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-surface-container-lowest border border-surface-container-highest p-4 rounded flex flex-col gap-3">
+        <div class="flex justify-between items-center">
+          <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Rough Notes Input</label>
+          <div class="flex gap-1">
+            <button class="text-xs bg-surface-container px-2 py-1 rounded font-bold" onclick="fillAiSample(1)">Sample 1</button>
+            <button class="text-xs bg-surface-container px-2 py-1 rounded font-bold" onclick="fillAiSample(2)">Sample 2</button>
+          </div>
+        </div>
+        <textarea id="aiInputText" class="w-full min-h-[220px] resize-none border border-outline-variant p-3 font-body-lg text-on-surface bg-surface rounded outline-none" placeholder="e.g. add backpainted glass in vanity drawers and sutter in parents room bathroom"></textarea>
+        <button class="w-full h-12 bg-primary hover:bg-primary-container text-on-primary font-headline-md font-semibold flex items-center justify-center gap-2 rounded transition-colors" onclick="processAiDraft()">
+          <span class="material-symbols-outlined icon-fill">auto_awesome</span> Draft Now
+        </button>
+      </div>
+
+      <div class="bg-surface-container-lowest border border-surface-container-highest p-4 rounded flex flex-col gap-3">
+        <div class="border-b border-surface-variant pb-2 flex justify-between items-center">
+          <h3 class="font-headline-md text-on-surface">Live Draft Preview</h3>
+          <span id="aiPreviewStatus" class="font-label-caps text-label-caps text-secondary uppercase bg-surface-container px-2 py-1 rounded">Waiting for Input</span>
+        </div>
+        <div id="aiPreviewBox" class="space-y-3 min-h-[220px]">
+          <div class="text-on-surface-variant text-sm italic">Type rough notes on the left and tap "Draft Now" to generate structured entry.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOG FORM VIEW (ADD / EDIT) -->
+  <section id="viewAdd" class="max-w-2xl mx-auto space-y-6" style="display:none">
+    <div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-md shadow-sm">
+      <h2 id="formHeaderTitle" class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold mb-4">New Log Entry</h2>
+      
+      <form onsubmit="event.preventDefault();" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Date</label>
+            <input type="date" id="fDate" class="w-full bg-surface-container-lowest border border-outline-variant rounded h-12 px-4 font-body-md"/>
+          </div>
+          <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Category</label>
+            <select id="fCat" class="w-full bg-surface-container-lowest border border-outline-variant rounded h-12 px-4 font-body-md">
+              <option value="SITE">🏗️ Site Visit</option>
+              <option value="ISSUE">⚠️ Technical Issue</option>
+              <option value="DRAWING">📐 Drawing Request</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Title *</label>
+          <input type="text" id="fTitle" placeholder="Brief subject..." class="w-full bg-surface-container-lowest border border-outline-variant rounded h-12 px-4 font-body-md"/>
+        </div>
+
+        <div>
+          <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Professional Engineering Description</label>
+          <textarea id="fDesc" rows="4" placeholder="Detailed notes..." class="w-full bg-surface-container-lowest border border-outline-variant rounded p-3 font-body-md"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Raised By (Optional)</label>
+            <input type="text" id="fBy" placeholder="e.g. Client / Engineer" class="w-full bg-surface-container-lowest border border-outline-variant rounded h-12 px-4 font-body-md"/>
+          </div>
+          <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Assigned To (Optional)</label>
+            <input type="text" id="fTo" placeholder="e.g. PMC / Design Team" class="w-full bg-surface-container-lowest border border-outline-variant rounded h-12 px-4 font-body-md"/>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Status</label>
+            <select id="fStatus" class="w-full bg-surface-container-lowest border border-outline-variant rounded h-12 px-4 font-body-md">
+              <option value="OPEN">Open</option>
+              <option value="INPROGRESS">In Progress</option>
+              <option value="RESOLVED">Resolved</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Priority (Optional)</label>
+            <select id="fPri" class="w-full bg-surface-container-lowest border border-outline-variant rounded h-12 px-4 font-body-md">
+              <option value="">(None / Optional)</option>
+              <option value="HIGH">High</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="LOW">Low</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Action Required / Follow-up</label>
+          <input type="text" id="fFollow" placeholder="Next step required..." class="w-full bg-surface-container-lowest border border-outline-variant rounded h-12 px-4 font-body-md"/>
+        </div>
+
+        <!-- DUAL PHOTO UPLOAD OPTIONS -->
+        <div class="border-t border-outline-variant pt-4">
+          <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase">Attachments</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button type="button" class="flex flex-col items-center justify-center gap-1 h-28 border-2 border-dashed border-outline-variant bg-surface-container hover:bg-surface-container-high rounded" onclick="document.getElementById('photoCamera').click()">
+              <input type="file" id="photoCamera" accept="image/*" capture="environment" class="hidden" onchange="handlePhotos(event)"/>
+              <span class="material-symbols-outlined text-3xl text-on-surface-variant">photo_camera</span>
+              <span class="font-body-md font-semibold text-on-surface-variant">Take Camera Photo</span>
+            </button>
+            <button type="button" class="flex flex-col items-center justify-center gap-1 h-28 border-2 border-dashed border-outline-variant bg-surface-container hover:bg-surface-container-high rounded" onclick="document.getElementById('photoGallery').click()">
+              <input type="file" id="photoGallery" multiple accept="image/*" class="hidden" onchange="handlePhotos(event)"/>
+              <span class="material-symbols-outlined text-3xl text-on-surface-variant">collections</span>
+              <span class="font-body-md font-semibold text-on-surface-variant">Pick from Gallery</span>
+            </button>
+          </div>
+          <div id="photoGrid" class="grid grid-cols-3 sm:grid-cols-4 gap-2 mt-3"></div>
+        </div>
+
+        <div class="flex gap-3 pt-4">
+          <button type="button" id="btnSubmitForm" class="flex-1 bg-primary text-on-primary font-headline-md h-12 rounded flex items-center justify-center hover:bg-primary-container font-bold" onclick="saveFormEntry()">Save Log Entry</button>
+          <button type="button" class="px-6 border border-outline-variant text-on-surface font-headline-md h-12 rounded" onclick="showLog()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- DETAIL VIEW -->
+  <section id="viewDetail" class="max-w-2xl mx-auto space-y-6" style="display:none"></section>
+
+  <!-- SITE VISIT REPORT VIEW -->
+  <section id="viewReport" class="space-y-6" style="display:none">
+    <div class="no-print bg-surface-container-lowest p-4 rounded border border-outline-variant space-y-3">
+      <div class="flex flex-wrap justify-between items-center gap-3">
+        <button class="bg-surface-container px-4 py-2 rounded font-bold text-sm" onclick="showLog()">← Back to Log</button>
+        <div class="flex items-center gap-2">
+          <label class="text-xs font-bold">From</label> <input type="date" id="rFrom" class="p-1 border rounded text-xs" onchange="renderReport()"/>
+          <label class="text-xs font-bold">To</label> <input type="date" id="rTo" class="p-1 border rounded text-xs" onchange="renderReport()"/>
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="text-xs font-bold">Layout</label>
+          <select id="rLayoutStyle" class="p-1.5 border rounded text-xs font-bold" onchange="renderReport()">
+            <option value="OPT1">🖼️ Option 1: Visual Photo Cards</option>
+            <option value="OPT2">📑 Option 2: Executive Rows</option>
+          </select>
+        </div>
+        <button class="bg-primary text-on-primary px-4 py-2 rounded font-bold text-sm flex items-center gap-1" onclick="printReport()">
+          <span class="material-symbols-outlined text-sm">print</span> Print / Export PDF
+        </button>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3 bg-surface p-3 rounded border border-outline-variant">
+        <label class="flex items-center gap-2 text-xs font-bold cursor-pointer">
+          <input type="checkbox" id="toggleAttendees" checked onchange="renderReport()"/> Include Attendees in Report
+        </label>
+        <input type="text" id="rAttendees" placeholder="e.g. Client Lead, PMC Lead" class="flex-1 text-xs p-1.5 border rounded bg-white" oninput="renderReport()"/>
+      </div>
+    </div>
+
+    <div id="reportDocument" class="bg-white border border-outline p-6 rounded-md space-y-4"></div>
+  </section>
+
+  <!-- 1-CLICK MOM VIEW -->
+  <section id="viewMom" class="space-y-6" style="display:none">
+    <div class="no-print flex flex-wrap justify-between items-center gap-3 bg-surface-container-lowest p-4 rounded border border-outline-variant">
+      <button class="bg-surface-container px-4 py-2 rounded font-bold text-sm" onclick="showLog()">← Back to Log</button>
+      <div class="flex items-center gap-2">
+        <label class="text-xs font-bold">Visit Date</label>
+        <input type="date" id="momDate" class="p-1.5 border rounded text-xs" onchange="renderMomList()"/>
+        <select id="momFilterMode" class="p-1.5 border rounded text-xs font-bold" onchange="renderMomList()">
+          <option value="DATE">Logs from Visit Date</option>
+          <option value="ALL_SITE">All Logs for Project</option>
+        </select>
+      </div>
+      <button class="bg-primary text-on-primary px-4 py-2 rounded font-bold text-sm flex items-center gap-1" onclick="copyMomText()">
+        <span class="material-symbols-outlined text-sm">content_copy</span> Copy for WhatsApp/Email
+      </button>
+      <button class="bg-secondary text-on-secondary px-4 py-2 rounded font-bold text-sm flex items-center gap-1" onclick="printMom()">
+        <span class="material-symbols-outlined text-sm">print</span> Print MOM PDF
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-surface-container-lowest border-2 border-outline-variant p-4 rounded space-y-3">
+        <h3 class="font-headline-md text-on-surface font-bold">Select Daily Logs</h3>
+        <div id="momChecklist" class="space-y-2"></div>
+      </div>
+
+      <div class="bg-surface-container-lowest border-2 border-outline-variant p-4 rounded space-y-3">
+        <div class="flex justify-between items-center border-b pb-2">
+          <h3 class="font-headline-md text-on-surface font-bold">Live MOM Text</h3>
+        </div>
+        <div class="space-y-2">
+          <label class="text-xs font-bold text-on-surface-variant block">Attendees:</label>
+          <input type="text" id="momAttendees" class="w-full p-2 border rounded text-xs" placeholder="e.g. Darshin, Lokendrabhai (PMC)" oninput="renderMomText()"/>
+        </div>
+        <textarea id="momOutputText" class="w-full min-h-[260px] p-3 font-data-mono text-xs bg-surface-container-low border rounded leading-relaxed outline-none"></textarea>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Floating Action Button (Mobile) -->
+<button class="fab-btn fixed bottom-20 right-4 w-14 h-14 bg-primary text-on-primary rounded-full flex items-center justify-center shadow-lg md:hidden z-40" onclick="showAdd()">
+  <span class="material-symbols-outlined text-2xl">add</span>
+</button>
+
+<!-- Mobile Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-2 bg-surface border-t-2 border-secondary md:hidden">
+  <button class="nav-mob-item flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 rounded-xl" onclick="showProjects()">
+    <span class="material-symbols-outlined mb-1">construction</span>
+    <span class="font-label-caps text-label-caps text-[10px]">Projects</span>
+  </button>
+  <button class="nav-mob-item flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 rounded-xl" onclick="showLog()">
+    <span class="material-symbols-outlined mb-1">assignment</span>
+    <span class="font-label-caps text-label-caps text-[10px]">Logs</span>
+  </button>
+  <button class="nav-mob-item flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 rounded-xl" onclick="showAi()">
+    <span class="material-symbols-outlined mb-1">auto_awesome</span>
+    <span class="font-label-caps text-label-caps text-[10px]">AI Drafter</span>
+  </button>
+  <button class="nav-mob-item flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 rounded-xl" onclick="showReport()">
+    <span class="material-symbols-outlined mb-1">description</span>
+    <span class="font-label-caps text-label-caps text-[10px]">Reports</span>
+  </button>
+  <button class="nav-mob-item flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 rounded-xl" onclick="showMom()">
+    <span class="material-symbols-outlined mb-1">assignment_turned_in</span>
+    <span class="font-label-caps text-label-caps text-[10px]">MOM</span>
+  </button>
+</nav>
+
+<div id="toastContainer"></div>
+
+<script>
+const CATS = {
+  DRAWING:{ label:"Drawing Request", color:"#1D4ED8", bg:"#EFF6FF", icon:"architecture" },
+  ISSUE:  { label:"Technical Issue",  color:"#DC2626", bg:"#FEF2F2", icon:"warning" },
+  SITE:   { label:"Site Visit",       color:"#15803D", bg:"#F0FDF4", icon:"construction" },
+};
+const STATS = {
+  OPEN:      { label:"Open",        color:"#B45309", bg:"#FEF3C7" },
+  INPROGRESS:{ label:"In Progress", color:"#1D4ED8", bg:"#EFF6FF" },
+  RESOLVED:  { label:"Resolved",    color:"#15803D", bg:"#F0FDF4" },
+};
+const PRIS = {
+  HIGH:  { label:"High",   color:"#DC2626" },
+  MEDIUM:{ label:"Medium", color:"#D97706" },
+  LOW:   { label:"Low",    color:"#64748B" },
+};
+
+// Shared LocalStorage Database Keys
+let sites    = JSON.parse(localStorage.getItem("sr-sites")   || "null") || ["Site A","Site B"];
+let entries  = JSON.parse(localStorage.getItem("sr-entries") || "null") || makeSample();
+let settings = JSON.parse(localStorage.getItem("sr-settings")|| "null") || { firmName:"Your Firm Name" };
+let activeSite = sites[0] || "Site A";
+let filterCat  = "ALL";
+let filterStat = "ALL";
+let addPhotos  = [];
+let editId     = null;
+let momSelectedIds = [];
+
+function makeSample() {
+  return [
+    { id:1, site:"Site A", date:today(), category:"SITE", status:"INPROGRESS", priority:"",
+      title:"Finishes Update: Backpainted Glass Vanity — Parents Room Bathroom",
+      description:"Parents Room Bathroom detail update: Incorporate backpainted glass finish to vanity drawers and shutter panels.",
+      raisedBy:"", assignedTo:"PMC", followUp:"PMC to coordinate backpainted glass installation on vanity drawers and shutters.", photos:[] },
+    { id:2, site:"Site A", date:daysAgo(1), category:"DRAWING", status:"OPEN", priority:"HIGH",
+      title:"Request: Deck Area Concept Layout",
+      description:"Site team requires architectural layout concepts for the deck area to proceed with planning.",
+      raisedBy:"", assignedTo:"Design Team", followUp:"Design Team to issue deck area concept drawings urgently by Friday.", photos:[] }
+  ];
+}
+
+function save() {
+  localStorage.setItem("sr-entries", JSON.stringify(entries));
+  localStorage.setItem("sr-sites",   JSON.stringify(sites));
+  localStorage.setItem("sr-settings",JSON.stringify(settings));
+}
+
+function today() { return new Date().toISOString().split("T")[0]; }
+function daysAgo(n) { return new Date(Date.now()-n*86400000).toISOString().split("T")[0]; }
+function fmt(d) { if(!d)return""; return new Date(d+"T00:00:00").toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"}); }
+function esc(s) { return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+function showToast(msg) {
+  const container = document.getElementById("toastContainer");
+  const t = Object.assign(document.createElement("div"),{className:"toast-box",textContent:msg});
+  container.appendChild(t); setTimeout(()=>t.remove(),2600);
+}
+
+function compressImage(file, callback) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      let w = img.width, h = img.height;
+      const maxDim = 1280;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+        else { w = Math.round((w * maxDim) / h); h = maxDim; }
+      }
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, w, h);
+      callback(canvas.toDataURL("image/jpeg", 0.75));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// VIEW SWITCHING ENGINE
+function hideAllViews() {
+  ["viewProjects","viewLog","viewAi","viewAdd","viewDetail","viewReport","viewMom"].forEach(id => {
+    document.getElementById(id).style.display = "none";
+  });
+}
+
+function showProjects() {
+  hideAllViews();
+  document.getElementById("viewProjects").style.display = "block";
+  renderProjectsGrid();
+}
+
+function showLog() {
+  hideAllViews();
+  document.getElementById("viewLog").style.display = "block";
+  document.getElementById("activeProjectNameText").textContent = activeSite;
+  renderStats(); renderFilters(); renderLog();
+}
+
+function showAi() {
+  hideAllViews();
+  document.getElementById("viewAi").style.display = "block";
+}
+
+function showAdd(prefillData = null) {
+  editId = null; addPhotos = [...(prefillData?.photos||[])];
+  hideAllViews();
+  document.getElementById("viewAdd").style.display = "block";
+  document.getElementById("formHeaderTitle").textContent = "New Log Entry — " + activeSite;
+  document.getElementById("btnSubmitForm").textContent = "Save Log Entry";
+  fillFormData(prefillData);
+  renderPhotoGrid();
+}
+
+function showEdit(id) {
+  const entry = entries.find(e => e.id === id); if(!entry) return;
+  editId = id; addPhotos = [...(entry.photos||[])];
+  hideAllViews();
+  document.getElementById("viewAdd").style.display = "block";
+  document.getElementById("formHeaderTitle").textContent = "Edit Log Entry — " + activeSite;
+  document.getElementById("btnSubmitForm").textContent = "Update Entry";
+  fillFormData(entry);
+  renderPhotoGrid();
+}
+
+function fillFormData(e) {
+  document.getElementById("fDate").value = e ? e.date : today();
+  document.getElementById("fCat").value = e ? e.category : "SITE";
+  document.getElementById("fTitle").value = e ? (e.title||"") : "";
+  document.getElementById("fDesc").value = e ? (e.description||"") : "";
+  document.getElementById("fBy").value = e ? (e.raisedBy||"") : "";
+  document.getElementById("fTo").value = e ? (e.assignedTo||"") : "";
+  document.getElementById("fStatus").value = e ? e.status : "OPEN";
+  document.getElementById("fPri").value = e ? (e.priority||"") : "";
+  document.getElementById("fFollow").value = e ? (e.followUp||"") : "";
+}
+
+function saveFormEntry() {
+  const title = document.getElementById("fTitle").value.trim();
+  if(!title) { alert("Please enter a title."); return; }
+
+  const entryData = {
+    date: document.getElementById("fDate").value,
+    category: document.getElementById("fCat").value,
+    title: title,
+    description: document.getElementById("fDesc").value,
+    raisedBy: document.getElementById("fBy").value,
+    assignedTo: document.getElementById("fTo").value,
+    status: document.getElementById("fStatus").value,
+    priority: document.getElementById("fPri").value,
+    followUp: document.getElementById("fFollow").value,
+    photos: [...addPhotos]
+  };
+
+  if(editId) {
+    entries = entries.map(e => e.id === editId ? {...e, ...entryData} : e);
+    showToast("Log updated!");
+  } else {
+    entries.unshift({ id: Date.now(), site: activeSite, ...entryData });
+    showToast("Log saved!");
+  }
+  save(); showLog();
+}
+
+// PROJECTS DASHBOARD ENGINE
+function renderProjectsGrid() {
+  const grid = document.getElementById("projectsGrid");
+  grid.innerHTML = sites.map(s => {
+    const siteLogs = entries.filter(e => e.site === s);
+    const openCount = siteLogs.filter(e => e.status === "OPEN").length;
+    const lastLog = siteLogs.sort((a,b)=>b.date.localeCompare(a.date))[0];
+    const isCurrent = s === activeSite;
+
+    return `<div class="bg-surface-container-lowest border ${isCurrent?'border-primary border-2':'border-outline-variant'} p-5 rounded-lg space-y-3 cursor-pointer hover:shadow-md transition-all" onclick="switchSite('${esc(s)}')">
+      <div class="flex justify-between items-start">
+        <div class="font-headline-md font-bold text-on-surface text-lg">${esc(s)}</div>
+        ${isCurrent ? `<span class="bg-primary text-on-primary text-xs px-2 py-0.5 rounded font-bold">Active</span>` : ''}
+      </div>
+      <div class="flex gap-4 text-xs text-on-surface-variant">
+        <span>📋 ${siteLogs.length} Logs</span>
+        <span>🔴 ${openCount} Open</span>
+        <span>📅 ${lastLog ? fmt(lastLog.date) : "No visits"}</span>
+      </div>
+      <div class="flex gap-2 pt-2 border-t border-surface-variant" onclick="event.stopPropagation()">
+        <button class="px-3 py-1 border border-outline-variant rounded text-xs font-bold" onclick="renameProject('${esc(s)}')">✏️ Rename</button>
+        <button class="px-3 py-1 border border-outline-variant text-error rounded text-xs font-bold" onclick="deleteProject('${esc(s)}')">🗑️ Delete</button>
+      </div>
+    </div>`;
+  }).join("") + `
+    <div class="border-2 border-dashed border-outline-variant p-6 rounded-lg flex flex-col items-center justify-center text-center cursor-pointer hover:bg-surface-container transition-colors" onclick="promptCreateProject()">
+      <span class="material-symbols-outlined text-3xl text-primary mb-1">add_circle</span>
+      <div class="font-bold text-sm text-primary">+ Create New Project</div>
+    </div>`;
+}
+
+function promptCreateProject() {
+  const name = prompt("Enter New Project / Site Name:");
+  if(!name || !name.trim()) return;
+  const v = name.trim();
+  if(sites.includes(v)) { alert("Project name already exists!"); return; }
+  sites.push(v); save(); switchSite(v);
+}
+
+function renameProject(oldName) {
+  const newName = prompt(`Rename project "${oldName}" to:`, oldName);
+  if(!newName || !newName.trim() || newName.trim() === oldName) return;
+  const v = newName.trim();
+  if(sites.includes(v)) { alert("Project name already exists!"); return; }
+  
+  sites = sites.map(s => s === oldName ? v : s);
+  entries = entries.map(e => e.site === oldName ? {...e, site: v} : e);
+  if(activeSite === oldName) activeSite = v;
+  save(); showProjects(); showToast("Project renamed!");
+}
+
+function deleteProject(siteName) {
+  if(sites.length <= 1) { alert("You must have at least one active project."); return; }
+  const count = entries.filter(e => e.site === siteName).length;
+  if(!confirm(`Delete project "${siteName}" and its ${count} logs?`)) return;
+
+  sites = sites.filter(s => s !== siteName);
+  entries = entries.filter(e => e.site !== siteName);
+  if(activeSite === siteName) activeSite = sites[0];
+  save(); showProjects(); showToast("Project deleted.");
+}
+
+function switchSite(s) {
+  activeSite = s; filterCat="ALL"; filterStat="ALL";
+  document.getElementById("searchInput").value = "";
+  document.getElementById("activeProjectNameText").textContent = activeSite;
+  showLog();
+}
+
+function switchSite(s) {
+  activeSite = s; filterCat="ALL"; filterStat="ALL";
+  if(document.getElementById("searchInput")) document.getElementById("searchInput").value = "";
+  if(document.getElementById("activeProjectNameText")) document.getElementById("activeProjectNameText").textContent = activeSite;
+  if(document.getElementById("activeProjectTitle")) document.getElementById("activeProjectTitle").innerHTML = `<span>${esc(activeSite)}</span> <span class="material-symbols-outlined text-secondary text-base">expand_more</span>`;
+  showLog();
+}
+
+function renderStats() {
+  const se = entries.filter(e => e.site === activeSite);
+  document.getElementById("statsRow").innerHTML = [
+    ["Total Logs", se.length, "bg-surface-container-lowest border border-outline-variant", "text-on-surface", () => {filterCat="ALL";filterStat="ALL";renderFilters();renderLog();}],
+    ["Open Items", se.filter(e=>e.status==="OPEN").length, "bg-primary-fixed border border-primary-fixed-dim", "text-primary", () => {filterCat="ALL";filterStat="OPEN";renderFilters();renderLog();}],
+    ["In Progress", se.filter(e=>e.status==="INPROGRESS").length, "bg-secondary-container border border-outline-variant", "text-primary", () => {filterCat="ALL";filterStat="INPROGRESS";renderFilters();renderLog();}],
+    ["Resolved", se.filter(e=>e.status==="RESOLVED").length, "bg-[#E8F5E9] border border-[#C8E6C9]", "text-[#2E7D32]", () => {filterCat="ALL";filterStat="RESOLVED";renderFilters();renderLog();}],
+  ].map(([l,v,bg,c,click]) => `<div class="${bg} rounded-xl p-4 flex flex-col gap-1 cursor-pointer hover:shadow-sm transition-all" onclick="(${click.toString()})()">
+    <span class="text-label-caps uppercase text-on-surface-variant font-bold text-[10px]">${l}</span>
+    <span class="text-[32px] font-bold ${c}">${v}</span>
+  </div>`).join("");
+}
+
+function renderFilters() {
+  const catItems = [
+    ["ALL", "All<br>Types", "text-sm", ""],
+    ["SITE", "Site Visit", "construction", "text-primary"],
+    ["ISSUE", "Issue", "warning", "text-error"],
+    ["DRAWING", "Drawing", "architecture", "text-secondary"]
+  ];
+
+  const statItems = [
+    ["ALL", "All<br>Status"],
+    ["OPEN", "Open"],
+    ["INPROGRESS", "In Progress"],
+    ["RESOLVED", "Resolved"]
+  ];
+
+  let html = catItems.map(([k, label, icon, iconCol]) => {
+    const active = filterCat === k;
+    return `<div class="flex flex-col items-center gap-1.5 min-w-[68px] cursor-pointer" onclick="setF('cat','${k}')">
+      <button class="w-14 h-14 rounded-full ${active ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-container-lowest border border-outline-variant text-on-surface'} flex items-center justify-center transition-all">
+        ${icon ? `<span class="material-symbols-outlined ${active ? 'text-on-primary' : iconCol}">${icon}</span>` : `<span class="font-bold text-center leading-tight text-[11px]">${label}</span>`}
+      </button>
+      ${icon ? `<span class="text-[10px] font-bold uppercase text-center ${active ? 'text-primary' : 'text-on-surface-variant'}">${label}</span>` : ''}
+    </div>`;
+  }).join("");
+
+  html += `<div class="w-[1px] h-10 bg-outline-variant mx-1 self-center"></div>`;
+
+  html += statItems.map(([k, label]) => {
+    const active = filterStat === k;
+    return `<div class="flex flex-col items-center gap-1.5 min-w-[68px] cursor-pointer" onclick="setF('stat','${k}')">
+      <button class="w-14 h-14 rounded-full ${active ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-container-lowest border border-outline-variant text-on-surface'} flex items-center justify-center transition-all">
+        <span class="font-bold text-center leading-tight text-[11px]">${label}</span>
+      </button>
+    </div>`;
+  }).join("");
+
+  document.getElementById("filterPillsRow").innerHTML = html;
+}
+
+function setF(t,v) { if(t==="cat") filterCat=v; else filterStat=v; renderFilters(); renderLog(); }
+
+function renderLog() {
+  const q = (document.getElementById("searchInput")?.value||"").toLowerCase();
+  const list = entries.filter(e => e.site === activeSite)
+    .filter(e => filterCat === "ALL" || e.category === filterCat)
+    .filter(e => filterStat === "ALL" || e.status === filterStat)
+    .filter(e => !q || [e.title,e.description,e.raisedBy,e.assignedTo].some(f=>(f||"").toLowerCase().includes(q)))
+    .sort((a,b) => b.date.localeCompare(a.date));
+
+  if(!list.length) {
+    document.getElementById("entriesList").innerHTML = `<div class="col-span-full text-center py-12 text-on-surface-variant">No logs found for <strong>${esc(activeSite)}</strong>. Tap <strong>+</strong> to record an observation.</div>`;
+    return;
+  }
+
+  document.getElementById("entriesList").innerHTML = list.map(e => {
+    const cat = CATS[e.category], st = STATS[e.status], pr = PRIS[e.priority];
+    return `<article class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 flex flex-col gap-3 shadow-sm cursor-pointer hover:shadow-md transition-all" onclick="showDetail(${e.id})">
+      <div class="flex justify-between items-start gap-2">
+        <div class="flex flex-col gap-0.5">
+          <span class="text-[11px] font-bold uppercase tracking-wider" style="color:${cat.color}">${cat.label}</span>
+          <h3 class="text-[17px] font-bold text-on-surface leading-snug">${esc(e.title)}</h3>
+        </div>
+        <span class="px-2.5 py-1 rounded-full text-[11px] font-bold shrink-0" style="background:${st.bg};color:${st.color}">${st.label}</span>
+      </div>
+      
+      ${e.description ? `<p class="text-on-surface-variant text-[13px] leading-relaxed line-clamp-2">${esc(e.description)}</p>` : ''}
+
+      ${e.photos?.length ? `<div class="flex gap-2 mt-1">${e.photos.slice(0,3).map(p=>`<img src="${p.dataUrl}" class="w-14 h-14 object-cover rounded-lg border border-outline-variant"/>`).join('')}</div>` : ''}
+
+      <div class="flex items-center gap-3 pt-3 border-t border-surface-container text-xs text-on-surface-variant">
+        <div class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+          <span>${fmt(e.date)}</span>
+        </div>
+        ${e.assignedTo ? `<div class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+          <span>${esc(e.assignedTo)}</span>
+        </div>` : ''}
+        ${pr ? `<div class="flex items-center gap-1 ml-auto text-error font-bold">
+          <span class="w-2 h-2 rounded-full bg-error"></span>
+          <span>${pr.label}</span>
+        </div>` : ''}
+      </div>
+    </article>`;
+  }).join("");
+}
+
+function handlePhotos(ev) {
+  Array.from(ev.target.files).forEach(f => {
+    compressImage(f, (compressedDataUrl) => {
+      addPhotos.push({ dataUrl: compressedDataUrl, caption: "" });
+      renderPhotoGrid();
+    });
+  });
+}
+
+function renderPhotoGrid() {
+  const g = document.getElementById("photoGrid"); if(!g) return;
+  g.innerHTML = addPhotos.map((p,i) => `<div class="relative rounded overflow-hidden border border-outline-variant bg-surface">
+    <img src="${p.dataUrl}" class="w-full h-20 object-cover cursor-pointer" onclick="showPhotoModal('${p.dataUrl}')"/>
+    <button type="button" class="absolute top-1 right-1 bg-black/70 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs" onclick="removePhoto(${i})">×</button>
+  </div>`).join("");
+}
+function removePhoto(i) { addPhotos.splice(i,1); renderPhotoGrid(); }
+
+function showDetail(id) {
+  const e = entries.find(x => x.id === id); if(!e) return;
+  const cat = CATS[e.category], st = STATS[e.status], pr = PRIS[e.priority];
+  hideAllViews();
+  const d = document.getElementById("viewDetail"); d.style.display = "block";
+  d.innerHTML = `<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-md space-y-4">
+    <div class="flex justify-between items-center">
+      <button class="bg-surface-container px-3 py-1.5 rounded text-xs font-bold" onclick="showLog()">← Back to Log</button>
+      <div class="space-x-2">
+        <button class="px-3 py-1.5 border border-outline-variant rounded text-xs font-bold" onclick="showEdit(${e.id})">✏️ Edit</button>
+        <button class="px-3 py-1.5 border border-outline-variant text-error rounded text-xs font-bold" onclick="delEntry(${e.id})">Delete</button>
+      </div>
+    </div>
+    <div class="space-y-1">
+      <span class="text-xs font-bold uppercase" style="color:${cat.color}">${cat.label}</span>
+      <h2 class="text-xl font-bold text-on-surface">${esc(e.title)}</h2>
+      <div class="text-xs text-on-surface-variant">${fmt(e.date)} · ${esc(e.site)} ${e.assignedTo?`· Assigned to ${esc(e.assignedTo)}`:''}</div>
+    </div>
+    <hr class="border-outline-variant"/>
+    ${e.description ? `<div class="space-y-1"><div class="text-xs font-bold uppercase text-on-surface-variant">Description</div><div class="text-sm leading-relaxed whitespace-pre-wrap">${esc(e.description)}</div></div>` : ''}
+    ${e.followUp ? `<div class="bg-amber-50 border-l-4 border-amber-600 p-3 rounded text-xs"><div class="font-bold text-amber-800">ACTION REQUIRED</div><div class="text-amber-900 mt-0.5">${esc(e.followUp)}</div></div>` : ''}
+    ${e.photos?.length ? `<div><div class="text-xs font-bold uppercase text-on-surface-variant mb-2">Photos</div><div class="grid grid-cols-3 sm:grid-cols-4 gap-2">${e.photos.map(p=>`<img src="${p.dataUrl}" class="w-full h-24 object-cover rounded border border-outline-variant cursor-pointer" onclick="showPhotoModal('${p.dataUrl}')"/>`).join('')}</div></div>` : ''}
+  </div>`;
+}
+
+function delEntry(id) {
+  if(!confirm("Delete this log entry?")) return;
+  entries = entries.filter(e => e.id !== id); save(); showLog(); showToast("Deleted");
+}
+
+function showPhotoModal(src) {
+  const m = document.createElement("div"); m.className = "photo-modal";
+  m.innerHTML = `<img src="${src}"><a href="${src}" download="site-photo-${today()}.jpg" class="mt-3 bg-primary text-on-primary px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-sm">download</span> Download Original High-Res Photo</a>`;
+  m.onclick = () => m.remove(); document.body.appendChild(m);
+}
+
+// AI ROUGH NOTES ENGINE
+function fillAiSample(num) {
+  const t = document.getElementById("aiInputText");
+  if(num === 1) t.value = "add backpainted glass in vanity drawers and sutter in parents room bathroom";
+  else if(num === 2) t.value = "deck area concept required";
+}
+
+function processAiDraft() {
+  let raw = document.getElementById("aiInputText").value.trim();
+  if(!raw) return;
+
+  raw = raw.replace(/\bsutter\b/gi, "shutter")
+           .replace(/\bmirrom\b/gi, "mirror")
+           .replace(/\bmat\b/gi, "matte")
+           .replace(/\bcabinate\b/gi, "cabinet")
+           .replace(/\bgf\b/gi, "Ground Floor")
+           .replace(/\b2nd\b/gi, "Second Floor")
+           .replace(/\bdwg\b/gi, "drawing");
+
+  let category = "SITE";
+  if(/drawing|layout|plan|concept|revision|rev|design|elevation/i.test(raw)) category = "DRAWING";
+  else if(/issue|defect|crack|missing|wrong|fail|error|problem|discrepancy/i.test(raw)) category = "ISSUE";
+
+  let priority = "";
+  if(/urgent|high|immediately|critical|asap|today|pour/i.test(raw)) priority = "HIGH";
+  else if(/medium|normal/i.test(raw)) priority = "MEDIUM";
+  else if(/low|minor|whenever/i.test(raw)) priority = "LOW";
+
+  let assignedTo = "";
+  if(category === "DRAWING" || /architect|design team|drawing/i.test(raw)) assignedTo = "Design Team";
+  else if(/site|execution|defect|finish|pour|slab|pmc/i.test(raw)) assignedTo = "PMC";
+
+  let raisedBy = "";
+  if(/client|owner/i.test(raw)) raisedBy = "Client";
+  else if(/site team|engineer/i.test(raw)) raisedBy = "Site Team";
+
+  const lines = raw.split("\n").map(l => l.replace(/^[-*•]\s*/, '').trim()).filter(Boolean);
+  const textStr = lines.join(". ");
+
+  let areaMatch = raw.match(/(parents room bathroom|gf guest bedroom|pooja room|deck area|2nd floor|second floor|living room|kitchen)/i);
+  let areaName = areaMatch ? areaMatch[0] : "";
+  
+  let title = category === "DRAWING" ? `Request: ${lines[0].charAt(0).toUpperCase() + lines[0].slice(1)}` : (areaName ? `Finishes Update: ${areaName.charAt(0).toUpperCase() + areaName.slice(1)}` : `Site Update: ${lines[0].charAt(0).toUpperCase() + lines[0].slice(1)}`);
+  let professionalProse = textStr.charAt(0).toUpperCase() + textStr.slice(1) + ".";
+
+  showAdd({ title, description: professionalProse, category, priority, assignedTo, raisedBy, date: today() });
+  showToast("✨ AI drafted entry!");
+}
+
+function exportData() {
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({entries,sites,settings,date:new Date().toISOString()}));
+  const a = Object.assign(document.createElement("a"),{href:dataStr,download:`site-report-backup-${today()}.json`});
+  a.click(); showToast("Backup downloaded!");
+}
+function triggerImport(){ document.getElementById("importFileInput").click(); }
+function importData(ev) {
+  const file = ev.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if(data.entries && data.sites) {
+        entries = data.entries; sites = data.sites; save(); renderProjectsGrid(); showLog(); showToast("Data restored!");
+      } else alert("Invalid backup file.");
+    } catch(err) { alert("Failed to read file."); }
+  };
+  reader.readAsText(file);
+}
+
+function showReport() {
+  hideAllViews();
+  document.getElementById("viewReport").style.display = "block";
+  document.getElementById("rFrom").value = daysAgo(30); document.getElementById("rTo").value = today();
+  renderReport();
+}
+
+function printReport() {
+  document.body.className = "printing-report";
+  window.print();
+  setTimeout(()=>document.body.className="", 500);
+}
+
+function renderReport() {
+  const from = document.getElementById("rFrom").value;
+  const to   = document.getElementById("rTo").value;
+  const layout = document.getElementById("rLayoutStyle") ? document.getElementById("rLayoutStyle").value : "OPT1";
+  const isAttendeesOn = document.getElementById("toggleAttendees") ? document.getElementById("toggleAttendees").checked : true;
+  const attendeesVal = document.getElementById("rAttendees") ? document.getElementById("rAttendees").value : "";
+  
+  const se = entries.filter(e => e.site === activeSite && (!from || e.date >= from) && (!to || e.date <= to)).sort((a,b) => b.date.localeCompare(a.date));
+
+  const doc = document.getElementById("reportDocument");
+
+  const headerHtml = `
+    <div class="border-b-2 border-primary pb-4 mb-4 flex justify-between items-end">
+      <div>
+        <h1 class="text-2xl font-extrabold text-primary uppercase">${layout === 'OPT2' ? 'EXECUTIVE SUMMARY REPORT' : 'VISUAL FIELD REPORT'}</h1>
+        <div class="text-lg font-bold text-on-surface">${esc(activeSite)}</div>
+      </div>
+      <div class="text-right text-xs space-y-1">
+        <div>Visit Date: <strong>${fmt(today())}</strong></div>
+        ${isAttendeesOn && attendeesVal ? `<div>👥 Attendees: <strong>${esc(attendeesVal)}</strong></div>` : ''}
+      </div>
+    </div>`;
+
+  if(se.length === 0) {
+    doc.innerHTML = headerHtml + `<div class="text-center py-10 text-on-surface-variant text-sm">No log entries found for this date range.</div>`;
+    return;
+  }
+
+  if(layout === "OPT2") {
+    // OPTION 2: COMPACT EXECUTIVE ROWS
+    const rowsHtml = se.map(e => {
+      const st = STATS[e.status] || { label: e.status, bg: '#F1F5F9', color: '#475569' };
+      const photosHtml = e.photos?.length ? `<div class="flex gap-1.5 ml-auto">${e.photos.slice(0,2).map(p=>`<img src="${p.dataUrl}" class="w-14 h-14 object-cover rounded border border-outline-variant"/>`).join('')}</div>` : '';
+      
+      return `
+        <div class="py-3 border-b border-surface-variant flex gap-4 items-start">
+          <div class="flex-1 space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="background:${st.bg};color:${st.color}">${st.label}</span>
+              <h3 class="text-sm font-bold text-on-surface">${esc(e.title)}</h3>
+            </div>
+            ${e.description ? `<p class="text-xs text-on-surface-variant leading-relaxed">${esc(e.description)}</p>` : ''}
+            <div class="text-[11px] text-secondary font-data-mono">📅 ${fmt(e.date)}</div>
+          </div>
+          ${photosHtml}
+        </div>`;
+    }).join("");
+    doc.innerHTML = headerHtml + `<div class="flex flex-col">${rowsHtml}</div>`;
+  } else {
+    // OPTION 1: VISUAL PHOTO CARDS
+    const cardsHtml = se.map(e => {
+      const cat = CATS[e.category] || { label: e.category, color: '#964900' };
+      const st = STATS[e.status] || { label: e.status, bg: '#F1F5F9', color: '#475569' };
+      const photosHtml = e.photos?.length ? `<div class="grid grid-cols-2 gap-2 mt-2">${e.photos.slice(0,2).map(p=>`<img src="${p.dataUrl}" class="w-full aspect-video object-cover rounded-lg border border-outline-variant"/>`).join('')}</div>` : '';
+
+      return `
+        <div class="border border-outline-variant p-4 rounded-lg bg-surface-container-lowest mb-3.5 shadow-sm" style="border-left: 6px solid ${cat.color}">
+          <div class="flex justify-between items-start mb-1.5">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider" style="color:${cat.color}">${cat.label}</span>
+              <h3 class="text-base font-bold text-on-surface">${esc(e.title)}</h3>
+            </div>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ml-auto" style="background:${st.bg};color:${st.color}">${st.label}</span>
+          </div>
+          ${photosHtml}
+          ${e.description ? `<p class="text-xs text-on-surface-variant leading-relaxed mt-2 border-l-2 border-outline-variant pl-2.5">${esc(e.description)}</p>` : ''}
+          <div class="text-[11px] text-secondary mt-2 pt-2 border-t border-surface-variant">📅 ${fmt(e.date)}</div>
+        </div>`;
+    }).join("");
+    doc.innerHTML = headerHtml + `<div>${cardsHtml}</div>`;
+  }
+}
+
+// MOM ENGINE
+function showMom() {
+  hideAllViews();
+  document.getElementById("viewMom").style.display = "block";
+  document.getElementById("momDate").value = today();
+  renderMomList();
+}
+
+function printMom() {
+  document.body.className = "printing-mom";
+  window.print();
+  setTimeout(()=>document.body.className="", 500);
+}
+
+function renderMomList() {
+  const targetDate = document.getElementById("momDate").value || today();
+  const filterMode = document.getElementById("momFilterMode") ? document.getElementById("momFilterMode").value : "DATE";
+
+  let dayLogs = [];
+  if(filterMode === "ALL_SITE") {
+    dayLogs = entries.filter(e => e.site === activeSite);
+  } else {
+    dayLogs = entries.filter(e => e.site === activeSite && e.date === targetDate);
+  }
+
+  momSelectedIds = dayLogs.map(e => e.id);
+
+  const checklistEl = document.getElementById("momChecklist");
+  if(dayLogs.length === 0) {
+    checklistEl.innerHTML = `<div class="text-xs text-on-surface-variant py-2">No log entries found for <strong>${esc(activeSite)}</strong> on ${fmt(targetDate)}. <button class="px-2 py-1 bg-surface-container rounded text-xs font-bold" onclick="document.getElementById('momFilterMode').value='ALL_SITE';renderMomList();">Show All Logs for this Site</button></div>`;
+  } else {
+    checklistEl.innerHTML = dayLogs.map(e => `
+      <label class="flex items-start gap-2 text-xs text-on-surface cursor-pointer py-1">
+        <input type="checkbox" value="${e.id}" checked onchange="toggleMomItem(${e.id})"/>
+        <div>
+          <div>${esc(e.description || e.title)}</div>
+          <div class="text-[10px] text-on-surface-variant">📅 ${fmt(e.date)} ${e.assignedTo?`· Assigned to ${esc(e.assignedTo)}`:''}</div>
+        </div>
+      </label>
+    `).join("");
+  }
+  renderMomText();
+}
+
+function toggleMomItem(id) {
+  if(momSelectedIds.includes(id)) momSelectedIds = momSelectedIds.filter(x => x !== id);
+  else momSelectedIds.push(id);
+  renderMomText();
+}
+
+function renderMomText() {
+  const targetDate = document.getElementById("momDate").value || today();
+  const attendeesStr = document.getElementById("momAttendees").value || "";
+  const selectedLogs = entries.filter(e => momSelectedIds.includes(e.id));
+
+  let bulletsStr = "";
+  if(selectedLogs.length > 0) {
+    bulletsStr = selectedLogs.map(e => `* ${e.description || e.title}`).join("\n");
+  } else {
+    bulletsStr = "(No log items selected)";
+  }
+
+  const fullMom = `Good Evening,
+Please find attached minutes from yesterday's site visit.
+
+${attendeesStr ? `Attendees : ${attendeesStr}\n` : ''}Date : ${fmt(targetDate)}
+
+Minutes:
+${bulletsStr}
+
+Please let us know if you have any additions/revisions in the same.
+Thank you.`;
+
+  document.getElementById("momOutputText").value = fullMom;
+}
+
+function copyMomText() {
+  const text = document.getElementById("momOutputText").value;
+  navigator.clipboard.writeText(text).then(() => showToast("📋 MOM copied to clipboard!"))
+    .catch(() => {
+      const el = document.getElementById("momOutputText");
+      el.select(); document.execCommand("copy");
+      showToast("📋 MOM text copied!");
+    });
 }
 
 showLog();
