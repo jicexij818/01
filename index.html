@@ -645,13 +645,6 @@ function deleteProject(siteName) {
 
 function switchSite(s) {
   activeSite = s; filterCat="ALL"; filterStat="ALL";
-  document.getElementById("searchInput").value = "";
-  document.getElementById("activeProjectNameText").textContent = activeSite;
-  showLog();
-}
-
-function switchSite(s) {
-  activeSite = s; filterCat="ALL"; filterStat="ALL";
   if(document.getElementById("searchInput")) document.getElementById("searchInput").value = "";
   if(document.getElementById("activeProjectNameText")) document.getElementById("activeProjectNameText").textContent = activeSite;
   if(document.getElementById("activeProjectTitle")) document.getElementById("activeProjectTitle").innerHTML = `<span>${esc(activeSite)}</span> <span class="material-symbols-outlined text-secondary text-base">expand_more</span>`;
