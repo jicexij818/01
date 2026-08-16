@@ -431,7 +431,12 @@ const PRIS = {
 
 // Shared LocalStorage Database Keys
 let sites    = JSON.parse(localStorage.getItem("sr-sites")   || "null") || ["Site A","Site B"];
-let entries  = JSON.parse(localStorage.getItem("sr-entries") || "null") || makeSample();
+let entries  = JSON.parse(localStorage.getItem("sr-entries") || "null");
+if(entries) {
+  entries = entries.map(e => ({...e, status: e.status || "OPEN", category: e.category || "SITE"}));
+} else {
+  entries = makeSample();
+}
 let settings = JSON.parse(localStorage.getItem("sr-settings")|| "null") || { firmName:"Your Firm Name" };
 let activeSite = sites[0] || "Site A";
 let filterCat  = "ALL";
@@ -543,15 +548,15 @@ function showEdit(id) {
 }
 
 function fillFormData(e) {
-  document.getElementById("fDate").value = e ? e.date : today();
-  document.getElementById("fCat").value = e ? e.category : "SITE";
-  document.getElementById("fTitle").value = e ? (e.title||"") : "";
-  document.getElementById("fDesc").value = e ? (e.description||"") : "";
-  document.getElementById("fBy").value = e ? (e.raisedBy||"") : "";
-  document.getElementById("fTo").value = e ? (e.assignedTo||"") : "";
-  document.getElementById("fStatus").value = e ? e.status : "OPEN";
-  document.getElementById("fPri").value = e ? (e.priority||"") : "";
-  document.getElementById("fFollow").value = e ? (e.followUp||"") : "";
+  document.getElementById("fCat").value = (e && e.category) ? e.category : "SITE";
+  document.getElementById("fStatus").value = (e && e.status) ? e.status : "OPEN";
+  document.getElementById("fPri").value = (e && e.priority) ? e.priority : "";
+  document.getElementById("fDate").value = (e && e.date) ? e.date : today();
+  document.getElementById("fTitle").value = (e && e.title) ? e.title : "";
+  document.getElementById("fDesc").value = (e && e.description) ? e.description : "";
+  document.getElementById("fBy").value = (e && e.raisedBy) ? e.raisedBy : "";
+  document.getElementById("fTo").value = (e && e.assignedTo) ? e.assignedTo : "";
+  document.getElementById("fFollow").value = (e && e.followUp) ? e.followUp : "";
 }
 
 function saveFormEntry() {
@@ -565,7 +570,7 @@ function saveFormEntry() {
     description: document.getElementById("fDesc").value,
     raisedBy: document.getElementById("fBy").value,
     assignedTo: document.getElementById("fTo").value,
-    status: document.getElementById("fStatus").value,
+    status: document.getElementById("fStatus").value || "OPEN",
     priority: document.getElementById("fPri").value,
     followUp: document.getElementById("fFollow").value,
     photos: [...addPhotos]
@@ -719,7 +724,9 @@ function renderLog() {
   }
 
   document.getElementById("entriesList").innerHTML = list.map(e => {
-    const cat = CATS[e.category], st = STATS[e.status], pr = PRIS[e.priority];
+    const cat = CATS[e.category] || CATS["SITE"];
+    const st = STATS[e.status] || STATS["OPEN"];
+    const pr = PRIS[e.priority] || { label:"", col:"", bg:"", border:"" };
     return `<article class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 flex flex-col gap-3 shadow-sm cursor-pointer hover:shadow-md transition-all" onclick="showDetail(${e.id})">
       <div class="flex justify-between items-start gap-2">
         <div class="flex flex-col gap-0.5">
@@ -861,7 +868,7 @@ function processAiDraft() {
   let title = category === "DRAWING" ? `Request: ${lines[0].charAt(0).toUpperCase() + lines[0].slice(1)}` : (areaName ? `Finishes Update: ${areaName.charAt(0).toUpperCase() + areaName.slice(1)}` : `Site Update: ${lines[0].charAt(0).toUpperCase() + lines[0].slice(1)}`);
   let professionalProse = textStr.charAt(0).toUpperCase() + textStr.slice(1) + ".";
 
-  showAdd({ title, description: professionalProse, category, priority, assignedTo, raisedBy, date: today() });
+  showAdd({ title, description: professionalProse, category, priority, assignedTo, raisedBy, status: "OPEN", date: today() });
   showToast("✨ AI drafted entry!");
 }
 
