@@ -314,7 +314,8 @@ tailwind.config = {
       <div class="flex flex-wrap justify-between items-center gap-3">
         <button class="bg-surface-container px-4 py-2 rounded font-bold text-sm" onclick="showLog()">← Back to Log</button>
         <div class="flex items-center gap-2">
-          <label class="text-xs font-bold">From</label> <input type="date" id="rFrom" class="p-1 border rounded text-xs" onchange="renderReport()"/>
+          <label class="text-xs font-bold">Report Date</label> <input type="date" id="rVisitDate" class="p-1 border rounded text-xs" onchange="renderReport()"/>
+          <label class="text-xs font-bold ml-2">From</label> <input type="date" id="rFrom" class="p-1 border rounded text-xs" onchange="renderReport()"/>
           <label class="text-xs font-bold">To</label> <input type="date" id="rTo" class="p-1 border rounded text-xs" onchange="renderReport()"/>
         </div>
         <div class="flex items-center gap-2">
@@ -872,6 +873,7 @@ function processAiDraft() {
   showToast("✨ AI drafted entry!");
 }
 
+
 function exportData() {
   const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({entries,sites,settings,date:new Date().toISOString()}));
   const a = Object.assign(document.createElement("a"),{href:dataStr,download:`site-report-backup-${today()}.json`});
@@ -896,6 +898,7 @@ function showReport() {
   hideAllViews();
   document.getElementById("viewReport").style.display = "block";
   document.getElementById("rFrom").value = daysAgo(30); document.getElementById("rTo").value = today();
+  if(document.getElementById("rVisitDate")) document.getElementById("rVisitDate").value = today();
   renderReport();
 }
 
@@ -911,6 +914,7 @@ function renderReport() {
   const layout = document.getElementById("rLayoutStyle") ? document.getElementById("rLayoutStyle").value : "OPT1";
   const isAttendeesOn = document.getElementById("toggleAttendees") ? document.getElementById("toggleAttendees").checked : true;
   const attendeesVal = document.getElementById("rAttendees") ? document.getElementById("rAttendees").value : "";
+  const visitDate = document.getElementById("rVisitDate") ? document.getElementById("rVisitDate").value : today();
   
   const se = entries.filter(e => e.site === activeSite && (!from || e.date >= from) && (!to || e.date <= to)).sort((a,b) => b.date.localeCompare(a.date));
 
@@ -923,7 +927,7 @@ function renderReport() {
         <div class="text-lg font-bold text-on-surface">${esc(activeSite)}</div>
       </div>
       <div class="text-right text-xs space-y-1">
-        <div>Visit Date: <strong>${fmt(today())}</strong></div>
+        <div>Visit Date: <strong>${fmt(visitDate)}</strong></div>
         ${isAttendeesOn && attendeesVal ? `<div>👥 Attendees: <strong>${esc(attendeesVal)}</strong></div>` : ''}
       </div>
     </div>`;
