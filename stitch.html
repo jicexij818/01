@@ -330,11 +330,14 @@ tailwind.config = {
         </button>
       </div>
 
-      <div class="flex flex-wrap items-center gap-3 bg-surface p-3 rounded border border-outline-variant">
+      <div class="flex flex-wrap items-center gap-4 bg-surface p-3 rounded border border-outline-variant">
         <label class="flex items-center gap-2 text-xs font-bold cursor-pointer">
-          <input type="checkbox" id="toggleAttendees" checked onchange="renderReport()"/> Include Attendees in Report
+          <input type="checkbox" id="toggleAttendees" checked onchange="renderReport()"/> Include Attendees
         </label>
         <input type="text" id="rAttendees" placeholder="e.g. Client Lead, PMC Lead" class="flex-1 text-xs p-1.5 border rounded bg-white" oninput="renderReport()"/>
+        <label class="flex items-center gap-2 text-xs font-bold cursor-pointer ml-2">
+          <input type="checkbox" id="toggleStatus" onchange="renderReport()"/> Include Status in Report
+        </label>
       </div>
     </div>
 
@@ -913,6 +916,7 @@ function renderReport() {
   const to   = document.getElementById("rTo").value;
   const layout = document.getElementById("rLayoutStyle") ? document.getElementById("rLayoutStyle").value : "OPT1";
   const isAttendeesOn = document.getElementById("toggleAttendees") ? document.getElementById("toggleAttendees").checked : true;
+  const isStatusOn = document.getElementById("toggleStatus") ? document.getElementById("toggleStatus").checked : false;
   const attendeesVal = document.getElementById("rAttendees") ? document.getElementById("rAttendees").value : "";
   const visitDate = document.getElementById("rVisitDate") ? document.getElementById("rVisitDate").value : today();
   
@@ -941,13 +945,14 @@ function renderReport() {
     // OPTION 2: COMPACT EXECUTIVE ROWS
     const rowsHtml = se.map(e => {
       const st = STATS[e.status] || { label: e.status, bg: '#F1F5F9', color: '#475569' };
+      const statusBadge = isStatusOn ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="background:${st.bg};color:${st.color}">${st.label}</span>` : '';
       const photosHtml = e.photos?.length ? `<div class="flex gap-2 ml-auto items-start">${e.photos.slice(0,2).map(p=>`<img src="${p.dataUrl}" style="width: 60px; height: auto;" class="rounded border border-outline-variant shadow-sm"/>`).join('')}</div>` : '';
       
       return `
         <div class="py-3 border-b border-surface-variant flex gap-4 items-start">
           <div class="flex-1 space-y-1">
             <div class="flex items-center gap-2">
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="background:${st.bg};color:${st.color}">${st.label}</span>
+              ${statusBadge}
               <h3 class="text-sm font-bold text-on-surface">${esc(e.title)}</h3>
             </div>
             ${e.description ? `<p class="text-xs text-on-surface-variant leading-relaxed">${esc(e.description)}</p>` : ''}
@@ -962,6 +967,7 @@ function renderReport() {
     const cardsHtml = se.map(e => {
       const cat = CATS[e.category] || { label: e.category, color: '#964900' };
       const st = STATS[e.status] || { label: e.status, bg: '#F1F5F9', color: '#475569' };
+      const statusBadge = isStatusOn ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full ml-auto" style="background:${st.bg};color:${st.color}">${st.label}</span>` : '';
       const photosHtml = e.photos?.length ? `<div class="grid grid-cols-2 gap-3 mt-3 items-start">${e.photos.slice(0,2).map(p=>`<img src="${p.dataUrl}" style="width: 100%; height: auto;" class="rounded-lg border border-outline-variant shadow-sm"/>`).join('')}</div>` : '';
 
       return `
@@ -971,7 +977,7 @@ function renderReport() {
               <span class="text-[10px] font-bold uppercase tracking-wider" style="color:${cat.color}">${cat.label}</span>
               <h3 class="text-base font-bold text-on-surface">${esc(e.title)}</h3>
             </div>
-            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ml-auto" style="background:${st.bg};color:${st.color}">${st.label}</span>
+            ${statusBadge}
           </div>
           ${photosHtml}
           ${e.description ? `<p class="text-xs text-on-surface-variant leading-relaxed mt-2 border-l-2 border-outline-variant pl-2.5">${esc(e.description)}</p>` : ''}
